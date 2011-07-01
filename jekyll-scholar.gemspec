@@ -18,14 +18,19 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = '>= 1.3.6'
   s.rubyforge_project = s.name
 
-  s.add_dependency('jekyll', '~> 0.10')
+  s.add_runtime_dependency('jekyll', '~> 0.10')
+  s.add_runtime_dependency('citeproc-ruby', '>= 0.0.1')
+  s.add_runtime_dependency('bibtex-ruby', '>= 1.3.7')
   
   s.add_development_dependency('bundler', '~> 1.0')
   s.add_development_dependency('rdoc', '~> 2.5')
   s.add_development_dependency('rake', '>= 0.8')
-  s.add_development_dependency('rspec', '~> 2.5')
-  s.add_development_dependency('cucumber', '~> 0.3')
-
+  s.add_development_dependency('redgreen', ">= 1.2.2")
+  s.add_development_dependency('shoulda', ">= 2.11.3")
+  s.add_development_dependency('rr', ">= 1.0.2")
+  s.add_development_dependency('cucumber', ">= 0.10.0")
+  s.add_development_dependency('RedCloth', ">= 4.2.1")
+  s.add_development_dependency('rdiscount', ">= 1.6.5")
 
   s.files        = `git ls-files`.split("\n")
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")
