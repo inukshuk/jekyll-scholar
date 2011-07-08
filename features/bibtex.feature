@@ -20,3 +20,22 @@ Feature: BibTeX
 	  Then the _site directory should exist
 		And the "_site/references.html" file should exist
 	  And I should see "<i>The Ruby Programming Language</i>" in "_site/references.html"
+
+	Scenario: Markdown Formatted Bibliography
+		Given I have a configuration file with "citation_style" set to "apa"
+	  And I have a page "references.bib":
+			"""
+			---
+			---
+			References
+			==========
+			
+			@book{ruby,
+			  title     = {The Ruby Programming Language},
+			  author    = {Flanagan, David and Matsumoto, Yukihiro},
+			  year      = {2008},
+			  publisher = {O'Reilly Media}
+			}
+			"""
+	  When I run jekyll
+	  Then I should see "<h1[^>]*>References</h1>" in "_site/references.html"
