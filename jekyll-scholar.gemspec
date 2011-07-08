@@ -36,8 +36,6 @@ Gem::Specification.new do |s|
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables  = []
   s.require_path = 'lib'
-
-  s.has_rdoc     = false
   
 end
 
