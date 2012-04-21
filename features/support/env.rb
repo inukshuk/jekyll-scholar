@@ -3,8 +3,8 @@ require 'test/unit'
 
 require 'jekyll/scholar'
 
-require 'ruby-debug'
-Debugger.start
+# require 'ruby-debug'
+# Debugger.start
 
 World do
   include Test::Unit::Assertions
