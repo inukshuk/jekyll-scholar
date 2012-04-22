@@ -22,10 +22,18 @@ to a file in your plugin directory (e.g., to `_plugins/ext.rb`):
 
     require 'jekyll/scholar'
 
-In your configuration you can now adjust the Jekyll-Scholar settings
+In your configuration you can now adjust the Jekyll-Scholar settings. The
+default configuration is as follows:
 
-    citation_style: apa
-    citation_language: en
+    scholar:
+      style: apa
+      locale: en
+      
+      sort_by: none
+      order: ascending
+      
+      source: ./_bibliography
+      bibliography: references.bib
 
 You can use any style that ships with
 [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g.,
@@ -33,9 +41,13 @@ apa, mla, chicago-fullnote-bibliography), or else you can add a link
 to any CSL style (e.g., you could link to any of the styles available at
 the official [CSL style repository](https://github.com/citation-style-language/styles)).
 
-The `citation_language` settings defines what language to use when formatting
+The `locale` settings defines what language to use when formatting
 your references (this typically applies to localized terms, e.g., 'Eds.' for
 editors in English).
+
+The `source` option indicates where your bibliographies are stored;
+`bibliography` is the name of your default bibliography.
+
 
 ### Bibliographies
 
@@ -47,17 +59,17 @@ the citation style and language defined in your configuration file.
 
 For example, if you had a file `bibliography.bib` in your root directory:
 
-      ---
-      ---
-      References
-      ==========
-
-      @book{ruby,
-        title     = {The Ruby Programming Language},
-        author    = {Flanagan, David and Matsumoto, Yukihiro},
-        year      = {2008},
-        publisher = {O'Reilly Media}
-      }
+    ---
+    ---
+    References
+    ==========
+    
+    @book{ruby,
+      title     = {The Ruby Programming Language},
+      author    = {Flanagan, David and Matsumoto, Yukihiro},
+      year      = {2008},
+      publisher = {O'Reilly Media}
+    }
 
 It would be converted to `bibliography.html` with the following content:
 
@@ -65,14 +77,50 @@ It would be converted to `bibliography.html` with the following content:
 
     <p>Flanagan, D., &#38; Matsumoto, Y. (2008). <i>The Ruby Programming Language</i>. O&#8217;Reilly Media.</p>
 
-This makes it very easy for you to add you bibliography to your Jekyll-powered
+This makes it very easy for you to add your bibliography to your Jekyll-powered
 blog or website.
+
+If your using other converters to generate your site, don't worry, you can
+still generate bibliographies using the `bibliography` tag. In your site
+or blog post, simply call:
+
+    {% bibliography %}
+
+This will generate your default bibliography; if you use multiple, you can
+also pass in a name to tell Jekyll-Scholar which bibliography it should render.
+
+Let's say you have two bibliographies stored in `_bibliography/books.bib` and
+`_bibliography/papers.bib`; you can include the bibliographies on your site
+by respectively calling:
+
+    {% bibliography books %}
+    
+    {% bibliography papers %}
 
 
 ### Citations
 
-Jekyll-Scholar will support inline citations and automatic generation of
-a list of references for individual blog posts. Stay tuned.
+If you want to reference books or papers from your bibliography in your blog
+posts, Jekyll-Scholar can help you, too. Simply use the `cite` tag with
+the appropriate key of the item you want to cite and Jekyll-Scholar will
+create a formatted citation reference for you. For example:
+
+    "Once upon a midnight dreary..." {{% cite poe %}}
+
+
+Contributing
+------------
+
+The Jekyll-Scholar source code is
+[hosted on GitHub](http://github.com/inukshuk/jekyll-scholar/).
+You can check out a copy of the latest code using Git:
+
+    $ git clone https://github.com/inukshuk/jekyll-scholar.git
+
+If you've found a bug or have a question, please open an issue on the
+[Jekyll-Scholar issue tracker](http://github.com/inukshuk/jekyll-scholar/issues).
+Or, for extra credit, clone the Jekyll-Scholar repository, write a failing
+example, fix the bug and submit a pull request.
 
 
 License

@@ -39,6 +39,10 @@ module Jekyll
       end
       
       def extend_path(name)
+        if name.nil? || name.empty?
+          name = config['bibliography']
+        end
+        
         p = File.join(config['source'], name)
         p << '.bib' unless File.exists?(p)
         p

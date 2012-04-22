@@ -27,10 +27,10 @@ module Jekyll
 			end
     
       def convert (content)
-        content = BibTeX.parse(content, :include => [:meta_content], :filter => [:latex]).map do |b|
+        content = BibTeX.parse(content, :strict => true, :include => [:meta_content], :filter => [:latex]).map do |b|
           if b.respond_to?(:to_citeproc)
-            CiteProc.process b.to_citeproc, :style => @config['citation_style'],
-              :locale => @config['citation_locale'], :format => 'html'
+            CiteProc.process b.to_citeproc, :style => @config['style'],
+              :locale => @config['locale'], :format => 'html'
           else
               b.is_a?(BibTeX::MetaContent) ? b.to_s : ''
           end
