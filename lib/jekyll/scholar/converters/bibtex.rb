@@ -1,31 +1,30 @@
-require 'bibtex'
-require 'citeproc'
-
 module Jekyll
-  module Scholar
+  class Scholar
     class BibTeXConverter < Converter
       safe true
     
       priority :highest
     
-      DEFAULTS = Hash[*%w{
-        citation_style  apa
-        citation_locale en
-        citation_sort_by none
-      }].freeze
+      @pattern = (/bib(tex)?$/i).freeze
+      @extension = '.html'.freeze
       
-      PATTERN = (/bib(tex)?$/i).freeze
-      EXTENSION = '.html'.freeze
-      
+			class << self
+				attr_reader :pattern, :extension
+			end
+			
       def initialize (config = {})
         super
-        @config['scholar'] = DEFAULTS.merge(@config['scholar'] || {})
+        @config['scholar'] = Scholar.defaults.merge(@config['scholar'] || {})
         @markdown = MarkdownConverter.new config
       end
     
-      def matches (extension); extension =~ PATTERN; end
+      def matches(extension)
+				extension =~ BibTeXConverter.pattern
+			end
     
-      def output_ext (extension); EXTENSION; end
+      def output_ext(extension)
+				BibTeXConverter.extension
+			end
     
       def convert (content)
         content = BibTeX.parse(content, :include => [:meta_content], :filter => [:latex]).map do |b|

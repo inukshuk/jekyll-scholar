@@ -45,16 +45,6 @@ Given /^I have a configuration file with:$/ do |table|
   end
 end
 
-Given /^I have a configuration file with "([^\"]*)" set to:$/ do |key, table|
-  File.open('_config.yml', 'w') do |f|
-    f.write("#{key}:\n")
-    table.hashes.each do |row|
-      f.write("- #{row["value"]}\n")
-    end
-    f.close
-  end
-end
-
 When /^I run jekyll$/ do
   run_jekyll
 end
