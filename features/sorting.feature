@@ -2,33 +2,68 @@ Feature: Sorting BibTeX Bibliographies
   As a scholar who likes to blog
   I want to sort my bibliographies according to configurable parameters
 
-  # Scenario: Sort Bibliography
-  #   Given I have a configuration file with "citation_sort_by" set to "<sort-by>"
-  #   And I have a configuration file with "citation_sort_order" set to "<sort-order>"
-  #   And I have a page "references.bib":
-  #     """
-  #     ---
-  #     ---
-  #     @book{ruby,
-  #       title     = {The Ruby Programming Language},
-  #       author    = {Flanagan, David and Matsumoto, Yukihiro},
-  #       year      = {2008},
-  #       publisher = {O'Reilly Media}
-  #     }
-  #     @book{ruby,
-  #       title     = {The Ruby Programming Language},
-  #       author    = {Flanagan, David and Matsumoto, Yukihiro},
-  #       year      = {2007},
-  #       publisher = {O'Reilly Media}
-  #     }
-  #     """
-  #   When I run jekyll
-  #     Then "<pattern-1>" should come before "<pattern-2>" in "_site/references.html"
-  # 
-  #   Scenarios: Various Sort Orders
-  #     | sort_order | sort-by    | pattern-1 | pattern-2 |
-  #     | ascending  | none       | 2008      | 2007      |
-  #     | descending | none       | 2008      | 2007      |
-  #     | ascending  | year       | 2007      | 2008      |
-  #     | descending | year       | 2008      | 2007      |
-  #       
+  @tags @sorting
+	Scenario: Sort By Year
+    Given I have a scholar configuration with:
+  	  | key     | value             |
+  	  | sort_by | year              |
+		And I have a "_bibliography" directory
+	  And I have a file "_bibliography/references.bib":
+			"""
+			@book{ruby1,
+			  title     = {The Ruby Programming Language},
+			  author    = {Flanagan, David and Matsumoto, Yukihiro},
+			  year      = {2008},
+			  publisher = {O'Reilly Media}
+			}
+			@book{ruby2,
+			  title     = {The Ruby Programming Language},
+			  author    = {Flanagan, David and Matsumoto, Yukihiro},
+			  year      = {2007},
+			  publisher = {O'Reilly Media}
+			}
+			"""
+	  And I have a page "scholar.html":
+			"""
+			---
+			---
+			{% bibliography references %}
+			"""
+	  When I run jekyll
+	  Then the _site directory should exist
+		And the "_site/scholar.html" file should exist
+    Then "2007" should come before "2008" in "_site/scholar.html"
+
+  @tags @sorting
+	Scenario: Reverse Sort Order
+    Given I have a scholar configuration with:
+  	  | key     | value             |
+  	  | sort_by | year              |
+  	  | order   | descending        |
+		And I have a "_bibliography" directory
+	  And I have a file "_bibliography/references.bib":
+			"""
+			@book{ruby1,
+			  title     = {The Ruby Programming Language},
+			  author    = {Flanagan, David and Matsumoto, Yukihiro},
+			  year      = {2008},
+			  publisher = {O'Reilly Media}
+			}
+			@book{ruby2,
+			  title     = {The Ruby Programming Language},
+			  author    = {Flanagan, David and Matsumoto, Yukihiro},
+			  year      = {2007},
+			  publisher = {O'Reilly Media}
+			}
+			"""
+	  And I have a page "scholar.html":
+			"""
+			---
+			---
+			{% bibliography references %}
+			"""
+	  When I run jekyll
+	  Then the _site directory should exist
+		And the "_site/scholar.html" file should exist
+    Then "2008" should come before "2007" in "_site/scholar.html"
+
