@@ -11,6 +11,7 @@ module Jekyll
       DEFAULTS = Hash[*%w{
         citation_style  apa
         citation_locale en
+        citation_sort_by none
       }].freeze
       
       PATTERN = (/bib(tex)?$/i).freeze
@@ -27,7 +28,7 @@ module Jekyll
       def output_ext (extension); EXTENSION; end
     
       def convert (content)
-        content = BibTeX.parse(content, :include => [:meta_content]).map do |b|
+        content = BibTeX.parse(content, :include => [:meta_content], :filter => [:latex]).map do |b|
           if b.respond_to?(:to_citeproc)
             CiteProc.process b.to_citeproc, :style => @config['citation_style'],
               :locale => @config['citation_locale'], :format => 'html'

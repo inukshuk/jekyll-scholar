@@ -39,3 +39,19 @@ Feature: BibTeX
 			"""
 	  When I run jekyll
 	  Then I should see "<h1[^>]*>References</h1>" in "_site/references.html"
+
+  @latex
+	Scenario: Simple Bibliography with LaTeX directives
+		Given I have a configuration file with "citation_style" set to "apa"
+	  And I have a page "references.bib":
+			"""
+			---
+			---
+			@misc{umlaut,
+			  title     = {Look, an umlaut: \"u!},
+			}
+			"""
+	  When I run jekyll
+	  Then the _site directory should exist
+		And the "_site/references.html" file should exist
+	  And I should see "Look, an umlaut: ü!" in "_site/references.html"
