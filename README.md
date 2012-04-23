@@ -92,7 +92,8 @@ also pass in a name to tell Jekyll-Scholar which bibliography it should render.
 Let's say you have two bibliographies stored in `_bibliography/books.bib` and
 `_bibliography/papers.bib`; you can include the bibliographies on your site
 by respectively calling `{% bibliography books %}` and
-`{% bibliography papers %}`. For example, if you have a file `references.md`:
+`{% bibliography papers %}`. For example, you could have a file `references.md`
+with several reference lists:
 
     ---
     title: My References
@@ -117,7 +118,7 @@ by respectively calling `{% bibliography books %}` and
 If you want to reference books or papers from your bibliography in your blog
 posts, Jekyll-Scholar can help you, too. Simply use the `cite` tag with
 the appropriate key of the item you want to cite and Jekyll-Scholar will
-create a formatted citation reference for you. For quick example, take
+create a formatted citation reference for you. For a quick example, take
 following blog post:
 
     ---
