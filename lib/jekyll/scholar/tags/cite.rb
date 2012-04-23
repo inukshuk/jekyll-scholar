@@ -15,12 +15,13 @@ module Jekyll
       def render(context)
         config.merge!(context.registers[:site].config['scholar'] || {})
 
-        puts key
         e = bibliography[key]
-        puts e
+
         if e
-          CiteProc.process e.to_citeproc, :style => config['style'],
+          c = CiteProc.process e.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html', :mode => :citation
+          
+          "<a href='##{e.key}'>#{c}</a>"
         else
           "(missing reference)"
         end

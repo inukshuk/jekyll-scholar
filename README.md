@@ -91,11 +91,25 @@ also pass in a name to tell Jekyll-Scholar which bibliography it should render.
 
 Let's say you have two bibliographies stored in `_bibliography/books.bib` and
 `_bibliography/papers.bib`; you can include the bibliographies on your site
-by respectively calling:
+by respectively calling `{% bibliography books %}` and
+`{% bibliography papers %}`. For example, if you have a file `references.md`:
 
-    {% bibliography books %}
-    
-    {% bibliography papers %}
+    ---
+    title: My References
+    ---
+
+    {{ page.title }}
+    ================
+
+    The default Bibliography
+    ------------------------
+
+    {% bibliography %}
+
+    Secondary References
+    --------------------
+
+    {% bibliography secondary %}
 
 
 ### Citations
@@ -103,9 +117,34 @@ by respectively calling:
 If you want to reference books or papers from your bibliography in your blog
 posts, Jekyll-Scholar can help you, too. Simply use the `cite` tag with
 the appropriate key of the item you want to cite and Jekyll-Scholar will
-create a formatted citation reference for you. For example:
+create a formatted citation reference for you. For quick example, take
+following blog post:
 
-    "Once upon a midnight dreary..." {{% cite poe %}}
+    ---
+    layout: default
+    title: A Blogging Scholar
+    ---
+
+    {{ page.title }}
+    ================
+
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis 'aute irure dolor in reprehenderit in voluptate' {% cite derrida:purveyor %}
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+    cupidatat non proident, 'sunt in culpa qui officia deserunt mollit anim id est
+    laborum' {% cite rabinowitz %}.
+
+    Duis 'aute irure dolor in reprehenderit in voluptate' {% cite breton:surrealism %}
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+    cupidatat non proident, 'sunt in culpa qui officia deserunt mollit anim id est
+    laborum' {% cite rainey %}.
+
+    References
+    ----------
+
+    {% bibliography %}
 
 
 Contributing
