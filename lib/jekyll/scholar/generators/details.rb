@@ -7,14 +7,14 @@ module Jekyll
       
       def initialize(site, base, dir, entry)
         @site, @base, @dir = site, base, dir
-        
+
         @config = Scholar.defaults.merge(site.config['scholar'] || {})
-        
+
         @name = [entry.key, 'html'].join('.')
 
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
-        
+
         data['entry'] = entry
       end
     end
@@ -25,12 +25,11 @@ module Jekyll
       attr_reader :config
       
       def generate(site)
-        if site.config['scholar'] && site.layouts.key?(site.config['scholar']['details_layout'])
-          
-          @config = Scholar.defaults.merge(site.config['scholar'] || {})
-          
-          bibliography['@*'].each do |entry|
-            details = Detauls.new(site, site.source, config['details_dir'], entry)
+        @config = Scholar.defaults.merge(site.config['scholar'] || {})
+
+        if site.layouts.key?(File.basename(config['details_layout'], '.html'))
+          bibliography.each do |entry|
+            details = Details.new(site, site.source, config['details_dir'], entry)
             details.render(site.layouts, site.site_payload)
             details.write(site.dest)
             
@@ -39,19 +38,15 @@ module Jekyll
           
         end
       end
-
+			
       private
       
       def bibliography
-        @bibliography ||= BibTeX.open(extend_path(file), :filter => :latex)
+        @bibliography ||= BibTeX.open(bibliography_path, :filter => :latex)
       end          
       
-      def extend_path(name)
-        if name.nil? || name.empty?
-          name = config['bibliography']
-        end
-        
-        p = File.join(config['source'], name)
+      def bibliography_path
+        p = File.join(config['source'], config['bibliography'])
         p << '.bib' unless File.exists?(p)
         p
       end      

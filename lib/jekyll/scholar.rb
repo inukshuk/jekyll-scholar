@@ -25,7 +25,7 @@ module Jekyll
       bibliography references.bib
 
       details_dir    ./bibliography
-      detauls_layout bibtex.html
+      details_layout bibtex.html
 
     }].freeze
     
