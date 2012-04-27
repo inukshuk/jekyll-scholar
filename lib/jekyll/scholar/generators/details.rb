@@ -10,7 +10,7 @@ module Jekyll
 
         @config = Scholar.defaults.merge(site.config['scholar'] || {})
 
-        @name = [entry.key, 'html'].join('.')
+        @name = filename_for(entry)
 
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
@@ -19,6 +19,14 @@ module Jekyll
       end
 
 			private
+			
+			def filename_for(entry)
+				n = entry.key.dup
+				
+				n.gsub!(/[:\s]+/, '_')
+				
+				[n, 'html'].join('.')
+			end
 			
 			def liquidify(entry)
 				data['entry'] = {}
