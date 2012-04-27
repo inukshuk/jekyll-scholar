@@ -15,8 +15,22 @@ module Jekyll
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
 
-        data['entry'] = entry
+				liquidify(entry)
       end
+
+			private
+			
+			def liquidify(entry)
+				data['entry'] = {}
+
+				data['entry']['key'] = entry.key
+				data['entry']['type'] = entry.type
+				
+				entry.fields.each do |key, value|
+					data['entry'][key.to_s] = value.to_s
+        end
+			end
+			
     end
 
     class DetailsGenerator < Generator
