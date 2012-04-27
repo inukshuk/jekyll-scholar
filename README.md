@@ -34,6 +34,10 @@ default configuration is as follows:
       
       source: ./_bibliography
       bibliography: references.bib
+      
+      details_dir    ./bibliography
+      details_layout bibtex.html
+      
 
 You can use any style that ships with
 [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g.,
@@ -146,6 +150,35 @@ following blog post:
     ----------
 
     {% bibliography %}
+
+### Detail Pages
+
+If your layouts directory contains a layout file for bibliography details
+(the 'details_layout' configuration options), Jekyll-Scholar will generate
+a details page for each entry in you main bibliography. That is to say, if
+your bibliography contains the following entry:
+
+    @book{ruby,
+      title     = {The Ruby Programming Language},
+      author    = {Flanagan, David and Matsumoto, Yukihiro},
+      year      = {2008},
+      publisher = {O'Reilly Media}
+    }
+
+Then a page 'bibliography/ruby.html' will be generated according to your
+details page layout. In the layout file, you have access to all fields
+of your BibTeX entry. Here is an example of a details page layout:
+
+    ---
+    ---
+    <html>
+    <head></head>
+    <body>
+      <h1>{{ page.entry.title }}</h1>
+    	<h2>{{ page.entry.author }}</h2>
+    	<p>{{ page.entry.abstract }}</p>
+    </body>
+    </html>
 
 
 Contributing
