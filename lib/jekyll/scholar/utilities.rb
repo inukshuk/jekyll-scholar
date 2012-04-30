@@ -53,12 +53,29 @@ module Jekyll
         [name, 'html'].join('.')
       end
       
-      def details_link_for(entry, base = site.config['baseurl'] || '/')
-        [base, details_path, details_file_for(entry)].compact.join('/')
+      def details_link_for(entry, base = base_url)
+        [base, details_path, details_file_for(entry)].join('/')
+      end
+      
+      def base_url
+        @base_url ||= site.config['baseurl'] || nil
       end
       
       def details_path
         config['details_dir']
+      end
+      
+      def cite(key)
+        entry = bibliography[key]
+
+        if bibliography.key?(key)
+          citation = CiteProc.process entry.to_citeproc, :style => config['style'],
+            :locale => config['locale'], :format => 'html', :mode => :citation
+          
+          link_to "##{entry.key}", citation.join
+        else
+          "(missing reference)"
+        end
       end
       
       def content_tag(name, content_or_attributes, attributes = {})

@@ -1,7 +1,7 @@
 module Jekyll
   class Scholar
 
-    class CiteTag < Liquid::Tag
+    class QuoteTag < Liquid::Block
       include Scholar::Utilities
       
       attr_reader :key, :pages
@@ -15,7 +15,15 @@ module Jekyll
 
       def render(context)
         set_context_to context
-        cite key
+        
+        quote = super.strip.gsub(/\n\n/, '</p><p>').gsub(/\n/, '<br/>')
+        quote = content_tag :p, quote
+        
+        citation = cite(key)
+        
+        quote << content_tag(:cite, citation)
+        
+        content_tag :blockquote, quote
       end
       
     end
@@ -23,4 +31,4 @@ module Jekyll
   end
 end
 
-Liquid::Template.register_tag('cite', Jekyll::Scholar::CiteTag)
+Liquid::Template.register_tag('quote', Jekyll::Scholar::QuoteTag)

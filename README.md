@@ -153,6 +153,27 @@ following blog post:
 
     {% bibliography %}
 
+For longer quotes, Jekyll-Scholar provides a `quote` tag:
+
+    {% quote derrida:purveyor %}
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+    sed do eiusmod tempor.
+    
+    Lorem ipsum dolor sit amet, consectetur adipisicing.
+    {% endquote %}
+
+For example, this could be rendered as:
+
+    <blockquote>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,<br/>
+      sed do eiusmod tempor.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+      <cite>
+        <a href="#derrida:purveyor">(Derrida, 1975)</a>
+      </cite>
+    </blockquote>
+
+
 ### Detail Pages
 
 If your layouts directory contains a layout file for bibliography details
