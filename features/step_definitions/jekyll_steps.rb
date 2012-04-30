@@ -54,8 +54,14 @@ Then /^the (.*) directory should exist$/ do |dir|
 end
 
 Then /^I should see "(.*)" in "(.*)"$/ do |text, file|
+  puts File.open(file).readlines.join
   assert_match Regexp.new(text), File.open(file).readlines.join
 end
+
+Then /^I should not see "(.*)" in "(.*)"$/ do |text, file|
+  assert !File.open(file).readlines.join.match(Regexp.new(text))
+end
+
 
 Then /^the "(.*)" file should exist$/ do |file|
   assert File.file?(file)

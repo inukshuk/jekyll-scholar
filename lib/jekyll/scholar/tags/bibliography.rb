@@ -31,7 +31,7 @@ module Jekyll
           
           "<li>#{r}</li>"
         end
-        
+
         "<ol>\n#{references.join("\n")}\n</ol>"
       end
       
@@ -42,13 +42,13 @@ module Jekyll
       end          
       
       def entries
-        b = bibliography['@*']
+        b = bibliography[config['query']]
 
         unless config['sort_by'] == 'none'
           b.sort_by! { |e| e[config['sort_by']].to_s }
           b.reverse! if config['order'] =~ /^(desc|reverse)/i
         end
-        
+
         b
       end
       

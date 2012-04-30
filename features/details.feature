@@ -34,4 +34,4 @@ Feature: BibTeX
 	  When I run jekyll
 	  Then the _site directory should exist
 		And the "_site/bibliography/ruby.html" file should exist
-	  And I should see "<i>The Ruby Programming Language</i>" in "_site/bibliography/ruby.html"
+	  And I should see "The Ruby Programming Language" in "_site/bibliography/ruby.html"

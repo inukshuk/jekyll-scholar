@@ -50,7 +50,7 @@ module Jekyll
         @config = Scholar.defaults.merge(site.config['scholar'] || {})
 
         if site.layouts.key?(File.basename(config['details_layout'], '.html'))
-          bibliography.each do |entry|
+          bibliography[config['query']].each do |entry|
             details = Details.new(site, site.source, config['details_dir'], entry)
             details.render(site.layouts, site.site_payload)
             details.write(site.dest)

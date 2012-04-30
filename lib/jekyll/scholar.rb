@@ -5,6 +5,7 @@ require 'bibtex'
 require 'citeproc'
 
 require 'jekyll/scholar/version'
+require 'jekyll/scholar/utilities'
 require 'jekyll/scholar/converters/bibtex'
 require 'jekyll/scholar/tags/bibliography'
 require 'jekyll/scholar/tags/cite'
@@ -27,6 +28,8 @@ module Jekyll
       details_dir    ./bibliography
       details_layout bibtex.html
 
+			query  @*
+			
     }].freeze
     
     class << self
