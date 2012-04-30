@@ -35,9 +35,11 @@ default configuration is as follows:
       source: ./_bibliography
       bibliography: references.bib
       
-      details_dir    ./bibliography
-      details_layout bibtex.html
+      details_dir:    bibliography
+      details_layout: bibtex.html
+      details_link:   Details
       
+    	query: "@*"  
 
 You can use any style that ships with
 [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g.,
@@ -180,6 +182,25 @@ of your BibTeX entry. Here is an example of a details page layout:
     </body>
     </html>
 
+When Jekyll-Scholar generates detail pages, it also adds links to each
+entry's detail page to the generated bibliography. You can alter the
+name of the link via the 'details_link' configuration option.
+
+
+### Bibliography Filters
+
+By default, Jekyll-Scholar includes all entries in you main BibTeX file
+when generating bibliographies. If you want to include only those entries
+matching certain criteria, you can do so by adjusting the 'query'
+configuration option. For example:
+
+    query: "@book" #=> includes only books
+    query: "@article[year>=2003]" #=> includes only articles published 2003 or later
+    query: "@*[url]" #=> includes all entries with a url field
+    query: "@*[status!=review]" #=> includes all entries whose status field is not set to 'review' 
+
+Please note that some of these queries require bibtex-ruby 2.0.7 or
+later versions.
 
 Contributing
 ------------
