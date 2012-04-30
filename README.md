@@ -39,7 +39,7 @@ default configuration is as follows:
       details_layout: bibtex.html
       details_link:   Details
       
-    	query: "@*"  
+      query: "@*"  
 
 You can use any style that ships with
 [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g.,
@@ -177,8 +177,8 @@ of your BibTeX entry. Here is an example of a details page layout:
     <head></head>
     <body>
       <h1>{{ page.entry.title }}</h1>
-    	<h2>{{ page.entry.author }}</h2>
-    	<p>{{ page.entry.abstract }}</p>
+      <h2>{{ page.entry.author }}</h2>
+      <p>{{ page.entry.abstract }}</p>
     </body>
     </html>
 
