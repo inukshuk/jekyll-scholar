@@ -58,7 +58,7 @@ module Jekyll
       end
       
       def base_url
-        @base_url ||= site.config['baseurl'] || nil
+        @base_url ||= site.config['baseurl'] || site.config['base_url'] || nil
       end
       
       def details_path
