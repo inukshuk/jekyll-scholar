@@ -12,23 +12,22 @@ module Jekyll
       end
 
       def render(context)
-        @site = context.registers[:site]
-        config.merge!(site.config['scholar'] || {})
+        set_context_to context
 
-        references = entries.map do |e|
-          reference = CiteProc.process e.to_citeproc, :style => config['style'],
+        references = entries.map do |entry|
+          reference = CiteProc.process entry.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html'
-                    
-          reference = "<span id='#{e.key}'>#{reference}</span>"
-          
+
+          reference = content_tag :span, reference, :id => entry.key
+
           if generate_details?
-            reference << "<a href='#{details_link_for(e)}'>#{config['details_link']}</a>"            
+            reference << link_to(details_link_for(entry), config['details_link'])
           end
-                    
-          "<li>#{reference}</li>"
+
+          content_tag :li, reference
         end
 
-        "<ol>\n#{references.join("\n")}\n</ol>"
+        content_tag :ol, references.join("\n")
       end
       
     end

@@ -53,12 +53,37 @@ module Jekyll
         [name, 'html'].join('.')
       end
       
-      def details_link_for(entry)
-        [site.source, details_path, details_file_for(entry)].join('/')
+      def details_link_for(entry, base = site.config['baseurl'] || '/')
+        [base, details_path, details_file_for(entry)].compact.join('/')
       end
       
       def details_path
         config['details_dir']
+      end
+      
+      def content_tag(name, content_or_attributes, attributes = {})
+        if content_or_attributes.is_a?(Hash)
+          content, attributes = nil, content_or_attributes
+        else
+          content = content_or_attributes
+        end
+        
+        attributes = attributes.map { |k,v| %Q(#{k}="#{v}") }
+        
+        if content.nil?
+          "<#{[name, attributes].flatten.compact.join(' ')}/>"
+        else
+          "<#{[name, attributes].flatten.compact.join(' ')}>#{content}</#{name}>"
+        end
+      end
+      
+      def link_to(href, content, attributes = {})
+        content_tag :a, content || href, attributes.merge(:href => href)
+      end
+      
+      def set_context_to(context)
+        @site = context.registers[:site]
+        config.merge!(site.config['scholar'] || {})
       end
       
     end
