@@ -2,65 +2,35 @@ module Jekyll
   class Scholar
 
     class BibliographyTag < Liquid::Tag
+      include Scholar::Utilities
   
-      attr_reader :file, :config
-    
       def initialize(tag_name, arguments, tokens)
         super
 
         @config = Scholar.defaults.dup
-        @file = arguments.strip
+        @bibtex_file = arguments.strip
       end
 
       def render(context)
-        config.merge!(context.registers[:site].config['scholar'] || {})
+        @site = context.registers[:site]
+        config.merge!(site.config['scholar'] || {})
 
         references = entries.map do |e|
-          r = CiteProc.process e.to_citeproc, :style => config['style'],
+          reference = CiteProc.process e.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html'
                     
-          r = "<span id='#{e.key}'>#{r}</span>"
+          reference = "<span id='#{e.key}'>#{reference}</span>"
           
-          if e.field?(:url)
-            r << "<a href='#{e.url}'>URL</a>"
+          if generate_details?
+            reference << "<a href='#{details_link_for(e)}'>#{config['details_link']}</a>"            
           end
-
-          if e.field?(:doi)
-            r << "<a href='#{e.doi}'>DOI</a>"
-          end
-          
-          "<li>#{r}</li>"
+                    
+          "<li>#{reference}</li>"
         end
 
         "<ol>\n#{references.join("\n")}\n</ol>"
       end
       
-      private
-      
-      def bibliography
-        @bibliography ||= BibTeX.open(extend_path(file), :filter => :latex)
-      end          
-      
-      def entries
-        b = bibliography[config['query']]
-
-        unless config['sort_by'] == 'none'
-          b.sort_by! { |e| e[config['sort_by']].to_s }
-          b.reverse! if config['order'] =~ /^(desc|reverse)/i
-        end
-
-        b
-      end
-      
-      def extend_path(name)
-        if name.nil? || name.empty?
-          name = config['bibliography']
-        end
-        
-        p = File.join(config['source'], name)
-        p << '.bib' unless File.exists?(p)
-        p
-      end
     end
     
   end

@@ -2,7 +2,8 @@ module Jekyll
   class Scholar
 
     class CiteTag < Liquid::Tag
-  
+      include Scholar::Utilities
+      
       attr_reader :key, :pages, :config
     
       def initialize(tag_name, arguments, tokens)
@@ -15,29 +16,18 @@ module Jekyll
       def render(context)
         config.merge!(context.registers[:site].config['scholar'] || {})
 
-        e = bibliography[key]
+        entry = bibliography[key]
 
-        if e
-          c = CiteProc.process e.to_citeproc, :style => config['style'],
+        if entry
+          c = CiteProc.process entry.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html', :mode => :citation
           
-          "<a href='##{e.key}'>#{c}</a>"
+          "<a href='##{entry.key}'>#{c}</a>"
         else
           "(missing reference)"
         end
       end
       
-      private
-      
-      def bibliography
-        @bibliography ||= BibTeX.open(extend_path(config['bibliography']), :filter => :latex)
-      end          
-      
-      def extend_path(name)
-        p = File.join(config['source'], name)
-        p << '.bib' unless File.exists?(p)
-        p
-      end
     end
     
   end
