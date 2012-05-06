@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency('jekyll', '~> 0.10')
   s.add_runtime_dependency('citeproc-ruby', '~> 0.0.6')
-  s.add_runtime_dependency('bibtex-ruby', '~> 2.0.5')
+  s.add_runtime_dependency('bibtex-ruby', '~> 2.0.7')
 
   s.add_development_dependency('rake', "~> 0.9")
   s.add_development_dependency('rdoc', "~> 3.11")
