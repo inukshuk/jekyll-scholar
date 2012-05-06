@@ -28,6 +28,8 @@ module Jekyll
 				entry.fields.each do |key, value|
 					data['entry'][key.to_s] = value.to_s
         end
+
+				data['entry']['bibtex'] = entry.to_s
 			end
 			
     end
