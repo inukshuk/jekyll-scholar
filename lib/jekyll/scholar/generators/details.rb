@@ -3,7 +3,7 @@ module Jekyll
 
     class Details < Page
       include Scholar::Utilities
-      
+
       def initialize(site, base, dir, entry)
         @site, @base, @dir = site, base, dir
 
@@ -14,32 +14,34 @@ module Jekyll
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
 
-				liquidify(entry)
+        liquidify(entry)
       end
 
-			private
-			
-			def liquidify(entry)
-				data['entry'] = {}
+      private
 
-				data['entry']['key'] = entry.key
-				data['entry']['type'] = entry.type
-				
-				entry.fields.each do |key, value|
-					data['entry'][key.to_s] = value.to_s
+      def liquidify(entry)
+        data['entry'] = {}
+
+        data['entry']['key'] = entry.key
+        data['entry']['type'] = entry.type
+
+        entry.fields.each do |key, value|
+          data['entry'][key.to_s] = value.to_s
         end
 
-				data['entry']['bibtex'] = entry.to_s
-			end
-			
+        data['entry']['bibtex'] = entry.to_s
+      end
+
     end
 
     class DetailsGenerator < Generator
       include Scholar::Utilities
+      
       safe true
+      priority :high
 
       attr_reader :config
-      
+
       def generate(site)
         @site, @config = site, Scholar.defaults.merge(site.config['scholar'] || {})
 
@@ -48,13 +50,13 @@ module Jekyll
             details = Details.new(site, site.source, details_path, entry)
             details.render(site.layouts, site.site_payload)
             details.write(site.dest)
-            
+
             site.pages << details
           end
-          
+
         end
       end
-			
+
     end
 
 
