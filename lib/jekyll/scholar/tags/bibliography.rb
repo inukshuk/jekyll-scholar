@@ -28,6 +28,9 @@ module Jekyll
         end
 
         content_tag :ol, references.join("\n")
+      rescue => e
+        debugger
+        warn e.message
       end
       
     end
