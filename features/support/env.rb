@@ -3,7 +3,6 @@ require 'test/unit'
 
 require 'jekyll/scholar'
 
-
 require 'debugger'
 
 

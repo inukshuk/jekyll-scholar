@@ -47,7 +47,7 @@ module Jekyll
 
         if generate_details?
           entries.each do |entry|
-            details = Details.new(site, site.source, details_path, entry)
+            details = Details.new(site, site.source, File.join('', details_path), entry)
             details.render(site.layouts, site.site_payload)
             details.write(site.dest)
 

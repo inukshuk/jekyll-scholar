@@ -24,7 +24,7 @@ module Jekyll
         b = bibliography[config['query']]
 
         unless config['sort_by'] == 'none'
-          b.sort_by! { |e| e[config['sort_by']].to_s }
+          b = b.sort_by { |e| e[config['sort_by']].to_s }
           b.reverse! if config['order'] =~ /^(desc|reverse)/i
         end
         
@@ -54,7 +54,7 @@ module Jekyll
       end
       
       def details_link_for(entry, base = base_url)
-        [base, details_path, details_file_for(entry)].join('/')
+        File.join(base, details_path, details_file_for(entry))
       end
       
       def base_url
