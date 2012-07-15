@@ -74,4 +74,4 @@ Feature: BibTeX
 	  When I run jekyll
 	  Then the _site directory should exist
 		And the "_site/scholar.html" file should exist
-	  And I should see "<a href=\"/bibliography/ruby.html\">" in "_site/scholar.html"
+	  And I should see "<a[^>]+href=\"/bibliography/ruby.html\">" in "_site/scholar.html"

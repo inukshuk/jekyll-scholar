@@ -15,6 +15,9 @@ module Jekyll
       details_layout bibtex.html
       details_link   Details
       
+      bibliography_class bibliography
+      details_link_class details
+
     	query  @*
 	
     }].freeze
