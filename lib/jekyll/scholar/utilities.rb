@@ -80,11 +80,11 @@ module Jekyll
         "(#{key})"
       end
       
-      def cite_details(key)
+      def cite_details(key, text)
         entry = bibliography[key]
       
         if bibliography.key?(key)
-          link_to details_link_for(entry), "More details."
+          link_to details_link_for(entry), text
         else
           "(missing reference)"
         end
