@@ -79,6 +79,14 @@ module Jekyll
       rescue
         "(#{key})"
       end
+      
+      def cite_details(key)
+        entry = bibliography[key]
+      
+        if bibliography.key?(key)
+          link_to "More details.", details_link_for(entry)
+        end
+      end
 
       def content_tag(name, content_or_attributes, attributes = {})
         if content_or_attributes.is_a?(Hash)
