@@ -79,6 +79,16 @@ module Jekyll
       rescue
         "(#{key})"
       end
+      
+      def cite_details(key, text)
+        entry = bibliography[key]
+      
+        if bibliography.key?(key)
+          link_to details_link_for(entry), text
+        else
+          "(missing reference)"
+        end
+      end
 
       def content_tag(name, content_or_attributes, attributes = {})
         if content_or_attributes.is_a?(Hash)
