@@ -84,7 +84,9 @@ module Jekyll
         entry = bibliography[key]
       
         if bibliography.key?(key)
-          link_to "More details.", details_link_for(entry)
+          link_to details_link_for(entry), "More details."
+        else
+          "(missing reference)"
         end
       end
 
