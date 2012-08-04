@@ -10,13 +10,12 @@ module Jekyll
         super
 
         @config = Scholar.defaults.dup
-        @key = arguments.strip.split(/\s+/, 2)[0]
-        @text = arguments.strip.split(/\s+/, 2)[1]
+        @key, @text = arguments.strip.split(/\s+/, 2)
       end
 
       def render(context)
         set_context_to context
-        cite_details key, text || config['details_link']
+        cite_details key, text
       end
 
     end
