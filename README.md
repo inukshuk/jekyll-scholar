@@ -211,6 +211,18 @@ When Jekyll-Scholar generates detail pages, it also adds links to each
 entry's detail page to the generated bibliography. You can alter the
 name of the link via the 'details_link' configuration option.
 
+Jekyll-Scholar also provides a Liquid tag for conveniently adding links
+to individual detail pages. For example, if you would like to add a simple
+link to one of the items in your bibliography on a page or in a blog post
+you can use the `cite_details` tag to generate the link. For this to work,
+you need to pass the BibTeX key of the element you want to reference to
+the tag and, optionally, provide a text for the link (the default text
+can be set via the 'details_link' configuration option).
+
+    Duis 'aute irure dolor in reprehenderit in voluptate' velit esse cillum
+    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident {% cite_details key, Click Here For More Details %}.
+
 
 ### Bibliography Filters
 
