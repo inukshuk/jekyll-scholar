@@ -10,7 +10,7 @@ module Jekyll
         super
 
         @config = Scholar.defaults.dup
-        @key, @text = arguments.strip.split(/,\s+/, 2)
+        @key, @text = arguments.strip.split(/\s*,\s*/, 2)
       end
 
       def render(context)
