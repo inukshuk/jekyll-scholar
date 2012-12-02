@@ -1,7 +1,7 @@
 module Jekyll
   class Scholar
 
-    class PrintCiteTag < Liquid::Tag
+    class ReferenceTag < Liquid::Tag
       include Scholar::Utilities
 
       attr_reader :key, :file
@@ -40,4 +40,4 @@ module Jekyll
   end
 end
 
-Liquid::Template.register_tag('print_cite', Jekyll::Scholar::PrintCiteTag)
+Liquid::Template.register_tag('reference', Jekyll::Scholar::ReferenceTag)
