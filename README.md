@@ -190,21 +190,19 @@ If you want to display the full formatted reference entry, you can use the
     }
 
 using `{% reference ruby %}` anywhere in your page, it will print
-
-Flanagan, D & Yukihiro, M. (2008). *The Ruby Programming Language.*. O'Reilly Media
-
-(provided that you use the default formatting style)
+"Flanagan, D., & Matsumoto, Y. (2008). *The Ruby Programming Language.*.
+O'Reilly Media" (the exact result depends on your formatting style).
 
 The `reference` tag accepts a second optional argument that specifies the
-absolute path of the Bibtex file to use as input. Using it, you can override
+absolute path of the BibTeX file to use as input. Using it, you can override
 the file from which the bib entries are read. This can be handy if you
-want to use a special Bibtex file as input for a specific page. As an example,
+want to use a special BibTeX file as input for a specific page. As an example,
 the tag
 
-    `{% reference ruby,/home/foo/bar.bib %}`
+    {% reference ruby, /home/foo/bar.bib %}
 
 will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
-fallback to the default Bibtex file.
+fallback to the default BibTeX file.
 
 ### Detail Pages
 
@@ -280,7 +278,6 @@ If you've found a bug or have a question, please open an issue on the
 [Jekyll-Scholar issue tracker](http://github.com/inukshuk/jekyll-scholar/issues).
 Or, for extra credit, clone the Jekyll-Scholar repository, write a failing
 example, fix the bug and submit a pull request.
-
 
 License
 -------
