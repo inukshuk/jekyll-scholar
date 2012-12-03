@@ -177,6 +177,34 @@ For example, this could be rendered as:
       </cite>
     </blockquote>
 
+#### Displaying formatted references
+
+If you want to display the full formatted reference entry, you can use the
+`reference` tag. For example, given the following Bibtex entry,
+
+    @book{ruby,
+      title     = {The Ruby Programming Language},
+      author    = {Flanagan, David and Matsumoto, Yukihiro},
+      year      = {2008},
+      publisher = {O'Reilly Media}
+    }
+
+using `{% reference ruby %}` anywhere in your page, it will print
+
+Flanagan, D & Yukihiro, M. (2008). *The Ruby Programming Language.*. O'Reilly Media
+
+(provided that you use the default formatting style)
+
+The `reference` tag accepts a second optional argument that specifies the
+absolute path of the Bibtex file to use as input. Using it, you can override
+the file from which the bib entries are read. This can be handy if you
+want to use a special Bibtex file as input for a specific page. As an example,
+the tag
+
+    `{% reference ruby,/home/foo/bar.bib %}`
+
+will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
+fallback to the default Bibtex file.
 
 ### Detail Pages
 
