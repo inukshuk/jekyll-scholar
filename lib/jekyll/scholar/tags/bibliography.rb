@@ -8,15 +8,7 @@ module Jekyll
         super
 
         @config = Scholar.defaults.dup
-
-        path_or_query = arguments.strip
-
-        case
-        when path_or_query.start_with?('@')
-          @query = path_or_query
-        when !path_or_query.empty?
-          @bibtex_file = path_or_query
-        end
+        @bibtex_file, @query = arguments.strip.split(/\s*filter:\s*/)
       end
 
       def render(context)
