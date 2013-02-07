@@ -131,7 +131,7 @@ The example above would print a bibliography of all entires published in
 the year 2013. Of course you can also combine the file and filter parameters
 like this:
 
-{% bibliography secondary filter: @*[year=2013] %}
+    {% bibliography secondary filter: @*[year=2013] %}
 
 This would print the publications from 2013 of the bibliography at
 `_bibliography/secondary.bib`.
