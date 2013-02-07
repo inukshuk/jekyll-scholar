@@ -122,6 +122,24 @@ with several reference lists:
 
     {% bibliography secondary %}
 
+Finally, the bibliography tag supports an optional filter parameter. This
+filter takes precedence over the global filter defined in your configuration.
+
+    {% bibliography filter: @*[year=2013] %}
+
+The example above would print a bibliography of all entires published in
+the year 2013. Of course you can also combine the file and filter parameters
+like this:
+
+{% bibliography secondary filter: @*[year=2013] %}
+
+This would print the publications from 2013 of the bibliography at
+`_bibliography/secondary.bib`.
+
+For more details about filters, see the corresponding section below or
+consult the [BibTeX-Ruby](https://github.com/inukshuk/bibtex-ruby)
+documentation.
+
 
 ### Citations
 
