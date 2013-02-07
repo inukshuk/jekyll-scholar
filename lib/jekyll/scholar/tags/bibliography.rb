@@ -3,12 +3,20 @@ module Jekyll
 
     class BibliographyTag < Liquid::Tag
       include Scholar::Utilities
-  
+
       def initialize(tag_name, arguments, tokens)
         super
 
         @config = Scholar.defaults.dup
-        @bibtex_file = arguments.strip
+
+        path_or_query = arguments.strip
+
+        case
+        when path_or_query.start_with?('@')
+          @query = path_or_query
+        when !path_or_query.empty?
+          @bibtex_file = path_or_query
+        end
       end
 
       def render(context)
@@ -17,23 +25,23 @@ module Jekyll
         references = entries.map do |entry|
           reference = CiteProc.process entry.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html'
-        
+
           reference = content_tag :span, reference, :id => entry.key
-        
+
           if generate_details?
             reference << link_to(details_link_for(entry),
               config['details_link'], :class => config['details_link_class'])
           end
-        
+
           content_tag :li, reference
         end
 
         content_tag :ol, references.join("\n"), :class => config['bibliography_class']
-      end      
+      end
     end
-    
+
     private
-    
+
     def citeproc
       @citeproc ||= CiteProc::Processor.new do |p|
         p.style = config['style']

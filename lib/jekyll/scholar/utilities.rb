@@ -6,7 +6,7 @@ module Jekyll
     # #site readers
     module Utilities
 
-      attr_reader :bibtex_file, :config, :site
+      attr_reader :bibtex_file, :config, :site, :query
 
       def bibtex_options
         @bibtex_options ||= { :filter => :latex }
@@ -21,7 +21,7 @@ module Jekyll
       end
 
       def entries
-        b = bibliography[config['query']]
+        b = bibliography[query || config['query']]
 
         unless config['sort_by'] == 'none'
           b = b.sort_by { |e| e[config['sort_by']].to_s }
