@@ -279,9 +279,11 @@ configuration option. For example:
     query: "@article[year>=2003]" #=> includes only articles published 2003 or later
     query: "@*[url]" #=> includes all entries with a url field
     query: "@*[status!=review]" #=> includes all entries whose status field is not set to 'review' 
-
+    query: "@book[year <= 1900 && author ^= Poe]" #=> Books published before 1900 where the author matches /Poe/ 
+    
 Please note that some of these queries require bibtex-ruby 2.0.7 or
-later versions.
+later versions. You can also overwrite the configuration's query parameter
+in each bibliography tag individually as described above.
 
 Contributing
 ------------
