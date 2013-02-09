@@ -131,7 +131,7 @@ The example above would print a bibliography of all entires published in
 the year 2013. Of course you can also combine the file and filter parameters
 like this:
 
-{% bibliography secondary filter: @*[year=2013] %}
+    {% bibliography secondary filter: @*[year=2013] %}
 
 This would print the publications from 2013 of the bibliography at
 `_bibliography/secondary.bib`.
@@ -279,9 +279,11 @@ configuration option. For example:
     query: "@article[year>=2003]" #=> includes only articles published 2003 or later
     query: "@*[url]" #=> includes all entries with a url field
     query: "@*[status!=review]" #=> includes all entries whose status field is not set to 'review' 
-
+    query: "@book[year <= 1900 && author ^= Poe]" #=> Books published before 1900 where the author matches /Poe/ 
+    
 Please note that some of these queries require bibtex-ruby 2.0.7 or
-later versions.
+later versions. You can also overwrite the configuration's query parameter
+in each bibliography tag individually as described above.
 
 Contributing
 ------------
