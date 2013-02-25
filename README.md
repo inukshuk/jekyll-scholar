@@ -175,6 +175,12 @@ following blog post:
 
     {% bibliography %}
 
+Note that this will print your entire bibliography in the Reference section.
+If you would like to include only those entries you cited on the page, pass
+the `cited` option to the bibliography tag:
+
+    {% bibliography cited %}
+
 For longer quotes, Jekyll-Scholar provides a `quote` tag:
 
     {% quote derrida:purveyor %}
