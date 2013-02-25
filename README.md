@@ -310,7 +310,7 @@ License
 
 Jekyll-Scholar is distributed under the same license as Jekyll.
 
-Copyright (c) 2011-2012 [Sylvester Keil](http://sylvester.keil.or.at/)
+Copyright (c) 2011-2013 [Sylvester Keil](http://sylvester.keil.or.at/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the 'Software'), to deal
