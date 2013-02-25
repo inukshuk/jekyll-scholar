@@ -6,7 +6,7 @@ module Jekyll
     # #site readers
     module Utilities
 
-      attr_reader :bibtex_file, :config, :site, :query
+      attr_reader :bibtex_file, :config, :site, :query, :context
 
       def bibtex_options
         @bibtex_options ||= { :filter => :latex }
@@ -108,8 +108,12 @@ module Jekyll
         content_tag :a, content || href, attributes.merge(:href => href)
       end
 
+      def cited_references
+        context && context['cited'] || []
+      end
+
       def set_context_to(context)
-        @site = context.registers[:site]
+        @context, @site, = context, context.registers[:site]
         config.merge!(site.config['scholar'] || {})
       end
 

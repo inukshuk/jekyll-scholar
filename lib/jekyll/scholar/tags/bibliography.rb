@@ -9,12 +9,25 @@ module Jekyll
 
         @config = Scholar.defaults.dup
         @bibtex_file, @query = arguments.strip.split(/\s*filter:\s*/)
+        
+        if @bibtex_file == 'cited'
+          @bibtex_file = nil
+          @cited = true
+        end
       end
 
       def render(context)
         set_context_to context
 
-        references = entries.map do |entry|
+        references = entries
+
+        if @cited
+          references = cited_references.map do |key|
+            references.detect { |e| e.key == key }
+          end          
+        end
+
+        references.map! do |entry|
           reference = CiteProc.process entry.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html'
 
