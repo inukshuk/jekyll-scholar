@@ -84,3 +84,30 @@ Feature: Citations
 	  Then the _site directory should exist
 		And the "_site/scholar.html" file should exist
 	  And I should see "<blockquote><p>We <3 Ruby</p><cite><a .*#ruby.+\(Flanagan" in "_site/scholar.html"
+
+  @tags @cite
+	Scenario: A prefixed citation
+    Given I have a scholar configuration with:
+  	  | key          | value             |
+  	  | source       | ./_bibliography   |
+  	  | bibliography | my_references     |
+		And I have a "_bibliography" directory
+	  And I have a file "_bibliography/my_references.bib":
+			"""
+			@book{ruby,
+			  title     = {The Ruby Programming Language},
+			  author    = {Flanagan, David and Matsumoto, Yukihiro},
+			  year      = {2008},
+			  publisher = {O'Reilly Media}
+			}
+			"""
+	  And I have a page "scholar.html":
+			"""
+			---
+			---
+			{% cite ruby prefix: a %}
+			"""
+	  When I run jekyll
+	  Then the _site directory should exist
+		And the "_site/scholar.html" file should exist
+	  And I should see "#a-ruby" in "_site/scholar.html"
