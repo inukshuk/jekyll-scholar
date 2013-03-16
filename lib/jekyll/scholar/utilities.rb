@@ -79,7 +79,7 @@ module Jekyll
       rescue
         "(#{key})"
       end
-      
+
       def cite_details(key, text)
         if bibliography.key?(key)
           link_to details_link_for(bibliography[key]), text || config['details_link']
@@ -116,7 +116,6 @@ module Jekyll
         @context, @site, = context, context.registers[:site]
         config.merge!(site.config['scholar'] || {})
       end
-
     end
 
   end
