@@ -4,13 +4,13 @@ module Jekyll
     class QuoteTag < Liquid::Block
       include Scholar::Utilities
       
-      attr_reader :key, :pages
+      attr_reader :pages
     
       def initialize(tag_name, arguments, tokens)
         super
         
         @config = Scholar.defaults.dup
-        @key = arguments.strip.split(/\s+/)[0]
+        @key, arguments = arguments.strip.split(/\s+/, 2)
       end
 
       def render(context)
@@ -19,7 +19,7 @@ module Jekyll
         quote = super.strip.gsub(/\n\n/, '</p><p>').gsub(/\n/, '<br/>')
         quote = content_tag :p, quote
         
-        citation = cite(key)
+        citation = cite key
         
         quote << content_tag(:cite, citation)
         

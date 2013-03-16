@@ -6,7 +6,38 @@ module Jekyll
     # #site readers
     module Utilities
 
-      attr_reader :bibtex_file, :config, :site, :query, :context
+      attr_reader :bibtex_file, :config, :site, :query,
+        :context, :prefix, :key, :text
+
+      def optparse(arguments)
+        return if arguments.nil? || arguments.empty?
+
+        parser = OptionParser.new do |opts|
+          opts.on('-c', '--cited') do |cited|
+            @cited = true
+          end
+
+          opts.on('-f', '--file FILE') do |file|
+            @bibtex_file = file
+          end
+
+          opts.on('-q', '--query QUERY') do |query|
+            @query = query
+          end
+
+          opts.on('-p', '--prefix PREFIX') do |prefix|
+            @prefix = prefix
+          end
+
+          opts.on('-t', '--text TEXT') do |text|
+            @text = text
+          end
+        end
+
+        argv = arguments.split(/(\B-[cfqpt]|\B--(?:cited|file|query|prefix|text))/)
+
+        parser.parse argv.map(&:strip).reject(&:empty?)
+      end
 
       def bibtex_options
         @bibtex_options ||= { :filter => :latex }
@@ -31,6 +62,10 @@ module Jekyll
         b
       end
 
+      def cited_only?
+        !!@cited
+      end
+
       def extend_path(name)
         if name.nil? || name.empty?
           name = config['bibliography']
@@ -39,6 +74,15 @@ module Jekyll
         p = File.join(config['source'], name)
         p << '.bib' unless File.exists?(p)
         p
+      end
+
+      def reference_tag(entry)
+        return '(missing reference)' unless entry
+
+        reference = CiteProc.process entry.to_citeproc,
+          :style => config['style'], :locale => config['locale'], :format => 'html'
+
+        content_tag :span, reference, :id => [prefix, entry.key].compact.join('-')
       end
 
       def generate_details?
@@ -68,13 +112,16 @@ module Jekyll
       def cite(key)
         entry = bibliography[key]
 
+        context['cited'] ||= []
+        context['cited'] << key
+
         if bibliography.key?(key)
           citation = CiteProc.process entry.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html', :mode => :citation
 
-          link_to "##{entry.key}", citation.join
+          link_to "##{[prefix, entry.key].compact.join('-')}", citation.join
         else
-          "(missing reference)"
+          '(missing reference)'
         end
       rescue
         "(#{key})"
@@ -84,7 +131,7 @@ module Jekyll
         if bibliography.key?(key)
           link_to details_link_for(bibliography[key]), text || config['details_link']
         else
-          "(missing reference)"
+          '(missing reference)'
         end
       end
 

@@ -8,12 +8,8 @@ module Jekyll
         super
 
         @config = Scholar.defaults.dup
-        @bibtex_file, @query = arguments.strip.split(/\s*filter:\s*/)
-        
-        if @bibtex_file == 'cited'
-          @bibtex_file = nil
-          @cited = true
-        end
+
+        optparse(arguments)
       end
 
       def render(context)
@@ -21,17 +17,14 @@ module Jekyll
 
         references = entries
 
-        if @cited
+        if cited_only?
           references = cited_references.map do |key|
             references.detect { |e| e.key == key }
           end          
         end
 
         references.map! do |entry|
-          reference = CiteProc.process entry.to_citeproc, :style => config['style'],
-            :locale => config['locale'], :format => 'html'
-
-          reference = content_tag :span, reference, :id => entry.key
+          reference = reference_tag entry
 
           if generate_details?
             reference << link_to(details_link_for(entry),

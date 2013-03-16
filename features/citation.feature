@@ -105,7 +105,7 @@ Feature: Citations
 			"""
 			---
 			---
-			{% cite ruby prefix: a %}
+			{% cite ruby --prefix a %}
 			"""
 	  When I run jekyll
 	  Then the _site directory should exist

@@ -1,6 +1,8 @@
 
 require 'jekyll'
 
+require 'optparse'
+
 require 'bibtex'
 require 'citeproc'
 

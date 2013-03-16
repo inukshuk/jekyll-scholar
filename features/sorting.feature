@@ -27,7 +27,7 @@ Feature: Sorting BibTeX Bibliographies
 			"""
 			---
 			---
-			{% bibliography references %}
+			{% bibliography -f references %}
 			"""
 	  When I run jekyll
 	  Then the _site directory should exist
@@ -60,7 +60,7 @@ Feature: Sorting BibTeX Bibliographies
 			"""
 			---
 			---
-			{% bibliography references %}
+			{% bibliography -f references %}
 			"""
 	  When I run jekyll
 	  Then the _site directory should exist

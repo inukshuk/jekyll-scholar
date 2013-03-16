@@ -49,7 +49,7 @@ Feature: Citations
 			"""
 			---
 			---
-			{% cite_details ruby, Click For More %}
+			{% cite_details ruby --text Click For More %}
 			"""
 	  When I run jekyll
 	  Then the _site directory should exist

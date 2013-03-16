@@ -83,7 +83,7 @@ Feature: BibTeX
 			"""
 			---
 			---
-			{% bibliography references %}
+			{% bibliography -f references %}
 			"""
 	  When I run jekyll
 	  Then the _site directory should exist
@@ -116,7 +116,7 @@ Feature: BibTeX
 			"""
 			---
 			---
-			{% bibliography references filter: @book[year <= 2000] %}
+			{% bibliography -f references --query @book[year <= 2000] %}
 			"""
 	  When I run jekyll
 	  Then the _site directory should exist
@@ -150,7 +150,7 @@ Feature: BibTeX
 			"""
 			---
 			---
-			{% bibliography references prefix: a filter: @book[year <= 2000] %}
+			{% bibliography --file references --prefix a -q @book[year <= 2000] %}
 			"""
 	  When I run jekyll
 	  Then the _site directory should exist

@@ -4,20 +4,19 @@ module Jekyll
     class CiteDetailsTag < Liquid::Tag
       include Scholar::Utilities
 
-      attr_reader :key, :text
-
       def initialize(tag_name, arguments, tokens)
         super
 
         @config = Scholar.defaults.dup
-        @key, @text = arguments.strip.split(/\s*,\s*/, 2)
+        @key, arguments = arguments.strip.split(/\s+/, 2)
+
+        optparse(arguments)
       end
 
       def render(context)
         set_context_to context
         cite_details key, text
       end
-
     end
 
   end
