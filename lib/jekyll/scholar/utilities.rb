@@ -71,6 +71,8 @@ module Jekyll
           name = config['bibliography']
         end
 
+        return name if File.exists?(name)
+
         p = File.join(config['source'], name)
         p << '.bib' unless File.exists?(p)
         p
