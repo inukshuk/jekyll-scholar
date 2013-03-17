@@ -241,14 +241,14 @@ shown in one html document.
 As a solution, Jekyll-Scholar provides the `--prefix` tag. In your
 first post you might cite as 
 
-	  ---
-	  title: Post 1
-	  ---
+    ---
+    title: Post 1
+    ---
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
     nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
     Duis 'aute irure dolor in reprehenderit in voluptate' 
-	  {% cite derrida:purveyor --prefix post1 %} velit esse cillum
+    {% cite derrida:purveyor --prefix post1 %} velit esse cillum
     dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, 'sunt in culpa qui officia deserunt mollit anim id
     est laborum' {% cite rabinowitz --prefix post1 %}.
@@ -261,11 +261,11 @@ first post you might cite as
 
 For the second blog post you would cite as follows:
 
-	  ---
-	  title: Post 2
-	  ---
+    ---
+    title: Post 2
+    ---
     Duis 'aute irure dolor in reprehenderit in voluptate' 
-	  {% cite rabinowitz --prefix post2 %} velit esse cillum
+    {% cite rabinowitz --prefix post2 %} velit esse cillum
     dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, 'sunt in culpa qui officia deserunt mollit anim id
     est laborum' {% cite rainey --prefix post2  %}.
@@ -356,7 +356,7 @@ You can check out a copy of the latest code using Git:
 To use this lasted version instead of the one provide by RubyGems,
 just add the line
 
-	$:.unshift '/full/path/to/the/repository/lib'
+  $:.unshift '/full/path/to/the/repository/lib'
 
 to your `_plugins/ext.rb` before requiring 'jekyll/scholar', where
 `/full/path/to/the/repository` is where you have cloned jekyll-scholar into.
