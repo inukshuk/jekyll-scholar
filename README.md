@@ -101,8 +101,8 @@ also pass in a name to tell Jekyll-Scholar which bibliography it should render.
 
 Let's say you have two bibliographies stored in `_bibliography/books.bib` and
 `_bibliography/papers.bib`; you can include the bibliographies on your site
-by respectively calling `{% bibliography books %}` and
-`{% bibliography papers %}`. For example, you could have a file `references.md`
+by respectively calling `{% bibliography --file books %}` and
+`{% bibliography --file papers %}`. For example, you could have a file `references.md`
 with several reference lists:
 
     ---
@@ -120,18 +120,18 @@ with several reference lists:
     Secondary References
     --------------------
 
-    {% bibliography secondary %}
+    {% bibliography --file secondary %}
 
 Finally, the bibliography tag supports an optional filter parameter. This
 filter takes precedence over the global filter defined in your configuration.
 
-    {% bibliography filter: @*[year=2013] %}
+    {% bibliography --query @*[year=2013] %}
 
 The example above would print a bibliography of all entires published in
 the year 2013. Of course you can also combine the file and filter parameters
 like this:
 
-    {% bibliography secondary filter: @*[year=2013] %}
+    {% bibliography --file secondary --query @*[year=2013] %}
 
 This would print the publications from 2013 of the bibliography at
 `_bibliography/secondary.bib`.
@@ -179,7 +179,7 @@ Note that this will print your entire bibliography in the Reference section.
 If you would like to include only those entries you cited on the page, pass
 the `cited` option to the bibliography tag:
 
-    {% bibliography cited %}
+    {% bibliography --cited %}
 
 For longer quotes, Jekyll-Scholar provides a `quote` tag:
 
@@ -223,10 +223,65 @@ the file from which the bib entries are read. This can be handy if you
 want to use a special BibTeX file as input for a specific page. As an example,
 the tag
 
-    {% reference ruby, /home/foo/bar.bib %}
+    {% reference ruby --file /home/foo/bar.bib %}
 
 will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
 fallback to the default BibTeX file.
+
+#### Citations to multiple bibliographies within one document (like [multibib.sty](http://www.ctan.org/pkg/multibib))
+
+When you have multiple `{% bibliography %}` sections in one file,
+Jekyll-Scholar will generate serveral lists containing the same
+publications that have the same `id` attributes. As a result, when you
+cite a reference the link to an `id` attribute cannot be resolved
+uniquely. Your browser will always take you take you to the first
+occurence of the `id`. Moreover, valid HTML requires unique `id`
+attributes. This scenario may happen, for example, if you cite the
+same reference in different blog posts, and all of these posts are
+shown in one html document.
+
+As a solution, Jekyll-Scholar provides the `--prefix` tag. In your
+first post you might cite as 
+
+	---
+	title: Post 1
+	---
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis 'aute irure dolor in reprehenderit in voluptate' 
+	{% cite derrida:purveyor --prefix post1 %} velit esse cillum
+    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, 'sunt in culpa qui officia deserunt mollit anim id
+    est laborum' {% cite rabinowitz --prefix post1 %}.
+
+    References
+    ----------
+
+    {% bibliography --cited --prefix post1 %}
+
+
+For the second blog post you would cite as follows:
+
+	---
+	title: Post 2
+	---
+    Duis 'aute irure dolor in reprehenderit in voluptate' 
+	{% cite rabinowitz --prefix post2 %} velit esse cillum
+    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, 'sunt in culpa qui officia deserunt mollit anim id
+    est laborum' {% cite rainey --prefix post2  %}.
+
+    References
+    ----------
+
+    {% bibliography --cited --prefix post2 %}
+
+Even though both posts cite rabinowitz, both citations will be
+assigned unique identifiers linking to the respective References
+section., even if both posts will be rendered into a single HTML
+document.
+
 
 ### Detail Pages
 
@@ -271,7 +326,7 @@ can be set via the 'details_link' configuration option).
 
     Duis 'aute irure dolor in reprehenderit in voluptate' velit esse cillum
     dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-    proident {% cite_details key, Click Here For More Details %}.
+    proident {% cite_details key --text Click Here For More Details %}.
 
 
 ### Bibliography Filters
@@ -299,6 +354,19 @@ The Jekyll-Scholar source code is
 You can check out a copy of the latest code using Git:
 
     $ git clone https://github.com/inukshuk/jekyll-scholar.git
+
+To use this lasted version instead of the one provide by Ruby Gems,
+replace the line
+
+	require 'jekyll/scholar'
+
+by
+
+	$:.unshift '/full/path/to/the/repository/lib'
+	require 'jekyll/scholar'
+
+in your `_plugins/ext.rb`, where `/full/path/to/the/repository` is
+where you have cloned jekyll-scholar into.
 
 If you've found a bug or have a question, please open an issue on the
 [Jekyll-Scholar issue tracker](http://github.com/inukshuk/jekyll-scholar/issues).
