@@ -361,6 +361,12 @@ just add the line
 to your `_plugins/ext.rb` before requiring 'jekyll/scholar', where
 `/full/path/to/the/repository` is where you have cloned jekyll-scholar into.
 
+If you want to contribute to jekyll-scholar, please make sure to install
+all dependencies and run the cucumber features:
+
+    $ bundle install
+    $ rake
+
 If you've found a bug or have a question, please open an issue on the
 [Jekyll-Scholar issue tracker](http://github.com/inukshuk/jekyll-scholar/issues).
 Or, for extra credit, clone the Jekyll-Scholar repository, write a failing
