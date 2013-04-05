@@ -3,7 +3,11 @@ require 'test/unit'
 
 require 'jekyll/scholar'
 
-require 'debugger'
+begin
+  require 'debugger'
+rescue LoadError
+  # ignore
+end
 
 
 World do
