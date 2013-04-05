@@ -40,7 +40,7 @@ module Jekyll
       end
 
       def bibtex_options
-        @bibtex_options ||= { :filter => :latex }
+        @bibtex_options ||= { :strip => false }
       end
 
       def bibtex_path
@@ -82,6 +82,7 @@ module Jekyll
       def reference_tag(entry)
         return '(missing reference)' unless entry
 
+        entry = entry.convert(:latex)
         reference = CiteProc.process entry.to_citeproc,
           :style => config['style'], :locale => config['locale'], :format => 'html'
 
@@ -113,7 +114,7 @@ module Jekyll
       end
 
       def cite(key)
-        entry = bibliography[key]
+        entry = bibliography[key].convert(:latex)
 
         context['cited'] ||= []
         context['cited'] << key

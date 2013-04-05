@@ -25,11 +25,12 @@ module Jekyll
         data['entry']['key'] = entry.key
         data['entry']['type'] = entry.type
 
+        data['entry']['bibtex'] = entry.to_s
+        
         entry.fields.each do |key, value|
-          data['entry'][key.to_s] = value.to_s
+          data['entry'][key.to_s] = value.convert(:latex).to_s
         end
 
-        data['entry']['bibtex'] = entry.to_s
       end
 
     end
