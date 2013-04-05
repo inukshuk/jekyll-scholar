@@ -6,4 +6,7 @@ rvm:
   - 1.9.3
 notifications:
   email:
-	- sylvester@keil.or.at
+    recipients:
+      - sylvester@keil.or.at
+    on_success: change
+    on_failure: always
