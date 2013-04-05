@@ -356,7 +356,7 @@ You can check out a copy of the latest code using Git:
 To use this lasted version instead of the one provide by RubyGems,
 just add the line
 
-  $:.unshift '/full/path/to/the/repository/lib'
+    $:.unshift '/full/path/to/the/repository/lib'
 
 to your `_plugins/ext.rb` before requiring 'jekyll/scholar', where
 `/full/path/to/the/repository` is where you have cloned jekyll-scholar into.
