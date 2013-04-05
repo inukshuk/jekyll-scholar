@@ -4,74 +4,74 @@ Feature: BibTeX
   And I want Jekyll to generate detail pages for all the entries in my bibliography
   
   @generators
-	Scenario: A bibliography with a single entry
+  Scenario: A bibliography with a single entry
     Given I have a scholar configuration with:
-  	  | key            | value             |
-  	  | source         | ./_bibliography   |
-  	  | details_layout | details.html      |
-		And I have a "_bibliography" directory
-	  And I have a file "_bibliography/references.bib":
-			"""
-			@book{ruby,
-			  title     = {The Ruby Programming Language},
-			  author    = {Flanagan, David and Matsumoto, Yukihiro},
-			  year      = {2008},
-			  publisher = {O'Reilly Media}
-			}
-			"""
-		And I have a "_layouts" directory
-		And I have a file "_layouts/details.html":
-			"""
-			---
-			---
-			<html>
-			<head></head>
-			<body>
-			{{ page.entry.title }}
-			</body>
-			</html>
-			"""
-	  When I run jekyll
-	  Then the _site directory should exist
-		And the "_site/bibliography/ruby.html" file should exist
-	  And I should see "The Ruby Programming Language" in "_site/bibliography/ruby.html"
+      | key            | value             |
+      | source         | ./_bibliography   |
+      | details_layout | details.html      |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {{ page.entry.title }}
+      </body>
+      </html>
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/bibliography/ruby.html" file should exist
+    And I should see "The Ruby Programming Language" in "_site/bibliography/ruby.html"
 
   @tags @details
-	Scenario: Links to Detail Pages are Generated Automatically
+  Scenario: Links to Detail Pages are Generated Automatically
     Given I have a scholar configuration with:
-  	  | key            | value             |
-  	  | source         | ./_bibliography   |
-  	  | bibliogaphy    | references        |
-  	  | details_layout | details.html      |
-		And I have a "_bibliography" directory
-	  And I have a file "_bibliography/references.bib":
-			"""
-			@book{ruby,
-			  title     = {The Ruby Programming Language},
-			  author    = {Flanagan, David and Matsumoto, Yukihiro},
-			  year      = {2008},
-			  publisher = {O'Reilly Media}
-			}
-			"""
-		And I have a "_layouts" directory
-		And I have a file "_layouts/details.html":
-			"""
-			---
-			---
-			<html>
-			<head></head>
-			<body>
-			{{ page.entry.title }}
-			</body>
-			</html>
-			"""
-	  And I have a page "scholar.html":
-			"""
-			---
-			---
-			{% bibliography %}
-			"""
-	  When I run jekyll
-	  Then the _site directory should exist
-		And the "_site/scholar.html" file should exist
-	  And I should see "<a[^>]+href=\"/bibliography/ruby.html\">" in "_site/scholar.html"
+      | key            | value             |
+      | source         | ./_bibliography   |
+      | bibliogaphy    | references        |
+      | details_layout | details.html      |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {{ page.entry.title }}
+      </body>
+      </html>
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "<a[^>]+href=\"/bibliography/ruby.html\">" in "_site/scholar.html"
