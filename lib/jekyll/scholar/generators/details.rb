@@ -4,7 +4,7 @@ module Jekyll
     class Details < Page
       include Scholar::Utilities
 
-      def initialize(site, base, dir, entry)
+      def initialize(site, base, dir, entry, entry_raw)
         @site, @base, @dir = site, base, dir
 
         @config = Scholar.defaults.merge(site.config['scholar'] || {})
@@ -14,22 +14,27 @@ module Jekyll
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
 
-        liquidify(entry)
+        liquidify(entry, entry_raw)
       end
 
       private
 
-      def liquidify(entry)
+      def liquidify(entry, entry_raw)
         data['entry'] = {}
 
         data['entry']['key'] = entry.key
         data['entry']['type'] = entry.type
 
         entry.fields.each do |key, value|
-          data['entry'][key.to_s] = value.to_s
+          case key
+          when :abstract
+            data['entry'][key.to_s] = entry_raw[:abstract].to_s
+          else
+            data['entry'][key.to_s] = value.to_s
+          end
         end
 
-        data['entry']['bibtex'] = entry.to_s
+        data['entry']['bibtex'] = entry_raw.to_s
       end
 
     end
@@ -46,8 +51,9 @@ module Jekyll
         @site, @config = site, Scholar.defaults.merge(site.config['scholar'] || {})
 
         if generate_details?
-          entries.each do |entry|
-            details = Details.new(site, site.source, File.join('', details_path), entry)
+          entries.each_with_index do |entry, idx|
+            
+            details = Details.new(site, site.source, File.join('', details_path), entry, entries_raw[idx])
             details.render(site.layouts, site.site_payload)
             details.write(site.dest)
 
@@ -62,3 +68,4 @@ module Jekyll
 
   end
 end
+

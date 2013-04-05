@@ -43,12 +43,20 @@ module Jekyll
         @bibtex_options ||= { :filter => :latex }
       end
 
+      def bibtex_options_raw
+        @bibtex_options_raw ||= { :strip => false }
+      end
+
       def bibtex_path
         @bibtex_path ||= extend_path(bibtex_file)
       end
 
       def bibliography
         @bibliography ||= BibTeX.open(bibtex_path, bibtex_options)
+      end
+      
+      def bibliography_raw
+        @bibliography_raw ||= BibTeX.open(bibtex_path, bibtex_options_raw)
       end
 
       def entries
@@ -58,9 +66,21 @@ module Jekyll
           b = b.sort_by { |e| e[config['sort_by']].to_s }
           b.reverse! if config['order'] =~ /^(desc|reverse)/i
         end
-
+        
         b
       end
+
+      def entries_raw
+        b = bibliography_raw[query || config['query']]
+
+        unless config['sort_by'] == 'none'
+          b = b.sort_by { |e| e[config['sort_by']].to_s }
+          b.reverse! if config['order'] =~ /^(desc|reverse)/i
+        end
+        
+        b
+      end
+
 
       def cited_only?
         !!@cited
@@ -132,7 +152,7 @@ module Jekyll
 
       def cite_details(key, text)
         if bibliography.key?(key)
-          link_to details_link_for(bibliography[key]), text || config['details_link']
+          link_to details_link_for(bibliography_raw[key]), text || config['details_link']
         else
           '(missing reference)'
         end
