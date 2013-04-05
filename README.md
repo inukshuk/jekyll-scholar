@@ -9,12 +9,13 @@ and gives your blog posts citation super-powers.
 For additional features you may also want to take a look at
 [jekyll-scholar-extras](https://github.com/hdpatel/jekyll-scholar-extras).
 
+[![Build Status](https://travis-ci.org/inukshuk/jekyll-scholar.png?branch=master)](https://travis-ci.org/inukshuk/jekyll-scholar)
+
 
 Installation
 ------------
 
     $ [sudo] gem install jekyll-scholar
-
 
 Usage
 -----
