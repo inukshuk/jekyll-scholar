@@ -114,12 +114,11 @@ module Jekyll
       end
 
       def cite(key)
-        entry = bibliography[key].convert(:latex)
-
         context['cited'] ||= []
         context['cited'] << key
 
         if bibliography.key?(key)
+          entry = bibliography[key].convert(:latex)
           citation = CiteProc.process entry.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html', :mode => :citation
 
