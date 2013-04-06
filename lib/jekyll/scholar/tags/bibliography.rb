@@ -23,8 +23,8 @@ module Jekyll
           end          
         end
 
-        references.map! do |entry|
-          reference = bibliography_tag entry
+        bibliography = references.map.with_index { |entry, index|
+          reference = bibliography_tag(entry, index + 1)
 
           if generate_details?
             reference << link_to(details_link_for(entry),
@@ -32,9 +32,9 @@ module Jekyll
           end
 
           content_tag :li, reference
-        end
+        }.join("\n")
 
-        content_tag :ol, references.join("\n"), :class => config['bibliography_class']
+        content_tag :ol, bibliography, :class => config['bibliography_class']
       end
     end
 

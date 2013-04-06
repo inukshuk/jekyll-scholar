@@ -93,9 +93,9 @@ Feature: BibTeX
   @tags @bibliography @config
   Scenario: Simple Bibliography With Custom Template
     Given I have a scholar configuration with:
-      | key                   | value                             |
-      | source                | ./_bibliography                   |
-      | bibliography_template | <abbr>[%{key}]</abbr>%{reference} |
+      | key                   | value                                      |
+      | source                | ./_bibliography                            |
+      | bibliography_template | <abbr>%{index} [%{key}]</abbr>%{reference} |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -116,7 +116,7 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "<i>The Ruby Programming Language</i>" in "_site/scholar.html"
-    And I should see "<abbr>\[ruby\]</abbr><span" in "_site/scholar.html"
+    And I should see "<abbr>1 \[ruby\]</abbr><span" in "_site/scholar.html"
 
   @tags @filter
   Scenario: Filtered Bibliography Loaded From Default Directory

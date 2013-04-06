@@ -102,12 +102,13 @@ module Jekyll
         config['bibliography_template'] || '%{reference}'
       end
 
-      def bibliography_tag(entry)
+      def bibliography_tag(entry, index)
         return missing_reference unless entry
 
         bibliography_template % {
           :reference => reference_tag(entry),
-          :key => entry.key
+          :key => entry.key,
+          :index => index
         }
       end
 
