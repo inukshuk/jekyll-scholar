@@ -80,13 +80,35 @@ module Jekyll
       end
 
       def reference_tag(entry)
-        return '(missing reference)' unless entry
+        return missing_reference unless entry
 
         entry = entry.convert(:latex)
         reference = CiteProc.process entry.to_citeproc,
           :style => config['style'], :locale => config['locale'], :format => 'html'
 
-        content_tag :span, reference, :id => [prefix, entry.key].compact.join('-')
+        content_tag reference_tagname, reference,
+          :id => [prefix, entry.key].compact.join('-')
+      end
+
+      def missing_reference
+        config['missing_reference']
+      end
+
+      def reference_tagname
+        config['reference_tagname'] || :span
+      end
+
+      def bibliography_template
+        config['bibliography_template'] || '%{reference}'
+      end
+
+      def bibliography_tag(entry)
+        return missing_reference unless entry
+
+        bibliography_template % {
+          :reference => reference_tag(entry),
+          :key => entry.key
+        }
       end
 
       def generate_details?

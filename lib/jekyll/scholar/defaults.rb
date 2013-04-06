@@ -1,26 +1,30 @@
 module Jekyll
   class Scholar
-    @defaults = Hash[*%w{
+    @defaults = {
+      'style'                 => 'apa',
+      'locale'                => 'en',
 
-      style        apa
-      locale       en
+      'sort_by'               => 'none',
+      'order'                 => 'ascending',
 
-      sort_by      none
-      order        ascending
+      'source'                => './_bibliography',
+      'bibliography'          => 'references.bib',
 
-      source       ./_bibliography
-      bibliography references.bib
+      'details_dir'           => 'bibliography',
+      'details_layout'        => 'bibtex.html',
+      'details_link'          => 'Details',
 
-      details_dir    bibliography
-      details_layout bibtex.html
-      details_link   Details
-      
-      bibliography_class bibliography
-      details_link_class details
+      'bibliography_class'    => 'bibliography',
+      'bibliography_template' => '%{reference}',
 
-    	query  @*
-	
-    }].freeze
+      'reference_tagname'     => 'span',
+      'missing_reference'     => '(missing reference)',
+
+      'details_link_class'    => 'details',
+
+    	'query'                 => '@*'
+
+    }.freeze
 
     class << self
       attr_reader :defaults

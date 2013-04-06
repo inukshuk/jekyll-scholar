@@ -24,7 +24,7 @@ module Jekyll
         end
 
         references.map! do |entry|
-          reference = reference_tag entry
+          reference = bibliography_tag entry
 
           if generate_details?
             reference << link_to(details_link_for(entry),
