@@ -39,7 +39,8 @@ default configuration is as follows:
       
       source: ./_bibliography
       bibliography: references.bib
-      
+      bibliography_template: %{reference}
+
       details_dir:    bibliography
       details_layout: bibtex.html
       details_link:   Details
@@ -140,6 +141,26 @@ This would print the publications from 2013 of the bibliography at
 For more details about filters, see the corresponding section below or
 consult the [BibTeX-Ruby](https://github.com/inukshuk/bibtex-ruby)
 documentation.
+
+### Bibliography Template
+
+Your bibliography is always rendered as an ordered list. Additionally,
+each reference is wrapped in an HTML tag (`span` by default but you can
+change this using the `reference_tagname` setting) with the cite key
+as id. The reference string itself is governed by the rules in your
+CSL style but you can also customize the main template a little bit.
+By default, the template is `%{reference}` – this renders only the
+reference tag. The template uses Ruby string interpolation and, in
+addition to the reference, exposes the cite-key (as `key`), the
+entry's `type` and the `index` in the bibliography. Thus, you could
+customize the template in your configuration as follows:
+
+    scholar:
+      bibliography_template: <abbr>[%{key}]</abbr>%{reference}
+
+This would be processed into something like:
+
+    <li><abbr>[ruby]</abbr><span id="ruby">Flanagan, D., &#38; Matsumoto, Y. (2008). <i>The Ruby Programming Language</i>. O&#8217;Reilly Media.</span>
 
 
 ### Citations
