@@ -160,7 +160,7 @@ customize the template in your configuration as follows:
 
 This would be processed into something like:
 
-    <li><abbr>[ruby]</abbr><span id="ruby">Flanagan, D., &#38; Matsumoto, Y. (2008). <i>The Ruby Programming Language</i>. O&#8217;Reilly Media.</span></li>
+    <li><abbr>[ruby]</abbr><span id="ruby">Matsumoto, Y. (2008). <i>The Ruby Programming Language</i>. O&#8217;Reilly Media.</span></li>
 
 
 ### Citations
