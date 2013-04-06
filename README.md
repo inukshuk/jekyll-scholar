@@ -227,14 +227,14 @@ a specific page. As an example, the tag
 will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
 fallback to the default BibTeX file.
 
-#### Citations to multiple bibliographies within one document (like [multibib.sty](http://www.ctan.org/pkg/multibib))
+#### Multiple bibliographies within one document (like [multibib.sty](http://www.ctan.org/pkg/multibib))
 
 When you have multiple `{% bibliography %}` sections in one file,
-Jekyll-Scholar will generate serveral lists containing the same
+Jekyll-Scholar will generate several lists containing the same
 publications that have the same `id` attributes. As a result, when you
 cite a reference the link to an `id` attribute cannot be resolved
 uniquely. Your browser will always take you take you to the first
-occurence of the `id`. Moreover, valid HTML requires unique `id`
+occurrence of the `id`. Moreover, valid HTML requires unique `id`
 attributes. This scenario may happen, for example, if you cite the
 same reference in different blog posts, and all of these posts are
 shown in one html document.
@@ -276,9 +276,9 @@ For the second blog post you would cite as follows:
 
     {% bibliography --cited --prefix post2 %}
 
-Even though both posts cite rabinowitz, both citations will be
-assigned unique identifiers linking to the respective References
-section., even if both posts will be rendered into a single HTML
+Even though both posts cite 'rabinowitz', both citations will be
+assigned unique identifiers linking to the respective references
+section, although both posts will be rendered into a single HTML
 document.
 
 
@@ -340,8 +340,9 @@ configuration option. For example:
     query: "@*[url]" #=> includes all entries with a url field
     query: "@*[status!=review]" #=> includes all entries whose status field is not set to 'review' 
     query: "@book[year <= 1900 && author ^= Poe]" #=> Books published before 1900 where the author matches /Poe/ 
+    query: "!@book" #=> includes all entries with a type other than book
     
-Please note that some of these queries require bibtex-ruby 2.0.7 or
+Please note that some of these queries require BibTeX-Ruby 2.3.0 or
 later versions. You can also overwrite the configuration's query parameter
 in each bibliography tag individually as described above.
 
@@ -360,9 +361,10 @@ just add the line
     $:.unshift '/full/path/to/the/repository/lib'
 
 to your `_plugins/ext.rb` before requiring 'jekyll/scholar', where
-`/full/path/to/the/repository` is where you have cloned jekyll-scholar into.
+`/full/path/to/the/repository` is the path to your local version
+of Jekyll-Scholar.
 
-When contributing to jekyll-scholar, please make sure to install
+When contributing to Jekyll-Scholar, please make sure to install
 all dependencies and run the cucumber features:
 
     $ bundle install
