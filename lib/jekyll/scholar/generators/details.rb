@@ -26,9 +26,10 @@ module Jekyll
         data['entry']['type'] = entry.type
 
         data['entry']['bibtex'] = entry.to_s
-        
+
         entry.fields.each do |key, value|
-          data['entry'][key.to_s] = value.convert(:latex).to_s
+          value = value.convert(*bibtex_filters) unless bibtex_filters.empty?
+          data['entry'][key.to_s] = value.to_s
         end
 
       end

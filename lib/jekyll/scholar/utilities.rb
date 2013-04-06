@@ -40,7 +40,11 @@ module Jekyll
       end
 
       def bibtex_options
-        @bibtex_options ||= { :strip => false }
+        config['bibtex_options'] ||= {}
+      end
+
+      def bibtex_filters
+        config['bibtex_filters'] ||= []
       end
 
       def bibtex_path
@@ -82,7 +86,7 @@ module Jekyll
       def reference_tag(entry)
         return missing_reference unless entry
 
-        entry = entry.convert(:latex)
+        entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
         reference = CiteProc.process entry.to_citeproc,
           :style => config['style'], :locale => config['locale'], :format => 'html'
 
@@ -142,13 +146,15 @@ module Jekyll
         context['cited'] << key
 
         if bibliography.key?(key)
-          entry = bibliography[key].convert(:latex)
+          entry = bibliography[key]
+          entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+
           citation = CiteProc.process entry.to_citeproc, :style => config['style'],
             :locale => config['locale'], :format => 'html', :mode => :citation
 
           link_to "##{[prefix, entry.key].compact.join('-')}", citation.join
         else
-          '(missing reference)'
+          missing_reference
         end
       rescue
         "(#{key})"
@@ -158,7 +164,7 @@ module Jekyll
         if bibliography.key?(key)
           link_to details_link_for(bibliography[key]), text || config['details_link']
         else
-          '(missing reference)'
+          missing_reference
         end
       end
 

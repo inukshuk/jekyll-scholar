@@ -10,6 +10,9 @@ module Jekyll
       'source'                => './_bibliography',
       'bibliography'          => 'references.bib',
 
+      'bibtex_options'        => { :strip => false },
+      'bibtex_filters'        => [ :latex ],
+
       'details_dir'           => 'bibliography',
       'details_layout'        => 'bibtex.html',
       'details_link'          => 'Details',
