@@ -108,6 +108,7 @@ module Jekyll
         bibliography_template % {
           :reference => reference_tag(entry),
           :key => entry.key,
+          :type => entry.type,
           :index => index
         }
       end
