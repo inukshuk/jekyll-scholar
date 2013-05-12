@@ -16,7 +16,7 @@ module Jekyll
       def initialize(config = {})
         super
         @config['scholar'] = Scholar.defaults.merge(@config['scholar'] || {})
-        @markdown = MarkdownConverter.new(config)
+        @markdown = Jekyll::Converters::Markdown.new(config)
       end
     
       def matches(extension)

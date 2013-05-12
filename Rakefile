@@ -17,7 +17,7 @@ task :default => [:features]
 
 task :release do |t|
   system "gem build jekyll-scholar.gemspec"
-  system "git tag #{Jekyll::Scholar::VERSION}"
+  system "git tag v#{Jekyll::Scholar::VERSION}"
   system "git push --tags"
   system "gem push jekyll-scholar-#{Jekyll::Scholar::VERSION}.gem"
 end
