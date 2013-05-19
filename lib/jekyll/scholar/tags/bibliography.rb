@@ -23,7 +23,7 @@ module Jekyll
           end          
         end
 
-        bibliography = references.map.with_index { |entry, index|
+        bibliography = references.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
 
           if generate_details?
