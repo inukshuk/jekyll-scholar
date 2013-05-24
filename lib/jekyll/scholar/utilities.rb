@@ -32,9 +32,13 @@ module Jekyll
           opts.on('-t', '--text TEXT') do |text|
             @text = text
           end
+
+          opts.on('-s', '--style STYLE') do |style|
+            @style = style
+          end 
         end
 
-        argv = arguments.split(/(\B-[cfqpt]|\B--(?:cited|file|query|prefix|text))/)
+        argv = arguments.split(/(\B-[cfqpts]|\B--(?:cited|file|query|prefix|text|style|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -88,10 +92,14 @@ module Jekyll
 
         entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
         reference = CiteProc.process entry.to_citeproc,
-          :style => config['style'], :locale => config['locale'], :format => 'html'
+          :style => style, :locale => config['locale'], :format => 'html'
 
         content_tag reference_tagname, reference,
           :id => [prefix, entry.key].compact.join('-')
+      end
+
+      def style
+        @style || config['style']
       end
 
       def missing_reference
