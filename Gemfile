@@ -5,7 +5,7 @@ group 'development' do
   gem 'rake'
   gem 'redgreen', '~> 1.2'
   gem 'shoulda', '~> 3.3.2'
-  gem 'rr', '~> 1.0'
+  gem 'rr', '~> 1.0.5'
   gem 'cucumber', '~> 1.2.1'
   gem 'RedCloth', '~> 4.2'
   gem 'rdiscount', '~> 1.6'
