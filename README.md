@@ -7,7 +7,7 @@ site generator; it formats your bibliographies and reading lists for the web
 and gives your blog posts citation super-powers.
 
 For additional features you may also want to take a look at
-[jekyll-scholar-extras](https://github.com/hdpatel/jekyll-scholar-extras).
+[jekyll-scholar-extras](https://github.com/jgoodall/jekyll-scholar-extras).
 
 [![Build Status](https://travis-ci.org/inukshuk/jekyll-scholar.png?branch=master)](https://travis-ci.org/inukshuk/jekyll-scholar)
 
