@@ -157,7 +157,7 @@ module Jekyll
           entry = bibliography[key]
           entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
 
-          citation = CiteProc.process entry.to_citeproc, :style => config['style'],
+          citation = CiteProc.process entry.to_citeproc, :style => style,
             :locale => config['locale'], :format => 'html', :mode => :citation
 
           link_to "##{[prefix, entry.key].compact.join('-')}", citation.join
