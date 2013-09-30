@@ -18,7 +18,7 @@ module Jekyll
         references = entries
 
         if cited_only?
-          references = cited_references.map do |key|
+          references = cited_references.uniq.map do |key|
             references.detect { |e| e.key == key }
           end          
         end
