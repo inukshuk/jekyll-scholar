@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.email       = 'http://sylvester.keil.or.at'
   s.homepage    = 'http://github.com/inukshuk/jekyll-scholar'
   s.summary     = 'Jekyll extensions for the academic blogger.'
+  s.licenses    = ['MIT']
   s.description = %q{
     Jekyll-Scholar is for all the academic bloggers out there. It is a set of
     extensions for Jekyll the awesome, blog aware, static site generator; it
