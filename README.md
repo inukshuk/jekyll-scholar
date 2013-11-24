@@ -33,10 +33,10 @@ default configuration is as follows:
     scholar:
       style: apa
       locale: en
-      
+
       sort_by: none
       order: ascending
-      
+
       source: ./_bibliography
       bibliography: references.bib
       bibliography_template: %{reference}
@@ -44,8 +44,8 @@ default configuration is as follows:
       details_dir:    bibliography
       details_layout: bibtex.html
       details_link:   Details
-      
-      query: "@*"  
+
+      query: "@*"
 
 You can use any style that ships with
 [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g.,
@@ -75,7 +75,7 @@ For example, if you had a file `bibliography.bib` in your root directory:
     ---
     References
     ==========
-    
+
     @book{ruby,
       title     = {The Ruby Programming Language},
       author    = {Flanagan, David and Matsumoto, Yukihiro},
@@ -208,7 +208,7 @@ For longer quotes, Jekyll-Scholar provides a `quote` tag:
     {% quote derrida:purveyor %}
     Lorem ipsum dolor sit amet, consectetur adipisicing elit,
     sed do eiusmod tempor.
-    
+
     Lorem ipsum dolor sit amet, consectetur adipisicing.
     {% endquote %}
 
@@ -261,7 +261,7 @@ same reference in different blog posts, and all of these posts are
 shown in one html document.
 
 As a solution, Jekyll-Scholar provides the `--prefix` tag. In your
-first post you might cite as 
+first post you might cite as
 
     ---
     title: Post 1
@@ -269,7 +269,7 @@ first post you might cite as
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
     nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    Duis 'aute irure dolor in reprehenderit in voluptate' 
+    Duis 'aute irure dolor in reprehenderit in voluptate'
     {% cite derrida:purveyor --prefix post1 %} velit esse cillum
     dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, 'sunt in culpa qui officia deserunt mollit anim id
@@ -286,7 +286,7 @@ For the second blog post you would cite as follows:
     ---
     title: Post 2
     ---
-    Duis 'aute irure dolor in reprehenderit in voluptate' 
+    Duis 'aute irure dolor in reprehenderit in voluptate'
     {% cite rabinowitz --prefix post2 %} velit esse cillum
     dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, 'sunt in culpa qui officia deserunt mollit anim id
@@ -362,7 +362,7 @@ configuration option. For example:
     query: "@*[status!=review]" #=> includes all entries whose status field is not set to 'review' 
     query: "@book[year <= 1900 && author ^= Poe]" #=> Books published before 1900 where the author matches /Poe/ 
     query: "!@book" #=> includes all entries with a type other than book
-    
+
 Please note that some of these queries require BibTeX-Ruby 2.3.0 or
 later versions. You can also overwrite the configuration's query parameter
 in each bibliography tag individually as described above.

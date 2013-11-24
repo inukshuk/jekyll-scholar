@@ -25,7 +25,7 @@ module Jekyll
 
       'details_link_class'    => 'details',
 
-    	'query'                 => '@*'
+      'query'                 => '@*'
 
     }.freeze
 
