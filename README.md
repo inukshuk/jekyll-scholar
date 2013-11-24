@@ -39,7 +39,7 @@ default configuration is as follows:
 
       source: ./_bibliography
       bibliography: references.bib
-      bibliography_template: %{reference}
+      bibliography_template: "%{reference}"
 
       details_dir:    bibliography
       details_layout: bibtex.html
