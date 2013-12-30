@@ -56,7 +56,12 @@ module Jekyll
       end
 
       def bibliography
-        @bibliography ||= BibTeX.open(bibtex_path, bibtex_options)
+        unless @bibliography
+          @bibliography = BibTeX.open(bibtex_path, bibtex_options)
+          @bibliography.replace_strings if replace_strings?
+        end
+
+        @bibliography
       end
 
       def entries
@@ -68,6 +73,10 @@ module Jekyll
         end
 
         b
+      end
+
+      def replace_strings?
+        config['replace_strings']
       end
 
       def cited_only?

@@ -41,6 +41,8 @@ default configuration is as follows:
       bibliography: references.bib
       bibliography_template: "%{reference}"
 
+      replace_strings: true
+
       details_dir:    bibliography
       details_layout: bibtex.html
       details_link:   Details

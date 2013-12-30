@@ -13,6 +13,8 @@ module Jekyll
       'bibtex_options'        => { :strip => false },
       'bibtex_filters'        => [ :latex ],
 
+      'replace_strings'       => true,
+
       'details_dir'           => 'bibliography',
       'details_layout'        => 'bibtex.html',
       'details_link'          => 'Details',
