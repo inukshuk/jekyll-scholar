@@ -329,6 +329,16 @@ section, although both posts will be rendered into a single HTML
 document.
 
 
+### File Repositories
+
+File repository support was added to Jekyll-Scholar starting at version
+4.0. Currently, if you have a folder in your site that contains PDF or
+Postscript files of your papers, you can use the configuration option
+`repository` to indicate this directory. When generating bibliographies,
+Jekyll-Scholar will look in that folder to see if it contains a filename
+matching each entry's BibTeX key: if it does, the path to that file
+will be exposed to the bibliography template.
+
 ### Detail Pages
 
 If your layouts directory contains a layout file for bibliography details
