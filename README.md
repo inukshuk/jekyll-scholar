@@ -39,7 +39,7 @@ default configuration is as follows:
 
       source: ./_bibliography
       bibliography: references.bib
-      bibliography_template: "%{reference}"
+      bibliography_template: "{{reference}}"
 
       replace_strings: true
 
@@ -151,19 +151,43 @@ each reference is wrapped in an HTML tag (`span` by default but you can
 change this using the `reference_tagname` setting) with the cite key
 as id. The reference string itself is governed by the rules in your
 CSL style but you can also customize the main template a little bit.
-By default, the template is `%{reference}` – this renders only the
-reference tag. The template uses Ruby string interpolation and, in
+By default, the template is `{{reference}}` – this renders only the
+reference tag. The template uses Liquid to render and, in
 addition to the reference, exposes the cite-key (as `key`), the
-entry's `type` and the `index` in the bibliography. Thus, you could
+entry's `type`, the `index` in the bibliography, and the link to
+file repository as `link`. Thus, you could
 customize the template in your configuration as follows:
 
     scholar:
-      bibliography_template: <abbr>[%{key}]</abbr>%{reference}
+      bibliography_template: <abbr>[{{key}}]</abbr>{{reference}}
 
 This would be processed into something like:
 
     <li><abbr>[ruby]</abbr><span id="ruby">Matsumoto, Y. (2008). <i>The Ruby Programming Language</i>. O&#8217;Reilly Media.</span></li>
 
+If you have more complex requirements, it quickly becomes tedious to
+have the template inside the configuration; for this reason, you can
+also put the bibliography template into your layouts directory. Jekyll-Scholar
+will load this template if the option set in your configuration matches
+an existing layout (without the file extension). That is to say, if you set:
+
+    scholar:
+      bibliography_template: bib
+
+And there is a file `_layouts/bib.html` (or with another extension) the
+contents of this file will be used as the template. Please note that it is
+important for this file to contain the YAML front matter! For example, this
+would be a more complex template file:
+
+    ---
+    ---
+    {{ reference }}
+
+    {% if entry.abstract %}
+    <p>{{ entry.abstract %}</p>
+    {% endif %}
+
+    <pre>{{ entry.bibtex %}</pre>
 
 ### Citations
 
