@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
     formats your BibTeX bibliographies for the web using CSL citation styles
     and generally gives your blog posts citation super-powers.'
   }.gsub(/\s+/, ' ')
-  
+
   s.date        = Time.now
 
   s.required_rubygems_version = '>= 1.3.6'
@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables  = []
   s.require_path = 'lib'
-  
+
 end
 
 # vim: syntax=ruby

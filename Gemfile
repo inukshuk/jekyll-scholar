@@ -12,9 +12,12 @@ group 'development' do
   gem 'redcarpet', '~> 2.2.2'
   gem 'launchy', '~> 2.1.2'
 
-  gem 'unicode_utils'  
+  gem 'unicode_utils'
 end
 
-group 'debug' do
-  gem 'debugger'
+group :debug do
+  gem 'ruby-debug', :require => false, :platform => :jruby
+  gem 'debugger', '~>1.6', :require => false, :platform => :mri
+  gem 'rubinius-compiler', '~>2.0', :require => false, :platform => :rbx
+  gem 'rubinius-debugger', '~>2.0', :require => false, :platform => :rbx
 end

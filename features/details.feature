@@ -1,8 +1,8 @@
-Feature: BibTeX
+Feature: Details
   As a scholar who likes to blog
   I want to publish my BibTeX bibliography on my blog
   And I want Jekyll to generate detail pages for all the entries in my bibliography
-  
+
   @generators
   Scenario: A bibliography with a single entry
     Given I have a scholar configuration with:

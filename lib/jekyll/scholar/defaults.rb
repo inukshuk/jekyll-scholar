@@ -9,6 +9,7 @@ module Jekyll
 
       'source'                => './_bibliography',
       'bibliography'          => 'references.bib',
+      'repository'            => nil,
 
       'bibtex_options'        => { :strip => false },
       'bibtex_filters'        => [ :latex ],
@@ -20,7 +21,7 @@ module Jekyll
       'details_link'          => 'Details',
 
       'bibliography_class'    => 'bibliography',
-      'bibliography_template' => '%{reference}',
+      'bibliography_template' => '{{reference}}',
 
       'reference_tagname'     => 'span',
       'missing_reference'     => '(missing reference)',

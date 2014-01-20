@@ -20,7 +20,7 @@ module Jekyll
         if cited_only?
           references = cited_references.uniq.map do |key|
             references.detect { |e| e.key == key }
-          end          
+          end
         end
 
         bibliography = references.each_with_index.map { |entry, index|

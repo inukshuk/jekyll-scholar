@@ -35,7 +35,7 @@ module Jekyll
 
           opts.on('-s', '--style STYLE') do |style|
             @style = style
-          end 
+          end
         end
 
         argv = arguments.split(/(\B-[cfqpts]|\B--(?:cited|file|query|prefix|text|style|))/)
@@ -73,6 +73,26 @@ module Jekyll
         end
 
         b
+      end
+
+      def repository?
+        !config['repository'].nil? && !config['repository'].empty?
+      end
+
+      def repository
+        @repository ||= load_repository
+      end
+
+      def load_repository
+        return {} unless repository?
+
+        Hash[Dir[File.join(repository_path, '**/*.{pdf,ps}')].map { |path|
+          [File.basename(path).sub(/\.(pdf|ps)$/, ''), path]
+        }]
+      end
+
+      def repository_path
+        config['repository']
       end
 
       def replace_strings?
@@ -120,18 +140,31 @@ module Jekyll
       end
 
       def bibliography_template
-        config['bibliography_template'] || '%{reference}'
+        return @bibliography_template if @bibliography_template
+
+        tmp = config['bibliography_template'] || '{{reference}}'
+
+        case
+        when tmp.nil?
+          tmp = '{{reference}}'
+        when site.layouts.key?(tmp)
+          tmp = site.layouts[tmp].content
+        end
+
+        @bibliography_template = Liquid::Template.parse(tmp)
       end
 
       def bibliography_tag(entry, index)
         return missing_reference unless entry
 
-        bibliography_template % {
-          :reference => reference_tag(entry),
-          :key => entry.key,
-          :type => entry.type,
-          :index => index
-        }
+        bibliography_template.render({
+          'entry' => entry,
+          'reference' => reference_tag(entry),
+          'key' => entry.key,
+          'type' => entry.type,
+          'link' => repository_link_for(entry),
+          'index' => index
+        })
       end
 
       def generate_details?
@@ -144,6 +177,13 @@ module Jekyll
         name.gsub!(/[:\s]+/, '_')
 
         [name, 'html'].join('.')
+      end
+
+      def repository_link_for(entry, base = base_url)
+        url = repository[entry.key]
+        return unless url
+
+        File.join(base, url)
       end
 
       def details_link_for(entry, base = base_url)

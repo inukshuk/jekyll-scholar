@@ -38,7 +38,7 @@ module Jekyll
 
     class DetailsGenerator < Generator
       include Scholar::Utilities
-      
+
       safe true
       priority :high
 

@@ -35,7 +35,7 @@ Feature: BibTeX
       ---
       References
       ==========
-      
+
       @book{ruby,
         title     = {The Ruby Programming Language},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
@@ -93,9 +93,9 @@ Feature: BibTeX
   @tags @bibliography @config
   Scenario: Simple Bibliography With Custom Template
     Given I have a scholar configuration with:
-      | key                   | value                                      |
-      | source                | ./_bibliography                            |
-      | bibliography_template | <abbr>%{index} [%{key}]</abbr>%{reference} |
+      | key                   | value                                         |
+      | source                | ./_bibliography                               |
+      | bibliography_template | <abbr>{{index}} [{{key}}]</abbr>{{reference}} |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
