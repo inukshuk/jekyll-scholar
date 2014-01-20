@@ -158,13 +158,29 @@ module Jekyll
         return missing_reference unless entry
 
         bibliography_template.render({
-          'entry' => entry,
+          'entry' => liquidify(entry),
           'reference' => reference_tag(entry),
           'key' => entry.key,
           'type' => entry.type,
           'link' => repository_link_for(entry),
           'index' => index
         })
+      end
+
+      def liquidify(entry)
+        e = {}
+
+        e['key'] = entry.key
+        e['type'] = entry.type
+
+        e['bibtex'] = entry.to_s
+
+        entry.fields.each do |key, value|
+          value = value.convert(*bibtex_filters) unless bibtex_filters.empty?
+          e[key.to_s] = value.to_s
+        end
+
+        e
       end
 
       def generate_details?

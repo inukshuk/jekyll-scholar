@@ -14,24 +14,7 @@ module Jekyll
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
 
-        liquidify(entry)
-      end
-
-      private
-
-      def liquidify(entry)
-        data['entry'] = {}
-
-        data['entry']['key'] = entry.key
-        data['entry']['type'] = entry.type
-
-        data['entry']['bibtex'] = entry.to_s
-
-        entry.fields.each do |key, value|
-          value = value.convert(*bibtex_filters) unless bibtex_filters.empty?
-          data['entry'][key.to_s] = value.to_s
-        end
-
+        data['entry'] = liquidify(entry)
       end
 
     end
