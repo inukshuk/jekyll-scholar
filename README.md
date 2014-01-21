@@ -336,7 +336,7 @@ document.
 ### File Repositories
 
 File repository support was added to Jekyll-Scholar starting at version
-4.0. Currently, if you have a folder in your site that contains PDF or
+2.0. Currently, if you have a folder in your site that contains PDF or
 Postscript files of your papers, you can use the configuration option
 `repository` to indicate this directory. When generating bibliographies,
 Jekyll-Scholar will look in that folder to see if it contains a filename
