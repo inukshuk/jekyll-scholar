@@ -60,7 +60,8 @@ your references (this typically applies to localized terms, e.g., 'Eds.' for
 editors in English).
 
 The `source` option indicates where your bibliographies are stored;
-`bibliography` is the name of your default bibliography.
+`bibliography` is the name of your default bibliography. For best results,
+please ensure that your Bibliography is encoded as ASCII or UTF-8.
 
 
 ### Bibliographies
