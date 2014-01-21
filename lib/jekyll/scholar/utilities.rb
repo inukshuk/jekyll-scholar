@@ -36,9 +36,13 @@ module Jekyll
           opts.on('-s', '--style STYLE') do |style|
             @style = style
           end
+
+          opts.on('-T', '--template TEMPLATE') do |template|
+            @bibliography_template = template
+          end
         end
 
-        argv = arguments.split(/(\B-[cfqpts]|\B--(?:cited|file|query|prefix|text|style|))/)
+        argv = arguments.split(/(\B-[cfqptTs]|\B--(?:cited|file|query|prefix|text|style|template|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -140,24 +144,28 @@ module Jekyll
       end
 
       def bibliography_template
-        return @bibliography_template if @bibliography_template
+        @bibliography_template || config['bibliography_template']
+      end
 
-        tmp = config['bibliography_template'] || '{{reference}}'
+      def liquid_template
+        return @liquid_template if @liquid_template
+
+        tmp = bibliography_template
 
         case
-        when tmp.nil?
+        when tmp.nil?, tmp.empty?
           tmp = '{{reference}}'
         when site.layouts.key?(tmp)
           tmp = site.layouts[tmp].content
         end
 
-        @bibliography_template = Liquid::Template.parse(tmp)
+        @liquid_template = Liquid::Template.parse(tmp)
       end
 
       def bibliography_tag(entry, index)
         return missing_reference unless entry
 
-        bibliography_template.render({
+        liquid_template.render({
           'entry' => liquidify(entry),
           'reference' => reference_tag(entry),
           'key' => entry.key,
