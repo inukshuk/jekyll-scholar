@@ -173,7 +173,13 @@ module Jekyll
         e['key'] = entry.key
         e['type'] = entry.type
 
-        e['bibtex'] = entry.to_s
+        if entry.field?(:abstract)
+          tmp = entry.dup
+          tmp.delete :abstract
+          e['bibtex'] = tmp.to_s
+        else
+          e['bibtex'] = entry.to_s
+        end
 
         entry.fields.each do |key, value|
           value = value.convert(*bibtex_filters) unless bibtex_filters.empty?
