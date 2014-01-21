@@ -190,6 +190,9 @@ would be a more complex template file:
 
     <pre>{{ entry.bibtex %}</pre>
 
+You can also override the default bibliography template, by passing the
+`--template` or `-T` option parameter to the bibliography tag.
+
 ### Citations
 
 If you want to reference books or papers from your bibliography in your blog
