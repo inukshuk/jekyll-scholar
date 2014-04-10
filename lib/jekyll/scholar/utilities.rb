@@ -18,7 +18,8 @@ module Jekyll
           end
 
           opts.on('-f', '--file FILE') do |file|
-            @bibtex_file = file
+            @bibtex_file ||= []
+            @bibtex_file << file
           end
 
           opts.on('-q', '--query QUERY') do |query|
@@ -61,7 +62,9 @@ module Jekyll
 
       def bibliography
         unless @bibliography
-          @bibliography = BibTeX.open(bibtex_path, bibtex_options)
+          tmp = ""
+          bibtex_path.each{|s| tmp << IO.read(s)}
+          @bibliography = BibTeX.parse(tmp, bibtex_options)
           @bibliography.replace_strings if replace_strings?
         end
 
@@ -109,15 +112,22 @@ module Jekyll
 
       def extend_path(name)
         if name.nil? || name.empty?
-          name = config['bibliography']
+          name = [config['bibliography']]
         end
 
-        # return as is if it is an absolute path
-        return name if name.start_with?('/') && File.exists?(name)
+        ret = []
 
-        p = File.join(config['source'], name)
-        p << '.bib' unless File.exists?(p)
-        p
+        name.each { |file|
+          # return as is if it is an absolute path
+          if file.start_with?('/') && File.exists?(file)
+            ret << file
+          else
+            p = File.join(config['source'], file)
+            p << '.bib' unless File.exists?(p)
+            ret << p
+          end
+        }
+        ret
       end
 
       def reference_tag(entry)
