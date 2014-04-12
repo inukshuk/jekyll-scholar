@@ -2,11 +2,11 @@ module Jekyll
   class Scholar
 
     # Utility methods used by several Scholar plugins. The methods in this
-    # module may depend on the presence of #config, #bibtex_file, and
+    # module may depend on the presence of #config, #bibtex_files, and
     # #site readers
     module Utilities
 
-      attr_reader :bibtex_file, :config, :site, :query,
+      attr_reader :config, :site, :query,
         :context, :prefix, :key, :text
 
       def optparse(arguments)
@@ -18,8 +18,8 @@ module Jekyll
           end
 
           opts.on('-f', '--file FILE') do |file|
-            @bibtex_file ||= []
-            @bibtex_file << file
+            @bibtex_files ||= []
+            @bibtex_files << file
           end
 
           opts.on('-q', '--query QUERY') do |query|
@@ -48,6 +48,15 @@ module Jekyll
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
 
+      def bibtex_files
+        @bibtex_files ||= [config['bibliography']]
+      end
+
+      # :nodoc: backwards compatibility
+      def bibtex_file
+        bibtex_files[0]
+      end
+
       def bibtex_options
         config['bibtex_options'] ||= {}
       end
@@ -56,15 +65,23 @@ module Jekyll
         config['bibtex_filters'] ||= []
       end
 
+      def bibtex_paths
+        @bibtex_paths ||= bibtex_files.map { |file|
+          extend_path file
+        }
+      end
+
+      # :nodoc: backwards compatibility
       def bibtex_path
-        @bibtex_path ||= extend_path(bibtex_file)
+        bibtex_paths[0]
       end
 
       def bibliography
         unless @bibliography
-          tmp = ""
-          bibtex_path.each{|s| tmp << IO.read(s)}
-          @bibliography = BibTeX.parse(tmp, bibtex_options)
+          @bibliography = BibTeX.parse(
+            bibtex_paths.reduce('') { |s, p| s << IO.read(p) },
+            bibtex_options
+          )
           @bibliography.replace_strings if replace_strings?
         end
 
@@ -112,22 +129,15 @@ module Jekyll
 
       def extend_path(name)
         if name.nil? || name.empty?
-          name = [config['bibliography']]
+          name = config['bibliography']
         end
 
-        ret = []
+        # return as is if it is an absolute path
+        return name if name.start_with?('/') && File.exists?(name)
 
-        name.each { |file|
-          # return as is if it is an absolute path
-          if file.start_with?('/') && File.exists?(file)
-            ret << file
-          else
-            p = File.join(config['source'], file)
-            p << '.bib' unless File.exists?(p)
-            ret << p
-          end
-        }
-        ret
+        p = File.join(config['source'], name)
+        p << '.bib' unless File.exists?(p)
+        p
       end
 
       def reference_tag(entry)
