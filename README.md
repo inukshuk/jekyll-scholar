@@ -10,6 +10,7 @@ For additional features you may also want to take a look at
 [jekyll-scholar-extras](https://github.com/jgoodall/jekyll-scholar-extras).
 
 [![Build Status](https://travis-ci.org/inukshuk/jekyll-scholar.png?branch=master)](https://travis-ci.org/inukshuk/jekyll-scholar)
+[![Coverage Status](https://coveralls.io/repos/inukshuk/jekyll-scholar/badge.png)](https://coveralls.io/r/inukshuk/jekyll-scholar)
 [![Dependency Status](https://gemnasium.com/inukshuk/jekyll-scholar.png)](https://gemnasium.com/inukshuk/jekyll-scholar)
 
 Installation

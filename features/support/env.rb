@@ -1,7 +1,9 @@
-require 'rr'
-require 'test/unit'
-
-require 'jekyll/scholar'
+begin
+  require 'simplecov'
+  require 'coveralls' if ENV['CI']
+rescue LoadError
+  # ignore
+end
 
 begin
   require 'debugger'
@@ -9,6 +11,10 @@ rescue LoadError
   # ignore
 end
 
+require 'rr'
+require 'test/unit'
+
+require 'jekyll/scholar'
 
 World do
   include Test::Unit::Assertions

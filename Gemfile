@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 gemspec
 
-group 'development' do
+group :development do
   gem 'rake'
   gem 'redgreen', '~> 1.2'
   gem 'shoulda', '~> 3.5'
@@ -13,6 +13,10 @@ group 'development' do
   gem 'launchy', '~> 2.1.2'
 
   gem 'unicode_utils'
+
+  gem 'simplecov', '~>0.8', :require => false
+  gem 'rubinius-coverage', :platform => :rbx
+  gem 'coveralls', :require => false
 end
 
 group :debug do

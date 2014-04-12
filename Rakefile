@@ -15,6 +15,10 @@ Cucumber::Rake::Task.new(:features)
 
 task :default => [:features]
 
+require 'coveralls/rake/task'
+Coveralls::RakeTask.new
+task :test_with_coveralls => [:features, 'coveralls:push']
+
 task :release do |t|
   system "gem build jekyll-scholar.gemspec"
   system "git tag v#{Jekyll::Scholar::VERSION}"
