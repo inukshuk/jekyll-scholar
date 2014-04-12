@@ -2,11 +2,12 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
+  gem 'minitest', '< 5.0'
   gem 'rake'
   gem 'redgreen', '~> 1.2'
   gem 'shoulda', '~> 3.5'
   gem 'rr', '~> 1.1'
-  gem 'cucumber', '~> 1.3'
+  gem 'cucumber', '=1.3.10'
   gem 'RedCloth', '~> 4.2'
   gem 'rdiscount', '~> 1.6'
   gem 'redcarpet', '~> 3.0'

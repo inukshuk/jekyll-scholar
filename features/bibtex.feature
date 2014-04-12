@@ -24,7 +24,6 @@ Feature: BibTeX
     And the "_site/references.html" file should exist
     And I should see "<i>The Ruby Programming Language</i>" in "_site/references.html"
 
-  @converters
   Scenario: Markdown Formatted Bibliography
     Given I have a scholar configuration with:
       | key   | value |
