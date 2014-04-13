@@ -83,7 +83,7 @@ module Jekyll
             bibtex_options
           )
           @bibliography.replace_strings if replace_strings?
-          @bibliography.join if join_strings?
+          @bibliography.join if join_strings? && replace_strings?
         end
 
         @bibliography
