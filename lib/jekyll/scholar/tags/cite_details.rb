@@ -8,14 +8,16 @@ module Jekyll
         super
 
         @config = Scholar.defaults.dup
-        @key, arguments = arguments.strip.split(/\s+/, 2)
+        @keys, arguments = split_arguments arguments
 
         optparse(arguments)
       end
 
       def render(context)
         set_context_to context
-        cite_details key, text
+        keys.map { |key|
+          cite_details key, text
+        }.join("\n")
       end
     end
 

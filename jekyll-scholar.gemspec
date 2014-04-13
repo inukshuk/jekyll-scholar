@@ -26,7 +26,8 @@ Gem::Specification.new do |s|
   s.rubyforge_project = s.name
 
   s.add_runtime_dependency('jekyll', '~> 1.0')
-  s.add_runtime_dependency('citeproc-ruby', '~> 0.0.6')
+  s.add_runtime_dependency('citeproc-ruby', '~> 1.0')
+  s.add_runtime_dependency('csl-styles', '~> 1.0')
   s.add_runtime_dependency('bibtex-ruby', '~> 3.0')
 
   s.files        = `git ls-files`.split("\n")

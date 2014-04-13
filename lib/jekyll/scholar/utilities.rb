@@ -1,13 +1,31 @@
 module Jekyll
   class Scholar
 
+    # Load styles into static memory.
+    # They should be thread safe as long as they are
+    # treated as being read-only.
+    STYLES = Hash.new do |h, k|
+      h[k.to_s] = CSL::Style.load k
+    end
+
+
     # Utility methods used by several Scholar plugins. The methods in this
     # module may depend on the presence of #config, #bibtex_files, and
     # #site readers
     module Utilities
 
       attr_reader :config, :site, :query,
-        :context, :prefix, :key, :text
+        :context, :prefix, :keys, :text
+
+      def split_arguments(arguments)
+
+        tokens = arguments.strip.split(/\s+/)
+
+        args = tokens.take_while { |a| !a.start_with?('-') }
+        opts = (tokens - args).join(' ')
+
+        [args, opts]
+      end
 
       def optparse(arguments)
         return if arguments.nil? || arguments.empty?
@@ -34,6 +52,10 @@ module Jekyll
             @text = text
           end
 
+          opts.on('-l', '--locator LOCATOR') do |locator|
+            locators << locator
+          end
+
           opts.on('-s', '--style STYLE') do |style|
             @style = style
           end
@@ -43,9 +65,13 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cfqptTs]|\B--(?:cited|file|query|prefix|text|style|template|))/)
+        argv = arguments.split(/(\B-[cfqptTsl]|\B--(?:cited|file|query|prefix|text|style|template|locator|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
+      end
+
+      def locators
+        @locators ||= []
       end
 
       def bibtex_files
@@ -145,12 +171,11 @@ module Jekyll
         p
       end
 
-      def reference_tag(entry)
+      def reference_tag(entry, index = nil)
         return missing_reference unless entry
 
         entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
-        reference = CiteProc.process entry.to_citeproc,
-          :style => style, :locale => config['locale'], :format => 'html'
+        reference = render_bibliography entry, index
 
         content_tag reference_tagname, reference,
           :id => [prefix, entry.key].compact.join('-')
@@ -192,7 +217,7 @@ module Jekyll
 
         liquid_template.render({
           'entry' => liquidify(entry),
-          'reference' => reference_tag(entry),
+          'reference' => reference_tag(entry, index),
           'key' => entry.key,
           'type' => entry.type,
           'link' => repository_link_for(entry),
@@ -253,23 +278,55 @@ module Jekyll
         config['details_dir']
       end
 
-      def cite(key)
-        context['cited'] ||= []
-        context['cited'] << key
+      def renderer
+        @renderer ||= CiteProc::Ruby::Renderer.new :format => 'html',
+          :style => style, :locale => config['locale']
+      end
 
-        if bibliography.key?(key)
-          entry = bibliography[key]
-          entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+      def render_citation(items)
+        renderer.render items.zip(locators).map { |entry, locator|
+          cited_keys << entry.key
 
-          citation = CiteProc.process entry.to_citeproc, :style => style,
-            :locale => config['locale'], :format => 'html', :mode => :citation
+          item = citation_item_for entry, citation_number
+          item.locator = locator
 
-          link_to "##{[prefix, entry.key].compact.join('-')}", citation.join
-        else
-          missing_reference
+          item
+        }, STYLES[style].citation
+      end
+
+      def render_bibliography(entry, index = nil)
+        renderer.render citation_item_for(entry, index),
+          STYLES[style].bibliography
+      end
+
+      def citation_item_for(entry, citation_number = nil)
+        CiteProc::CitationItem.new id: entry.id do |c|
+          c.data = CiteProc::Item.new entry.to_citeproc
+          c.data[:'citation-number'] = citation_number
         end
-      rescue
-        "(#{key})"
+      end
+
+      def cited_keys
+        context['cited'] ||= []
+      end
+
+      def citation_number
+        number = context['citation_number'] || 1
+        context['citation_number'] = number.succ
+        number
+      end
+
+      def cite(keys)
+        items = keys.map do |key|
+          if bibliography.key?(key)
+            entry = bibliography[key]
+            entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+          else
+            return missing_reference
+          end
+        end
+
+        link_to "##{[prefix, keys[0]].compact.join('-')}", render_citation(items)
       end
 
       def cite_details(key, text)

@@ -255,6 +255,23 @@ For example, this could be rendered as:
       </cite>
     </blockquote>
 
+#### Multiple citation
+
+You can cite multiple items in a single citation by referencing all ids
+of the items you wish to quote separated by spaces. For example,
+`{% cite ruby microscope %}` would produce a cite tag like:
+
+    <a href="#ruby">(Flanagan &amp; Matsumoto 2008; Shaughnessy 2013)</a>
+
+#### Page numbers and locators
+
+If you would like to add page numbers to your citation, you can use the
+`-l` or `--locator` option. For example, `{% cite ruby -l 23-5 %}` would
+produce a citation like `(Matsumoto, 2008, pp. 23-5)`.
+
+When quoting multiple items (see above) you can add multiple locators after
+the list of ids. For example, `{% cite ruby microscope -l 2 -l 24 & 32 %}`.
+
 #### Displaying formatted references
 
 If you want to display the full formatted reference entry, you can use the
@@ -446,7 +463,7 @@ License
 
 Jekyll-Scholar is distributed under the same license as Jekyll.
 
-Copyright (c) 2011-2013 [Sylvester Keil](http://sylvester.keil.or.at/)
+Copyright (c) 2011-2014 [Sylvester Keil](http://sylvester.keil.or.at/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the 'Software'), to deal
