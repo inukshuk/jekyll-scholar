@@ -263,8 +263,6 @@ module Jekyll
         else
           missing_reference
         end
-      rescue
-        "(#{key})"
       end
 
       def cite_details(key, text)
