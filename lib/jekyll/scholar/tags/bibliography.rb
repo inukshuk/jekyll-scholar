@@ -38,15 +38,6 @@ module Jekyll
       end
     end
 
-    private
-
-    def citeproc
-      @citeproc ||= CiteProc::Processor.new do |p|
-        p.style = config['style']
-        p.format = 'html'
-        p.locale = config['locale']
-      end
-    end
   end
 end
 
