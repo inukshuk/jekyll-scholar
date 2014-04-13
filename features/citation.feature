@@ -111,3 +111,72 @@ Feature: Citations
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "#a-ruby" in "_site/scholar.html"
+
+  @tags @cite
+  Scenario: Multiple Citations
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+
+      @book{microscope,
+        title     = {Ruby Under a Microscope},
+        author    = {Pat Shaughnessy},
+        year      = {2013},
+        publisher = {No Starch Press}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby microscope %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Flanagan &amp; Matsumoto, 2008; Shaughnessy, 2013" in "_site/scholar.html"
+
+  @tags @cite @locator
+  Scenario: Multiple Citations with locators
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+
+      @book{microscope,
+        title     = {Ruby Under a Microscope},
+        author    = {Pat Shaughnessy},
+        year      = {2013},
+        publisher = {No Starch Press}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby microscope -l 2-3 --locator 23 & 42 %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Matsumoto, 2008, pp. 2-3; Shaughnessy, 2013, pp. 23 &amp; 42" in "_site/scholar.html"
+

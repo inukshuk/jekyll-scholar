@@ -44,6 +44,7 @@ Then(/^the (.*) directory should exist$/) do |dir|
 end
 
 Then(/^I should see "(.*)" in "(.*)"$/) do |text, file|
+  puts File.open(file).readlines.join 
   assert_match Regexp.new(text), File.open(file).readlines.join
 end
 

@@ -15,7 +15,17 @@ module Jekyll
     module Utilities
 
       attr_reader :config, :site, :query,
-        :context, :prefix, :key, :text
+        :context, :prefix, :keys, :text
+
+      def split_arguments(arguments)
+
+        tokens = arguments.strip.split(/\s+/)
+
+        args = tokens.take_while { |a| !a.start_with?('-') }
+        opts = (tokens - args).join(' ')
+
+        [args, opts]
+      end
 
       def optparse(arguments)
         return if arguments.nil? || arguments.empty?
@@ -42,6 +52,10 @@ module Jekyll
             @text = text
           end
 
+          opts.on('-l', '--locator LOCATOR') do |locator|
+            locators << locator
+          end
+
           opts.on('-s', '--style STYLE') do |style|
             @style = style
           end
@@ -51,9 +65,13 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cfqptTs]|\B--(?:cited|file|query|prefix|text|style|template|))/)
+        argv = arguments.split(/(\B-[cfqptTsl]|\B--(?:cited|file|query|prefix|text|style|template|locator|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
+      end
+
+      def locators
+        @locators ||= []
       end
 
       def bibtex_files
@@ -260,8 +278,12 @@ module Jekyll
           :style => style, :locale => config['locale']
       end
 
-      def render_citation(entry)
-        renderer.render [citation_item_for(entry)], STYLES[style].citation
+      def render_citation(items)
+        renderer.render items.zip(locators).map { |entry, locator|
+          item = citation_item_for entry
+          item.locator = locator
+          item
+        }, STYLES[style].citation
       end
 
       def render_bibliography(entry)
@@ -274,18 +296,23 @@ module Jekyll
         end
       end
 
-      def cite(key)
+      def cited_keys
         context['cited'] ||= []
-        context['cited'] << key
+      end
 
-        if bibliography.key?(key)
-          entry = bibliography[key]
-          entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+      def cite(keys)
+        items = keys.map do |key|
+          cited_keys << key
 
-          link_to "##{[prefix, entry.key].compact.join('-')}", render_citation(entry)
-        else
-          missing_reference
+          if bibliography.key?(key)
+            entry = bibliography[key]
+            entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+          else
+            return missing_reference
+          end
         end
+
+        link_to "##{[prefix, keys[0]].compact.join('-')}", render_citation(items)
       end
 
       def cite_details(key, text)
