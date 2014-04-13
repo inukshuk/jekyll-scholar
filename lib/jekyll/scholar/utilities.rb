@@ -83,6 +83,7 @@ module Jekyll
             bibtex_options
           )
           @bibliography.replace_strings if replace_strings?
+          @bibliography.join if join_strings?
         end
 
         @bibliography
@@ -121,6 +122,10 @@ module Jekyll
 
       def replace_strings?
         config['replace_strings']
+      end
+
+      def join_strings?
+        config['join_strings']
       end
 
       def cited_only?
