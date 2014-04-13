@@ -166,11 +166,11 @@ module Jekyll
         p
       end
 
-      def reference_tag(entry)
+      def reference_tag(entry, index = nil)
         return missing_reference unless entry
 
         entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
-        reference = render_bibliography entry
+        reference = render_bibliography entry, index
 
         content_tag reference_tagname, reference,
           :id => [prefix, entry.key].compact.join('-')
@@ -212,7 +212,7 @@ module Jekyll
 
         liquid_template.render({
           'entry' => liquidify(entry),
-          'reference' => reference_tag(entry),
+          'reference' => reference_tag(entry, index),
           'key' => entry.key,
           'type' => entry.type,
           'link' => repository_link_for(entry),
@@ -280,19 +280,24 @@ module Jekyll
 
       def render_citation(items)
         renderer.render items.zip(locators).map { |entry, locator|
-          item = citation_item_for entry
+          cited_keys << entry.key
+
+          item = citation_item_for entry, citation_number
           item.locator = locator
+
           item
         }, STYLES[style].citation
       end
 
-      def render_bibliography(entry)
-        renderer.render citation_item_for(entry), STYLES[style].bibliography
+      def render_bibliography(entry, index = nil)
+        renderer.render citation_item_for(entry, index),
+          STYLES[style].bibliography
       end
 
-      def citation_item_for(entry)
+      def citation_item_for(entry, citation_number = nil)
         CiteProc::CitationItem.new id: entry.id do |c|
           c.data = CiteProc::Item.new entry.to_citeproc
+          c.data[:'citation-number'] = citation_number
         end
       end
 
@@ -300,10 +305,14 @@ module Jekyll
         context['cited'] ||= []
       end
 
+      def citation_number
+        number = context['citation_number'] || 1
+        context['citation_number'] = number.succ
+        number
+      end
+
       def cite(keys)
         items = keys.map do |key|
-          cited_keys << key
-
           if bibliography.key?(key)
             entry = bibliography[key]
             entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
