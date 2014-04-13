@@ -254,6 +254,23 @@ For example, this could be rendered as:
       </cite>
     </blockquote>
 
+#### Multiple citation
+
+You can cite multiple items in a single citation by referencing all ids
+of the items you wish to quote separated by spaces. For example,
+`{% cite ruby microscope %}` would produce a cite tag like:
+
+    <a href="#ruby">(Flanagan, D. &amp; Matsumoto, Y. 2008; Shaughnessy, P. 2013)</a>
+
+#### Page numbers and locators
+
+If you would like to add page numbers to your citation, you can use the
+`-l` or `--locator` option. For example, `{% cite ruby -l 23-5 %}` would
+produce a citation like `(Matsumoto, Y., 2008, pp. 23-5)`.
+
+When quoting multiple items (see above) you can add multiple locators after
+the list of ids. For example, `{% cite ruby microscope -l 2 -l 24 & 32 %}`.
+
 #### Displaying formatted references
 
 If you want to display the full formatted reference entry, you can use the
