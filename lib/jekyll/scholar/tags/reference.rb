@@ -16,8 +16,6 @@ module Jekyll
       def render(context)
         set_context_to context
         reference_tag bibliography[key]
-      rescue
-        "(#{key})"
       end
     end
 
