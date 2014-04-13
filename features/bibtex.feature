@@ -204,7 +204,7 @@ Feature: BibTeX
       """
       ---
       ---
-      {% bibliography  --style mla %}
+      {% bibliography  --style modern-language-association %}
       """
     When I run jekyll
     Then the _site directory should exist

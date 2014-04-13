@@ -1,6 +1,14 @@
 module Jekyll
   class Scholar
 
+    # Load styles into static memory.
+    # They should be thread safe as long as they are
+    # treated as being read-only.
+    STYLES = Hash.new do |h, k|
+      h[k.to_s] = CSL::Style.load k
+    end
+
+
     # Utility methods used by several Scholar plugins. The methods in this
     # module may depend on the presence of #config, #bibtex_files, and
     # #site readers
@@ -144,8 +152,7 @@ module Jekyll
         return missing_reference unless entry
 
         entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
-        reference = CiteProc.process entry.to_citeproc,
-          :style => style, :locale => config['locale'], :format => 'html'
+        reference = render_bibliography entry
 
         content_tag reference_tagname, reference,
           :id => [prefix, entry.key].compact.join('-')
@@ -248,6 +255,25 @@ module Jekyll
         config['details_dir']
       end
 
+      def renderer
+        @renderer ||= CiteProc::Ruby::Renderer.new :format => 'html',
+          :style => style, :locale => config['locale']
+      end
+
+      def render_citation(entry)
+        renderer.render [citation_item_for(entry)], STYLES[style].citation
+      end
+
+      def render_bibliography(entry)
+        renderer.render citation_item_for(entry), STYLES[style].bibliography
+      end
+
+      def citation_item_for(entry)
+        CiteProc::CitationItem.new id: entry.id do |c|
+          c.data = CiteProc::Item.new entry.to_citeproc
+        end
+      end
+
       def cite(key)
         context['cited'] ||= []
         context['cited'] << key
@@ -256,10 +282,7 @@ module Jekyll
           entry = bibliography[key]
           entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
 
-          citation = CiteProc.process entry.to_citeproc, :style => style,
-            :locale => config['locale'], :format => 'html', :mode => :citation
-
-          link_to "##{[prefix, entry.key].compact.join('-')}", citation.join
+          link_to "##{[prefix, entry.key].compact.join('-')}", render_citation(entry)
         else
           missing_reference
         end

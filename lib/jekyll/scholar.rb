@@ -4,7 +4,8 @@ require 'jekyll'
 require 'optparse'
 
 require 'bibtex'
-require 'citeproc'
+require 'citeproc/ruby'
+require 'csl/styles'
 
 require 'jekyll/scholar/version'
 require 'jekyll/scholar/defaults'
