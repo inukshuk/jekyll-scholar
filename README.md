@@ -43,6 +43,7 @@ default configuration is as follows:
       bibliography_template: "{{reference}}"
 
       replace_strings: true
+      join_strings:    true
 
       details_dir:    bibliography
       details_layout: bibtex.html

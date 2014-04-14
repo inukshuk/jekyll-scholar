@@ -15,6 +15,7 @@ module Jekyll
       'bibtex_filters'        => [ :latex ],
 
       'replace_strings'       => true,
+      'join_strings'          => true,
 
       'details_dir'           => 'bibliography',
       'details_layout'        => 'bibtex.html',
