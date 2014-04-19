@@ -17,13 +17,9 @@ module Jekyll
 
         references = entries
 
-        if cited_only?
-          references = cited_references.uniq.map do |key|
-            references.detect { |e| e.key == key }
-          end
-
-          references = sort references
-        end
+        references.select! do |e|
+          cited_references.include? e.key
+        end if cited_only?
 
         bibliography = references.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
