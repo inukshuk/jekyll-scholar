@@ -116,14 +116,15 @@ module Jekyll
       end
 
       def entries
-        b = bibliography[query || config['query']]
+        sort bibliography[query || config['query']]
+      end
 
-        unless config['sort_by'] == 'none'
-          b = b.sort_by { |e| e[config['sort_by']].to_s }
-          b.reverse! if config['order'] =~ /^(desc|reverse)/i
-        end
+      def sort(unsorted)
+        return unsorted if config['sort_by'] == 'none'
 
-        b
+        sorted = unsorted.sort_by { |e| e[config['sort_by']].to_s }
+        sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
+        sorted
       end
 
       def repository?

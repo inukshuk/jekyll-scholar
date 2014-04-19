@@ -67,3 +67,86 @@ Feature: Sorting BibTeX Bibliographies
     And the "_site/scholar.html" file should exist
     Then "2008" should come before "2007" in "_site/scholar.html"
 
+  @tags @sorting @cited_only
+  Scenario: Sort By Year Cited Only
+    Given I have a scholar configuration with:
+      | key     | value             |
+      | sort_by | year              |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby1,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      @book{ruby2,
+        title     = {Ruby Not Cited},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2007},
+        publisher = {O'Reilly Media}
+      }
+      @book{smalltalk,
+        title     = {Smalltalk Best Practice Patterns},
+        author    = {Kent Beck},
+        year      = {1996},
+        publisher = {Prentice Hall}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby1 %}
+      {% cite smalltalk %}
+      {% bibliography --cited %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then "Smalltalk" should come before "Ruby Programming" in "_site/scholar.html"
+    And I should not see "<i>Ruby Not Cited</i>" in "_site/scholar.html"
+
+  @tags @sorting @cited_only
+  Scenario: Reverse Sort Order Cited Only
+    Given I have a scholar configuration with:
+      | key     | value             |
+      | sort_by | year              |
+      | order   | descending        |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby1,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      @book{ruby2,
+        title     = {Ruby Not Cited},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2007},
+        publisher = {O'Reilly Media}
+      }
+      @book{smalltalk,
+        title     = {Smalltalk Best Practice Patterns},
+        author    = {Kent Beck},
+        year      = {1996},
+        publisher = {Prentice Hall}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby1 %}
+      {% cite smalltalk %}
+      {% bibliography --cited %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then "Ruby Programming" should come before "Smalltalk" in "_site/scholar.html"
+    And I should not see "<i>Ruby Not Cited</i>" in "_site/scholar.html"
+

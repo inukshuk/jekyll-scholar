@@ -21,6 +21,8 @@ module Jekyll
           references = cited_references.uniq.map do |key|
             references.detect { |e| e.key == key }
           end
+
+          references = sort references
         end
 
         bibliography = references.each_with_index.map { |entry, index|

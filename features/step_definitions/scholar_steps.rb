@@ -31,6 +31,7 @@ end
 Then(/^"(.*)" should come before "(.*)" in "(.*)"$/) do |p1, p2, file|
   data = File.open(file).readlines.join('')
 
+  puts data
   m1 = data.match(p1)
   m2 = data.match(p2)
 
