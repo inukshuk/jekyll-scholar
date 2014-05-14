@@ -7,10 +7,8 @@ group :development do
   gem 'redgreen', '~> 1.2'
   gem 'shoulda', '~> 3.5'
   gem 'rr', '~> 1.1'
-  gem 'cucumber', '=1.3.10'
-  gem 'RedCloth', '~> 4.2'
-  gem 'rdiscount', '~> 1.6'
-  gem 'redcarpet', '~> 3.0'
+  gem 'cucumber', '1.3.11'
+  gem 'redcarpet', '~> 3.1'
   gem 'launchy', '~> 2.1.2'
 
   gem 'unicode_utils'
