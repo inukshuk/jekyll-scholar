@@ -28,7 +28,8 @@ to a file in your plugin directory (e.g., to `_plugins/ext.rb`):
 
     require 'jekyll/scholar'
 
-Alternatively, add `jekyll-scholr` to your `gem` array in you configuration:
+Alternatively, add `jekyll-scholar` to your `gem` list in your Jekyll
+configuration:
 
     gem: ['jekyll-scholar']
 
