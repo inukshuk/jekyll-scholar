@@ -28,6 +28,10 @@ to a file in your plugin directory (e.g., to `_plugins/ext.rb`):
 
     require 'jekyll/scholar'
 
+Alternatively, add `jekyll-scholr` to your `gem` array in you configuration:
+
+    gem: ['jekyll-scholar']
+
 In your configuration you can now adjust the Jekyll-Scholar settings. The
 default configuration is as follows:
 
