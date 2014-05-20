@@ -31,7 +31,7 @@ to a file in your plugin directory (e.g., to `_plugins/ext.rb`):
 Alternatively, add `jekyll-scholar` to your `gem` list in your Jekyll
 configuration:
 
-    gem: ['jekyll-scholar']
+    gems: ['jekyll/scholar']
 
 In your configuration you can now adjust the Jekyll-Scholar settings. The
 default configuration is as follows:
