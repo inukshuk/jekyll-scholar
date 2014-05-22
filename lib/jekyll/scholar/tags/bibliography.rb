@@ -21,6 +21,8 @@ module Jekyll
           cited_references.include? e.key
         end if cited_only?
 
+        references = references.take(max.to_i) if limit_entries?
+
         bibliography = references.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
 
