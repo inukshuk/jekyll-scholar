@@ -376,6 +376,13 @@ module Jekyll
       def set_context_to(context)
         @context, @site, = context, context.registers[:site]
         config.merge!(site.config['scholar'] || {})
+
+        # De-reference keys
+        keys.map! do |key|
+          context.send(:resolve, key) || key
+        end unless keys.nil?
+
+        self
       end
     end
 
