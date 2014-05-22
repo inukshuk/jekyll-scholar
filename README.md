@@ -152,6 +152,14 @@ For more details about filters, see the corresponding section below or
 consult the [BibTeX-Ruby](https://github.com/inukshuk/bibtex-ruby)
 documentation.
 
+If you need to limit the number of entries in your bibliography, you can
+use the `--max` option:
+
+    {% bibliography --max 5 %}
+
+This would generate a bibliography containing only the first 5 entries
+of your bibliography (after query filters and sort options have been applied).
+
 ### Bibliography Template
 
 Your bibliography is always rendered as an ordered list. Additionally,
