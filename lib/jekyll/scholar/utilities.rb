@@ -327,6 +327,9 @@ module Jekyll
 
       def cite(keys)
         items = keys.map do |key|
+          # dereference variables in current scope
+          key = context.scopes.last[key] || key
+
           if bibliography.key?(key)
             entry = bibliography[key]
             entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
