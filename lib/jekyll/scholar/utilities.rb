@@ -35,6 +35,10 @@ module Jekyll
             @cited = true
           end
 
+          opts.on('-C', '--cited_in_order') do |cited|
+            @cited, @skip_sort = true, true
+          end
+
           opts.on('-f', '--file FILE') do |file|
             @bibtex_files ||= []
             @bibtex_files << file
@@ -69,7 +73,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cfqptTslm]|\B--(?:cited|file|query|prefix|text|style|template|locator|max|))/)
+        argv = arguments.split(/(\B-[cCfqptTslm]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|max|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -128,7 +132,7 @@ module Jekyll
       end
 
       def sort(unsorted)
-        return unsorted if config['sort_by'] == 'none'
+        return unsorted if skip_sort?
 
         sorted = unsorted.sort_by { |e| e[config['sort_by']].to_s }
         sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
@@ -165,6 +169,10 @@ module Jekyll
 
       def cited_only?
         !!@cited
+      end
+
+      def skip_sort?
+        @skip_sort || config['sort_by'] == 'none'
       end
 
       def extend_path(name)
@@ -327,9 +335,6 @@ module Jekyll
 
       def cite(keys)
         items = keys.map do |key|
-          # dereference variables in current scope
-          key = context.scopes.last[key] || key
-
           if bibliography.key?(key)
             entry = bibliography[key]
             entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
@@ -375,6 +380,8 @@ module Jekyll
 
       def keys
         # De-reference keys (in case they are variables)
+        # We need to do this every time, to support for loops,
+        # where the context can change for each invocation.
         Array(@keys).map do |key|
           context.send(:resolve, key) || key
         end
