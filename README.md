@@ -248,6 +248,12 @@ the `cited` option to the bibliography tag:
 
     {% bibliography --cited %}
 
+By default, the `--cited` option will still sort your bibliography if you set
+the sort option. Especially for styles using citation numbers, this is usually
+not the desired behaviour. In such cases you can use `--cited_in_order` instead
+of `--cited` and your bibliography will contain all cited items in the order
+they were cited on the page.
+
 For longer quotes, Jekyll-Scholar provides a `quote` tag:
 
     {% quote derrida:purveyor %}
