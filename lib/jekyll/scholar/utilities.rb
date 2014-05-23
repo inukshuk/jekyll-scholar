@@ -15,7 +15,7 @@ module Jekyll
     module Utilities
 
       attr_reader :config, :site, :query,
-        :context, :prefix, :keys, :text, :max
+        :context, :prefix, :text, :max
 
       def split_arguments(arguments)
 
@@ -373,15 +373,16 @@ module Jekyll
         context && context['cited'] || []
       end
 
+      def keys
+        # De-reference keys (in case they are variables)
+        Array(@keys).map do |key|
+          context.send(:resolve, key) || key
+        end
+      end
+
       def set_context_to(context)
         @context, @site, = context, context.registers[:site]
         config.merge!(site.config['scholar'] || {})
-
-        # De-reference keys
-        keys.map! do |key|
-          context.send(:resolve, key) || key
-        end unless keys.nil?
-
         self
       end
     end

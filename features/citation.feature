@@ -278,7 +278,7 @@ Feature: Citations
     And the "_site/scholar.html" file should exist
     And I should see "Flanagan" in "_site/scholar.html"
 
-  @tags @cite @variables @data
+  @tags @cite @variables @data @wip
   Scenario: Multiple Citations in a list using liquid variables
     Given I have a scholar configuration with:
       | key          | value             |
