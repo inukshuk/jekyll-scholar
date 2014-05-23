@@ -277,3 +277,49 @@ Feature: Citations
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "Flanagan" in "_site/scholar.html"
+
+  @tags @cite @variables @data
+  Scenario: Multiple Citations in a list using liquid variables
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+
+      @book{gof,
+         Author = {Erich Gamma and Richard Helm and Ralph Johnson and John Vlissides},
+         Title = {Design Patterns: Elements of Reusable Object-Oriented Software},
+         Publisher = {Addison-Wesley Professional},
+         Year = {1994},                   
+      }
+      """
+    And I have a "_data" directory
+    And I have a file "_data/covers.yml":
+      """
+      - reference: "ruby"
+        image: "/img/covers/cover_01.png"
+      - reference: "gof"
+        image: "/img/covers/cover_02.png"
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% for cover in site.data.covers %}
+        {% cite cover.reference %}
+      {% endfor %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Flanagan" in "_site/scholar.html"
+    And I should see "Gamma" in "_site/scholar.html"
+
