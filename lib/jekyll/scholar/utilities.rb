@@ -14,8 +14,7 @@ module Jekyll
     # #site readers
     module Utilities
 
-      attr_reader :config, :site, :query,
-        :context, :prefix, :text, :max
+      attr_reader :config, :site, :context, :prefix, :text, :max
 
       def split_arguments(arguments)
 
@@ -121,6 +120,10 @@ module Jekyll
         end
 
         @bibliography
+      end
+
+      def query
+        interpolate @query
       end
 
       def entries
@@ -384,6 +387,14 @@ module Jekyll
         # where the context can change for each invocation.
         Array(@keys).map do |key|
           context.send(:resolve, key) || key
+        end
+      end
+
+      def interpolate(string)
+        return unless string
+
+        string.gsub(/{{\s*([\w\.]+)\s*}}/) do |match|
+          context.send(:resolve, $1) || match
         end
       end
 
