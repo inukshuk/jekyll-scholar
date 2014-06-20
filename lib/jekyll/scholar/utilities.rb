@@ -239,7 +239,7 @@ module Jekyll
           'entry' => liquidify(entry),
           'reference' => reference_tag(entry, index),
           'key' => entry.key,
-          'type' => entry.type,
+          'type' => entry.type.to_s,
           'link' => repository_link_for(entry),
           'index' => index
         })
@@ -249,7 +249,7 @@ module Jekyll
         e = {}
 
         e['key'] = entry.key
-        e['type'] = entry.type
+        e['type'] = entry.type.to_s
 
         if entry.field?(:abstract)
           tmp = entry.dup
