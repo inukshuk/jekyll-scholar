@@ -241,7 +241,8 @@ module Jekyll
           'key' => entry.key,
           'type' => entry.type.to_s,
           'link' => repository_link_for(entry),
-          'index' => index
+          'index' => index,
+          'details' => details_link_for(entry)
         })
       end
 
