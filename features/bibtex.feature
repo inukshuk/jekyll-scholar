@@ -63,6 +63,32 @@ Feature: BibTeX
     And the "_site/references.html" file should exist
     And I should see "Look, an umlaut: ü!" in "_site/references.html"
 
+  @tags @bibtex @wip
+  Scenario: Embedded BibTeX
+    Given I have a scholar configuration with:
+      | key   | value |
+      | style | apa   |
+     And I have a page "references.md":
+      """
+      ---
+      ---
+      References
+      ==========
+
+      {% bibtex %}
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      {% endbibtex %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/references.html" file should exist
+    And I should see "<i>The Ruby Programming Language</i>" in "_site/references.html"
+
   @tags
   Scenario: Simple Bibliography Loaded From Default Directory
     Given I have a scholar configuration with:
