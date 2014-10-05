@@ -25,12 +25,16 @@ Feature: PDF Repository
       """
       The PDF
       """
+    And I have a file "papers/ruby.ppt":
+      """
+      The PPT
+      """
     And I have a "_layouts" directory
     And I have a file "_layouts/bibliography.html":
       """
       ---
       ---
-      {{ reference }} Link: {{ link }}
+      {{ reference }} Link: {{ link }} Slides: {{ links.ppt }}
       """
     And I have a page "scholar.html":
       """
@@ -43,6 +47,7 @@ Feature: PDF Repository
     And the "_site/papers/ruby.pdf" file should exist
     And I should see "The Ruby Programming Language" in "_site/scholar.html"
     And I should see "Link: /papers/ruby.pdf" in "_site/scholar.html"
+    And I should see "Slides: /papers/ruby.ppt" in "_site/scholar.html"
 
 
 

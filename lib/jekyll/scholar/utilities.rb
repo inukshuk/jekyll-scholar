@@ -151,11 +151,16 @@ module Jekyll
       end
 
       def load_repository
-        return {} unless repository?
+        repo = Hash.new { |h,k| h[k] = {} }
 
-        Hash[Dir[File.join(repository_path, '**/*.{pdf,ps}')].map { |path|
-          [File.basename(path).sub(/\.(pdf|ps)$/, ''), path]
-        }]
+        return repo unless repository?
+
+        Dir[File.join(repository_path, '**/*')].each do |path|
+          extname = File.extname(path)
+          repo[File.basename(path, extname)][extname[1..-1]] = path
+        end
+
+        repo
       end
 
       def repository_path
@@ -241,6 +246,7 @@ module Jekyll
           'key' => entry.key,
           'type' => entry.type.to_s,
           'link' => repository_link_for(entry),
+          'links' => repository_links_for(entry),
           'index' => index,
           'details' => details_link_for(entry)
         })
@@ -281,10 +287,18 @@ module Jekyll
       end
 
       def repository_link_for(entry, base = base_url)
-        url = repository[entry.key]
+        links = repository[entry.key]
+        url   = links['pdf'] || links['ps']
+
         return unless url
 
         File.join(base, url)
+      end
+
+      def repository_links_for(entry, base = base_url)
+        Hash[repository[entry.key].map { |ext, url|
+          [ext, File.join(base, url)]
+        }]
       end
 
       def details_link_for(entry, base = base_url)

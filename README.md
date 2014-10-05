@@ -379,12 +379,19 @@ Postscript files of your papers, you can use the configuration option
 `repository` to indicate this directory. When generating bibliographies,
 Jekyll-Scholar will look in that folder to see if it contains a filename
 matching each entry's BibTeX key: if it does, the path to that file
-will be exposed to the bibliography template.
+will be exposed to the bibliography template as the `link` property.
+
+Since version 4.1.0 repositories are not limited to PDF and PS files.
+These files are mapped to the `links` property in your bibliography
+template. Here is an example of template that utilizes this feature
+to link to supporting material in a ZIP archive:
+
+    {{ reference }} [<a href="{{links.zip}}">Supporting Materials</a>]
 
 ### Detail Pages
 
 If your layouts directory contains a layout file for bibliography details
-(the 'details_layout' configuration options), Jekyll-Scholar will generate
+(the `details_layout` configuration options), Jekyll-Scholar will generate
 a details page for each entry in you main bibliography. That is to say, if
 your bibliography contains the following entry:
 
@@ -437,8 +444,8 @@ configuration option. For example:
     query: "@book" #=> includes only books
     query: "@article[year>=2003]" #=> includes only articles published 2003 or later
     query: "@*[url]" #=> includes all entries with a url field
-    query: "@*[status!=review]" #=> includes all entries whose status field is not set to 'review' 
-    query: "@book[year <= 1900 && author ^= Poe]" #=> Books published before 1900 where the author matches /Poe/ 
+    query: "@*[status!=review]" #=> includes all entries whose status field is not set to 'review'
+    query: "@book[year <= 1900 && author ^= Poe]" #=> Books published before 1900 where the author matches /Poe/
     query: "!@book" #=> includes all entries with a type other than book
 
 Please note that some of these queries require BibTeX-Ruby 2.3.0 or
