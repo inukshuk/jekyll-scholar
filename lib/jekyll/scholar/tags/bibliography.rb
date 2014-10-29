@@ -39,15 +39,11 @@ module Jekyll
               config['details_link'], :class => config['details_link_class'])
           end
 
-          content_tag :li, reference
+          content_tag config['bibliography_item_tag'], reference
         }.join("\n")
 
-        if config['numbering'] == false
-          content_tag :ul, bibliography, :class => config['bibliography_class']
-        else
-         content_tag :ol, bibliography, :class => config['bibliography_class']
-        end
-      
+        content_tag config['bibliography_list_tag'], bibliography, :class => config['bibliography_class']
+        
       end
     end
 
