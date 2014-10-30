@@ -39,10 +39,11 @@ module Jekyll
               config['details_link'], :class => config['details_link_class'])
           end
 
-          content_tag :li, reference
+          content_tag config['bibliography_item_tag'], reference
         }.join("\n")
 
-        content_tag :ol, bibliography, :class => config['bibliography_class']
+        content_tag config['bibliography_list_tag'], bibliography, :class => config['bibliography_class']
+        
       end
     end
 
