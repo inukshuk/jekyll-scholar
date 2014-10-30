@@ -6,6 +6,8 @@ module Jekyll
 
       'sort_by'               => 'none',
       'order'                 => 'ascending',
+      'bibliography_list_tag' => 'ol',
+      'bibliography_item_tag' => 'li',
 
       'source'                => './_bibliography',
       'bibliography'          => 'references.bib',
