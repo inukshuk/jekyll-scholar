@@ -3,3 +3,4 @@ demo
 **/*.swp
 .bundle
 coverage
+.ruby-version
