@@ -38,6 +38,10 @@ module Jekyll
             @cited, @skip_sort = true, true
           end
 
+          opts.on('-A', '--suppress_author') do |cited|
+            @suppress_author = true
+          end
+
           opts.on('-f', '--file FILE') do |file|
             @bibtex_files ||= []
             @bibtex_files << file
@@ -72,7 +76,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTslm]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|max|))/)
+        argv = arguments.split(/(\B-[cCfqptTslmA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -140,6 +144,10 @@ module Jekyll
         sorted = unsorted.sort_by { |e| e[config['sort_by']].to_s }
         sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
         sorted
+      end
+
+      def suppress_author?
+        !!@suppress_author
       end
 
       def repository?
@@ -338,6 +346,7 @@ module Jekyll
         CiteProc::CitationItem.new id: entry.id do |c|
           c.data = CiteProc::Item.new entry.to_citeproc
           c.data[:'citation-number'] = citation_number
+          c.data.suppress! 'author' if suppress_author?
         end
       end
 
