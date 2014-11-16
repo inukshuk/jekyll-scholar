@@ -322,7 +322,7 @@ module Jekyll
         renderer.render items.zip(locators).map { |entry, locator|
           cited_keys << entry.key
 
-          item = citation_item_for entry, citation_number
+          item = citation_item_for entry, citation_number(entry.key)
           item.locator = locator
 
           item
@@ -345,10 +345,8 @@ module Jekyll
         context['cited'] ||= []
       end
 
-      def citation_number
-        number = context['citation_number'] || 1
-        context['citation_number'] = number.succ
-        number
+      def citation_number(key)
+        (context['citation_numbers'] ||= {})[key] ||= cited_keys.length
       end
 
       def cite(keys)

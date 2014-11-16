@@ -215,6 +215,36 @@ Feature: Citations
     And the "_site/scholar.html" file should exist
     And I should see "\[1\], \[2\]" in "_site/scholar.html"
 
+  @tags @cite @citation_number
+  Scenario: Multiple citations of the same item using citation numbers
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+      | style        | ieee              |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby %}
+      {% cite ruby %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "\[1\]" in "_site/scholar.html"
+    And I should not see "\[2\]" in "_site/scholar.html"
+
   @tags @cite @variables
   Scenario: A Simple Citation using liquid variables
     Given I have a scholar configuration with:
