@@ -282,6 +282,14 @@ of the items you wish to quote separated by spaces. For example,
 
     <a href="#ruby">(Flanagan &amp; Matsumoto 2008; Shaughnessy 2013)</a>
 
+#### Suppressing author names
+
+Sometimes you want to suppress author names in a citation, because the
+name has already been mentioned in your text; for such cases Jekyll-Scholar
+provides the `--suppress_author` option (short form: `-A`):
+`...as Matz explains {% cite ruby -A -l 42 %}` would produce something
+like: `...as Matz explains (2008, p. 42)`.
+
 #### Page numbers and locators
 
 If you would like to add page numbers to your citation, you can use the
