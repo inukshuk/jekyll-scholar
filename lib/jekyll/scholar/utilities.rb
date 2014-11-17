@@ -329,6 +329,7 @@ module Jekyll
       def render_citation(items)
         renderer.render items.zip(locators).map { |entry, locator|
           cited_keys << entry.key
+          cited_keys.uniq!
 
           item = citation_item_for entry, citation_number(entry.key)
           item.locator = locator
