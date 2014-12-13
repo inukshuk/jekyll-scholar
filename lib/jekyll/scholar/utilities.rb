@@ -141,9 +141,16 @@ module Jekyll
       def sort(unsorted)
         return unsorted if skip_sort?
 
-        sorted = unsorted.sort_by { |e| e[config['sort_by']].to_s }
+        puts unsorted.first.values_at(*sort_keys)
+        sorted = unsorted.sort_by { |e| e.values_at(*sort_keys) }
         sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
         sorted
+      end
+
+      def sort_keys
+        @sort_kyes ||= Array(config['sort_by']).map { |key|
+          key.to_s.split(/\s*,\s*/)
+        }.flatten
       end
 
       def suppress_author?
