@@ -200,10 +200,10 @@ would be a more complex template file:
     {{ reference }}
 
     {% if entry.abstract %}
-    <p>{{ entry.abstract %}</p>
+    <p>{{ entry.abstract }}</p>
     {% endif %}
 
-    <pre>{{ entry.bibtex %}</pre>
+    <pre>{{ entry.bibtex }}</pre>
 
 You can also override the default bibliography template, by passing the
 `--template` or `-T` option parameter to the bibliography tag.
