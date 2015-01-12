@@ -16,10 +16,6 @@ require 'test/unit'
 
 require 'jekyll/scholar'
 
-World do
-  include Test::Unit::Assertions
-end
-
 TEST_DIR = File.join('/', 'tmp', 'jekyll')
 
 def run_jekyll(options = {})
