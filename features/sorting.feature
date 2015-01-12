@@ -191,7 +191,7 @@ Feature: Sorting BibTeX Bibliographies
     Then "Ruby Programming" should come before "Smalltalk" in "_site/scholar.html"
     And I should not see "<i>Ruby Not Cited</i>" in "_site/scholar.html"
 
-  @tags @sorting @wip
+  @tags @sorting
   Scenario: Sort By Year And Month
     Given I have a scholar configuration with:
       | key     | value       |

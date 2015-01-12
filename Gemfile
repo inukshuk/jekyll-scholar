@@ -2,7 +2,13 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'test-unit' if RUBY_VERSION.start_with?('2.2')
+
+  if RUBY_VERSION.start_with?('2.2')
+    gem 'test-unit'
+  else
+    gem 'minitest', '< 5.0'
+  end
+
   gem 'rake'
   gem 'redgreen', '~> 1.2'
   gem 'shoulda', '~> 3.5'
