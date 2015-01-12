@@ -13,7 +13,7 @@ module Jekyll
       'bibliography'          => 'references.bib',
       'repository'            => nil,
 
-      'bibtex_options'        => { :strip => false },
+      'bibtex_options'        => { :strip => false, :parse_months => true },
       'bibtex_filters'        => [ :latex ],
 
       'replace_strings'       => true,

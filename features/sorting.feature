@@ -200,17 +200,17 @@ Feature: Sorting BibTeX Bibliographies
     And I have a file "_bibliography/references.bib":
       """
       @book{ruby1,
-        title     = {December},
+        title     = {December 08},
         year      = {2008},
         month     = dec
       }
       @book{ruby2,
-        title     = {March},
+        title     = {March 08},
         year      = {2008},
         month     = mar
       }
       @book{ruby3,
-        title     = {August},
+        title     = {August 07},
         year      = {2007},
         month     = aug
       }
@@ -224,5 +224,5 @@ Feature: Sorting BibTeX Bibliographies
     When I run jekyll
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
-    Then "August" should come before "March" in "_site/scholar.html"
-#    And "March" should come before "December" in "_site/scholar.html"
+    Then "August 07" should come before "March 08" in "_site/scholar.html"
+    And "March 08" should come before "December 08" in "_site/scholar.html"

@@ -141,16 +141,18 @@ module Jekyll
       def sort(unsorted)
         return unsorted if skip_sort?
 
-        puts unsorted.first.values_at(*sort_keys)
-        sorted = unsorted.sort_by { |e| e.values_at(*sort_keys) }
+        sorted = unsorted.sort_by { |e| e.values_at(*sort_keys).map(&:v) }
         sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
         sorted
       end
 
       def sort_keys
-        @sort_kyes ||= Array(config['sort_by']).map { |key|
-          key.to_s.split(/\s*,\s*/)
-        }.flatten
+        return @sort_keys unless @sort_keys.nil?
+
+        @sort_keys = Array(config['sort_by'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+          .map { |key| key == 'month' ? 'month_numeric' : key }
       end
 
       def suppress_author?
