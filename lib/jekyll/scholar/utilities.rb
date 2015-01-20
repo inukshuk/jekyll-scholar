@@ -275,12 +275,16 @@ module Jekyll
         e['key'] = entry.key
         e['type'] = entry.type.to_s
 
-        if entry.field?(:abstract)
-          tmp = entry.dup
-          tmp.delete :abstract
-          e['bibtex'] = tmp.to_s
-        else
+        if entry.field_names(config['bibtex_skip_fields']).empty?
           e['bibtex'] = entry.to_s
+        else
+          tmp = entry.dup
+
+          config['bibtex_skip_fields'].each do |name|
+            tmp.delete name if tmp.field?(name)
+          end
+
+          e['bibtex'] = tmp.to_s
         end
 
         entry.fields.each do |key, value|
@@ -289,6 +293,9 @@ module Jekyll
         end
 
         e
+      end
+
+      def bibtex_skip_fields
       end
 
       def generate_details?
