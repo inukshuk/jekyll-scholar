@@ -320,7 +320,11 @@ module Jekyll
 
         name.gsub!(/[:\s]+/, '_')
 
-        [name, 'html'].join('.')
+        if site.config['permalink'] == 'pretty'
+          name << '/index.html'
+        else
+          name << '.html'
+        end
       end
 
       def repository_link_for(entry, base = base_url)
