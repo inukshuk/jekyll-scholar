@@ -6,7 +6,11 @@ rescue LoadError
 end
 
 begin
-  require 'debugger'
+  if RUBY_VERSION > '2.0'
+    require 'byebug'
+  else
+    require 'debugger'
+  end
 rescue LoadError
   # ignore
 end
