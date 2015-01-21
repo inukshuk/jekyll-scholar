@@ -208,12 +208,22 @@ module Jekyll
           name = config['bibliography']
         end
 
-        # return as is if it is an absolute path
+        # Return as is if it is an absolute path
+        # Improve by using Pathname from stdlib?
         return name if name.start_with?('/') && File.exists?(name)
 
-        p = File.join(config['source'], name)
-        p << '.bib' unless File.exists?(p)
-        p
+        name = File.join scholar_source, name
+        name << '.bib' if File.extname(name).empty? && !File.exists?(name)
+        name
+      end
+
+      def scholar_source
+        source = config['source']
+
+        # Improve by using Pathname from stdlib?
+        return source if source.start_with?('/') && File.exists?(source)
+
+        File.join site.source, source
       end
 
       def reference_tag(entry, index = nil)
