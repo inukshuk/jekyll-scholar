@@ -141,7 +141,10 @@ module Jekyll
       def sort(unsorted)
         return unsorted if skip_sort?
 
-        sorted = unsorted.sort_by { |e| e.values_at(*sort_keys) }
+        sorted = unsorted.sort_by do |e|
+          e.values_at(*sort_keys).map { |v| v.nil? ? BibTeX::Value.new : v }
+        end
+
         sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
         sorted
       end
