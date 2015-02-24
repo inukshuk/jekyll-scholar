@@ -321,7 +321,7 @@ module Jekyll
         name.gsub!(/[:\s]+/, '_')
 
         if site.config['permalink'] == 'pretty'
-          name << '/index.html'
+          name << 'index/index.html'
         else
           name << '.html'
         end
