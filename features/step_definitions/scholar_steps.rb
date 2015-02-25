@@ -9,17 +9,8 @@ Given(/^I have a (?:page|file) "([^"]*)":$/) do |file, string|
   end
 end
 
-Given(/^I have a configuration file with "([^\"]*)" set to:$/) do |key, table|
-  File.open('_config.yml', 'w') do |f|
-    f.write("#{key}:\n")
-    table.hashes.each do |row|
-      f.write("  #{row["key"]}: #{row["value"]}\n")
-    end
-  end
-end
-
 Given(/^I have a scholar configuration with:$/) do |table|
-  File.open('_config.yml', 'w') do |f|
+  File.open('_config.yml', 'a') do |f|
     f.write("scholar:\n")
     table.hashes.each do |row|
       f.write("  #{row["key"]}: #{row["value"]}\n")

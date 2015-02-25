@@ -20,14 +20,14 @@ Given(/^I have an? "(.*)" file that contains "(.*)"$/) do |file, text|
 end
 
 Given(/^I have a configuration file with "(.*)" set to "(.*)"$/) do |key, value|
-  File.open('_config.yml', 'w') do |f|
+  File.open('_config.yml', 'a') do |f|
     f.write("#{key}: #{value}\n")
     f.close
   end
 end
 
 Given(/^I have a configuration file with:$/) do |table|
-  File.open('_config.yml', 'w') do |f|
+  File.open('_config.yml', 'a') do |f|
     table.hashes.each do |row|
       f.write("#{row["key"]}: #{row["value"]}\n")
     end

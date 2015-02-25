@@ -63,7 +63,7 @@ Feature: BibTeX
     And the "_site/references.html" file should exist
     And I should see "Look, an umlaut: ü!" in "_site/references.html"
 
-  @tags @bibtex @wip
+  @tags @bibtex
   Scenario: Embedded BibTeX
     Given I have a scholar configuration with:
       | key   | value |
