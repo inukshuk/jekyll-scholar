@@ -142,7 +142,7 @@ Feature: Details
     And the "_site/bibliography/ruby.html" file should exist
     And I should see "<a[^>]+href=\"/bibliography/ruby.html\">" in "_site/scholar.html"
 
-  @tags @details @wip
+  @tags @details
   Scenario: Links to Detail Pages Work With Pretty URLs
     Given I have a configuration file with "permalink" set to "pretty"
     And I have a scholar configuration with:
