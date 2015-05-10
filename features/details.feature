@@ -184,3 +184,27 @@ Feature: Details
     And the "_site/scholar/index.html" file should exist
     And I should see "<a[^>]+href=\"/bibliography/ruby/index.html\">" in "_site/scholar/index.html"
     And the "_site/bibliography/ruby/index.html" file should exist
+
+  @generators @parse_months @wip
+  Scenario: Months are parsed by default
+    Given I have a scholar configuration with:
+      | key            | value             |
+      | details_layout | details.html      |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{august,
+        month     = {August}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      {{ page.entry.bibtex }}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/bibliography/august.html" file should exist
+    And I should see "month = aug" in "_site/bibliography/august.html"
