@@ -95,7 +95,8 @@ module Jekyll
       end
 
       def bibtex_options
-        config['bibtex_options'] ||= {}
+        @bibtex_options ||=
+          (config['bibtex_options'] || {}).symbolize_keys
       end
 
       def bibtex_filters
