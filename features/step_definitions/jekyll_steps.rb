@@ -43,12 +43,18 @@ Then(/^the (.*) directory should exist$/) do |dir|
   assert File.directory?(dir)
 end
 
-Then(/^I should see "(.*)" in "(.*)"$/) do |text, file|
-  assert_match Regexp.new(text), File.open(file).readlines.join
+Then(/^I should see "(.*)" in "(.*)"$/) do |pattern, file|
+  text = File.open(file).readlines.join
+
+  assert_match Regexp.new(pattern), text,
+    "Pattern /#{pattern}/ not found in: #{text}"
 end
 
-Then(/^I should not see "(.*)" in "(.*)"$/) do |text, file|
-  assert !File.open(file).readlines.join.match(Regexp.new(text))
+Then(/^I should not see "(.*)" in "(.*)"$/) do |pattern, file|
+  text = File.open(file).readlines.join
+
+  assert !text.match(Regexp.new(pattern)),
+    "Did not exptect /#{pattern}/ in: #{text}"
 end
 
 
