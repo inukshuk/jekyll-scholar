@@ -38,6 +38,40 @@ Feature: BibTeX
     And I should see "Programming Ruby" in "_site/scholar.html"
     And I should not see "The Ruby Programming Language" in "_site/scholar.html"
 
+  @tags @filters
+  Scenario: Jekyll Filters
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+      | bibliography_template | template |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+    @book{ruby:2008-Foo,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/template.html":
+      """
+      ---
+      ---
+      {{ entry.key | slugify }}
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "ruby-2008-foo" in "_site/scholar.html"
+
   @tags @max
   Scenario: Limit number of entries
     Given I have a scholar configuration with:
