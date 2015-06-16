@@ -14,7 +14,7 @@ module Jekyll
     # #site readers
     module Utilities
 
-      attr_reader :config, :site, :context, :prefix, :text, :max
+      attr_reader :config, :site, :context, :prefix, :text, :offset, :max
 
       def split_arguments(arguments)
 
@@ -27,6 +27,8 @@ module Jekyll
       end
 
       def optparse(arguments)
+        @offset = 0   # set default
+        @max = -1     # set default
         return if arguments.nil? || arguments.empty?
 
         parser = OptionParser.new do |opts|
@@ -63,8 +65,12 @@ module Jekyll
             locators << locator
           end
 
+          opts.on('-o', '--offset OFFSET') do |offset|
+            @offset = offset.to_i
+          end
+
           opts.on('-m', '--max MAX') do |max|
-            @max = max
+            @max = max.to_i
           end
 
           opts.on('-s', '--style STYLE') do |style|
@@ -76,7 +82,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTslmA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqptTslomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -133,10 +139,6 @@ module Jekyll
 
       def entries
         sort bibliography[query || config['query']]
-      end
-
-      def limit_entries?
-        !max.nil?
       end
 
       def sort(unsorted)

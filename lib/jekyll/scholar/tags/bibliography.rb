@@ -29,7 +29,11 @@ module Jekyll
           end
         end
 
-        items = items.take(max.to_i) if limit_entries?
+        # this also allows for --max {...,-2,-1,0,1,...}
+        if max > -1
+            @max = offset + max - 1
+        end
+        items = items[offset..max]
 
         bibliography = items.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
