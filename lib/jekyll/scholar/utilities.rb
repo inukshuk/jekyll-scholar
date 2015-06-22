@@ -27,8 +27,6 @@ module Jekyll
       end
 
       def optparse(arguments)
-        @offset = 0   # set default
-        @max = -1     # set default
         return if arguments.nil? || arguments.empty?
 
         parser = OptionParser.new do |opts|
@@ -139,6 +137,18 @@ module Jekyll
 
       def entries
         sort bibliography[query || config['query']]
+      end
+
+      def offset
+        @offset ||= 0
+      end
+
+      def max
+        @max.nil? ? -1 : @max + offset - 1
+      end
+
+      def limit_entries?
+        !offset.nil? || !max.nil?
       end
 
       def sort(unsorted)
