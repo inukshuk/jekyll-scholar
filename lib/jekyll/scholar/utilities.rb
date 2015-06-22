@@ -255,6 +255,7 @@ module Jekyll
 
       def liquid_template
         return @liquid_template if @liquid_template
+        Liquid::Template.register_filter(Jekyll::Filters)
 
         tmp = bibliography_template
 
