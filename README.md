@@ -18,6 +18,10 @@ Installation
 
     $ [sudo] gem install jekyll-scholar
 
+Or add it to your `Gemfile`:
+
+    gem 'jekyll-scholar'
+
 Usage
 -----
 
