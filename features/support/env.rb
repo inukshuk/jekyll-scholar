@@ -15,7 +15,6 @@ rescue LoadError
   # ignore
 end
 
-require 'rr'
 require 'test/unit'
 
 require 'jekyll/scholar'

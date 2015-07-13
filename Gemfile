@@ -12,7 +12,6 @@ group :development do
   gem 'rake'
   gem 'redgreen', '~> 1.2'
   gem 'shoulda', '~> 3.5'
-  gem 'rr', '~> 1.1'
   gem 'cucumber', '1.3.11'
   gem 'redcarpet'
   gem 'launchy', '~> 2.3'
