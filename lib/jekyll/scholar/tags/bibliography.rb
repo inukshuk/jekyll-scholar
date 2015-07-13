@@ -27,6 +27,9 @@ module Jekyll
               cited_references.include? e.key
             end
           end
+
+          # See #90
+          cited_keys.clear
         end
 
         items = items.take(max.to_i) if limit_entries?
@@ -43,7 +46,7 @@ module Jekyll
         }.join("\n")
 
         content_tag config['bibliography_list_tag'], bibliography, :class => config['bibliography_class']
-        
+
       end
     end
 
