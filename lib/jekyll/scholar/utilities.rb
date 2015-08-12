@@ -444,7 +444,7 @@ module Jekyll
         # We need to do this every time, to support for loops,
         # where the context can change for each invocation.
         Array(@keys).map do |key|
-          context.send(:resolve, key) || key
+          context[key] || key
         end
       end
 
@@ -452,7 +452,7 @@ module Jekyll
         return unless string
 
         string.gsub(/{{\s*([\w\.]+)\s*}}/) do |match|
-          context.send(:resolve, $1) || match
+          context[$1] || match
         end
       end
 
