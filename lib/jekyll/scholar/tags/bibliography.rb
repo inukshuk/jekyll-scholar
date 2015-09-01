@@ -15,6 +15,16 @@ module Jekyll
       def render(context)
         set_context_to context
 
+        # Add bibtex files to dependency tree
+        if context.registers[:page] and context.registers[:page].has_key? "path"
+          bibtex_paths.each do |bibtex_path|
+            site.regenerator.add_dependency(
+              site.in_source_dir(context.registers[:page]["path"]),
+              bibtex_path
+            )
+          end
+        end
+
         items = entries
 
         if cited_only?
