@@ -272,16 +272,22 @@ module Jekyll
       def bibliography_tag(entry, index)
         return missing_reference unless entry
 
-        liquid_template.render({
+        liquid_template.render(
+          reference_data(entry,index).merge({
+            'index' => index,
+            'details' => details_link_for(entry)
+        }))
+      end
+
+      def reference_data(entry, index = nil)
+        {
           'entry' => liquidify(entry),
           'reference' => reference_tag(entry, index),
           'key' => entry.key,
           'type' => entry.type.to_s,
           'link' => repository_link_for(entry),
-          'links' => repository_links_for(entry),
-          'index' => index,
-          'details' => details_link_for(entry)
-        })
+          'links' => repository_links_for(entry)
+        }
       end
 
       def liquidify(entry)
@@ -323,7 +329,7 @@ module Jekyll
         name.gsub!(/[:\s]+/, '_')
 
         if site.config['permalink'] == 'pretty'
-          name << '/index.html'
+          name << '/'
         else
           name << '.html'
         end

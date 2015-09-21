@@ -182,7 +182,7 @@ Feature: Details
     Then the _site directory should exist
     And I should see "pretty" in "_config.yml"
     And the "_site/scholar/index.html" file should exist
-    And I should see "<a[^>]+href=\"/bibliography/ruby/index.html\">" in "_site/scholar/index.html"
+    And I should see "<a[^>]+href=\"/bibliography/ruby/\">" in "_site/scholar/index.html"
     And the "_site/bibliography/ruby/index.html" file should exist
 
   @generators @parse_months
