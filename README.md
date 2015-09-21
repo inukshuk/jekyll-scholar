@@ -108,7 +108,7 @@ It would be converted to `bibliography.html` with the following content:
 This makes it very easy for you to add your bibliography to your Jekyll-powered
 blog or website.
 
-If your using other converters to generate your site, don't worry, you can
+If you are using other converters to generate your site, don't worry, you can
 still generate bibliographies using the `bibliography` tag. In your site
 or blog post, simply call:
 
