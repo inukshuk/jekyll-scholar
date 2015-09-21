@@ -42,7 +42,7 @@ module Jekyll
           cited_keys.clear
         end
 
-        items = items.take(max.to_i) if limit_entries?
+        items = items[offset..max] if limit_entries?
 
         bibliography = items.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
