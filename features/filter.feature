@@ -140,8 +140,8 @@ Feature: BibTeX
       | key    | value             |
       | source | ./_bibliography   |
     And I have the following BibTeX filters:
-      | latex    |
       | markdown |
+      | latex    |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -164,3 +164,33 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "from \[https://pragprog.com\]\(https://pragprog.com\)" in "_site/scholar.html"
+
+  @tags @urls
+  Scenario: LaTeX links as Markdown links
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | markdown |
+      | latex    |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{pickaxe,
+        title     = {Programming Ruby 1.9: The Pragmatic Programmer's Guide},
+        author    = {Thomas, Dave and Fowler, Chad and Hunt, Andy},
+        year      = {2009},
+        edition   = 3,
+        publisher = {\href\{https://pragprog.com\}\{Pragmatic Bookshelf\}},
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "\[Pragmatic Bookshelf\]\(https://pragprog.com\)" in "_site/scholar.html"
