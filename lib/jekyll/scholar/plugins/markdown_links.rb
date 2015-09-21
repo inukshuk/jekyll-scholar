@@ -13,8 +13,6 @@ module Jekyll
     class Markdown < BibTeX::Filter
       def apply(value)
         value.to_s.gsub(URL_PATTERN) {
-          puts $1
-          puts $2
           if $1
             "[#{$2}](#{$1})"
           else
