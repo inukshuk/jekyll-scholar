@@ -5,7 +5,9 @@ module Jekyll
     # They should be thread safe as long as they are
     # treated as being read-only.
     STYLES = Hash.new do |h, k|
-      h[k.to_s] = CSL::Style.load k
+      style = CSL::Style.load k
+      style = style.independent_parent unless style.independent?
+      h[k.to_s] = style
     end
 
 
