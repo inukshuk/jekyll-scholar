@@ -115,12 +115,12 @@ Feature: BibTeX
     And the "_site/scholar.html" file should exist
     And I should see "<i>The Ruby Programming Language</i>" in "_site/scholar.html"
 
-  @tags @bibliography @config
+  @tags @bibliography @config @template
   Scenario: Simple Bibliography With Custom Template
     Given I have a scholar configuration with:
       | key                   | value                                         |
       | source                | ./_bibliography                               |
-      | bibliography_template | <abbr>{{index}} {{entry.type}} [{{key}}]</abbr>{{reference}} |
+      | bibliography_template | <abbr>{{index}} {{entry.type}} [{{key}}]</abbr>{{entry.author_1_last}} |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -140,8 +140,7 @@ Feature: BibTeX
     When I run jekyll
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
-    And I should see "<i>The Ruby Programming Language</i>" in "_site/scholar.html"
-    And I should see "<abbr>1 book \[ruby\]</abbr><span" in "_site/scholar.html"
+    And I should see "<abbr>1 book \[ruby\]</abbr>Matsumoto" in "_site/scholar.html"
 
   @tags @filter
   Scenario: Filtered Bibliography Loaded From Default Directory

@@ -325,6 +325,14 @@ module Jekyll
         entry.fields.each do |key, value|
           value = value.convert(*bibtex_filters) unless bibtex_filters.empty?
           e[key.to_s] = value.to_s
+
+          if value.is_a?(BibTeX::Names)
+            value.each.with_index do |name, idx|
+              name.each_pair do |k, v|
+                e["#{key}_#{idx}_#{k}"] = v.to_s
+              end
+            end
+          end
         end
 
         e
