@@ -55,6 +55,8 @@ default configuration is as follows:
 
       replace_strings: true
       join_strings:    true
+      
+      use_raw_bibtex_entry: false
 
       details_dir:    bibliography
       details_layout: bibtex.html
@@ -76,6 +78,10 @@ The `source` option indicates where your bibliographies are stored;
 `bibliography` is the name of your default bibliography. For best results,
 please ensure that your Bibliography is encoded as ASCII or UTF-8.
 
+The `use_raw_bibtex_entry` option will disable parsing of Liquid tags that 
+are embedded in the Bibtex fields. This option provides a way to circumvent 
+the problem that the double braces functionality of BibTex is accidentally 
+parsed by Liquid, while it was intended to keep the exact capitalization style.
 
 ### Bibliographies
 

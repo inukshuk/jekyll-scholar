@@ -80,13 +80,9 @@ module Jekyll
           opts.on('-T', '--template TEMPLATE') do |template|
             @bibliography_template = template
           end
-
-          opts.on('-R', '--raw_bibtex') do |raw_bibtex|
-            @raw_bibtex = raw_bibtex
-          end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTslomAR]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|offset|max|suppress_author|raw_bibtex|))/)
+        argv = arguments.split(/(\B-[cCfqptTslomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -182,7 +178,7 @@ module Jekyll
       end
 
       def raw_bibtex?
-        !!@raw_bibtex
+        config['use_raw_bibtex_entry']
       end
 
       def repository?
