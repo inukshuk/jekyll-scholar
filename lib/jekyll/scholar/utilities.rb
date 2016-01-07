@@ -287,10 +287,17 @@ module Jekyll
         return missing_reference unless entry
 
         liquid_template.render(
-          reference_data(entry,index).merge({
-            'index' => index,
-            'details' => details_link_for(entry)
-        }))
+          reference_data(entry,index)
+            .merge(site.site_payload)
+            .merge({
+              'index' => index,
+              'details' => details_link_for(entry)
+            }),
+          {
+            :registers => { :site => site },
+            :filters => [Jekyll::Filters]
+          }
+        )
       end
 
       def reference_data(entry, index = nil)
