@@ -209,7 +209,7 @@ Feature: Details
     And the "_site/bibliography/august.html" file should exist
     And I should see "month = aug" in "_site/bibliography/august.html"
 
-  @generators @parse_months @wip
+  @generators @parse_months
   Scenario: Month parsing can be turned off
     Given I have a scholar configuration with:
       | key            | value             |

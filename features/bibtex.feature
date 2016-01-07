@@ -270,3 +270,26 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "<i>The Ruby Programming Language</i>. O’Reilly Media, 2008" in "_site/scholar.html"
+
+  @tags @bibliography @config @template
+  Scenario: Raw bibtex template
+    Given I have a scholar configuration with:
+      | key                   | value              |
+      | bibliography_template | "{{entry.bibtex}}" |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references --raw_bibtex %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "{%raw%}@book" in "_site/scholar.html"

@@ -70,7 +70,6 @@ Feature: Cited-only Bibliographies
     And I should not see "<i>The Ruby Programming Language</i>" in "_site/scholar.html"
     And I should not see "<i>Smalltalk Best Practice Patterns</i>" in "_site/scholar.html"
 
-  @wip
   Scenario: Cited items with prefix
     Given I have a scholar configuration with:
       | key    | value             |
