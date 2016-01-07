@@ -41,7 +41,7 @@ Feature: Citations
     And I have a file "_bibliography/references.bib":
       """
       @book{a,
-        title     = {{"b" | prepend: "a"}}
+        title     = {{'b' | prepend: 'a'}}
       }
       """
     And I have a "_layouts" directory  
@@ -50,12 +50,12 @@ Feature: Citations
       ---
       ---
       {{ page.entry.bibtex }}
-      """      
+      """
     When I run jekyll
     Then the _site directory should exist
     
     And the "_site/bibliography/a.html" file should exist
-    And I should see """{{"b" prepend: "a"}}""" in "_site/bibliography/a.html"
+    And I should see "{{'b' | prepend: 'a'}}" in "_site/bibliography/a.html"
     And I should not see "ab" in "_site/bibliography/a.html"
     
   @tags @bibliography @config @template @cite_details
@@ -69,7 +69,7 @@ Feature: Citations
     And I have a file "_bibliography/references.bib":
       """
       @book{a,
-        title     = {{"b" | prepend: "a"}}
+        title     = {{'b' | prepend: 'a'}}
       }
       """
     And I have a "_layouts" directory  
@@ -83,7 +83,7 @@ Feature: Citations
     Then the _site directory should exist
     
     And the "_site/bibliography/a.html" file should exist
-    And I should not see """{{"b" prepend: "a"}}""" in "_site/bibliography/a.html"
+    And I should not see "{{'b' | prepend: 'a'}}" in "_site/bibliography/a.html"
     And I should see "ab" in "_site/bibliography/a.html"
     
   @tags @cite_details
