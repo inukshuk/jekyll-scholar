@@ -276,6 +276,7 @@ Feature: BibTeX
     Given I have a scholar configuration with:
       | key                   | value              |
       | bibliography_template | "{{entry.bibtex}}" |
+      | use_raw_bibtex_entry  | true               |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -287,7 +288,7 @@ Feature: BibTeX
       """
       ---
       ---
-      {% bibliography -f references --raw_bibtex %}
+      {% bibliography -f references %}
       """
     When I run jekyll
     Then the _site directory should exist
