@@ -122,7 +122,7 @@ module Jekyll
 
       def bibliography
         unless @bibliography
-          @bibliography = BibTeX.parse(
+          @bibliography = BibTeX::Bibliography.parse(
             bibtex_paths.reduce('') { |s, p| s << IO.read(p) },
             bibtex_options
           )
