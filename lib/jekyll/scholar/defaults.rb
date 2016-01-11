@@ -1,39 +1,59 @@
 module Jekyll
   class Scholar
     @defaults = {
-      'style'                 => 'apa',
-      'locale'                => 'en',
+      'style'                  => 'apa',
+      'locale'                 => 'en',
 
-      'sort_by'               => 'none',
-      'order'                 => 'ascending',
-      'bibliography_list_tag' => 'ol',
-      'bibliography_item_tag' => 'li',
+      'sort_by'                => 'none',
+      'order'                  => 'ascending',
+      'group_by'               => 'none',
+      'group_order'            => 'ascending',
+      'bibliography_group_tag' => 'h2,h3,h4,h5',
+      'bibliography_list_tag'  => 'ol',
+      'bibliography_item_tag'  => 'li',
 
-      'source'                => './_bibliography',
-      'bibliography'          => 'references.bib',
-      'repository'            => nil,
+      'source'                 => './_bibliography',
+      'bibliography'           => 'references.bib',
+      'repository'             => nil,
 
-      'bibtex_options'        => { :strip => false, :parse_months => true },
-      'bibtex_filters'        => [ :latex ],
-      'bibtex_skip_fields'    => [ :abstract, :month_numeric ],
+      'bibtex_options'         => { :strip => false, :parse_months => true },
+      'bibtex_filters'         => [ :latex ],
+      'bibtex_skip_fields'     => [ :abstract, :month_numeric ],
 
-      'replace_strings'       => true,
-      'join_strings'          => true,
+      'replace_strings'        => true,
+      'join_strings'           => true,
 
-      'details_dir'           => 'bibliography',
-      'details_layout'        => 'bibtex.html',
-      'details_link'          => 'Details',
-      'use_raw_bibtex_entry'  => false,
+      'details_dir'            => 'bibliography',
+      'details_layout'         => 'bibtex.html',
+      'details_link'           => 'Details',
+      'use_raw_bibtex_entry'   => false,
 
-      'bibliography_class'    => 'bibliography',
-      'bibliography_template' => '{{reference}}',
+      'bibliography_class'     => 'bibliography',
+      'bibliography_template'  => '{{reference}}',
 
-      'reference_tagname'     => 'span',
-      'missing_reference'     => '(missing reference)',
+      'reference_tagname'      => 'span',
+      'missing_reference'      => '(missing reference)',
 
-      'details_link_class'    => 'details',
+      'details_link_class'     => 'details',
 
-      'query'                 => '@*'
+      'query'                  => '@*',
+
+      'type_names' => {
+        'article' => 'Journal Articles',
+        'book' => 'Books',
+        'incollection' => 'Book Chapters',
+        'inproceedings' => 'Conference Articles',
+        'thesis' => 'Theses',
+        'manual' => 'Manuals',
+        'techreport' => 'Technical Reports',
+        'misc' => 'Miscellaneous',
+        'unpublished' => 'Unpublished',
+      },
+      'type_aliases' => {
+        'phdthesis' => 'thesis',
+        'mastersthesis' => 'thesis',
+      },
+      'type_order' => [],
 
     }.freeze
 

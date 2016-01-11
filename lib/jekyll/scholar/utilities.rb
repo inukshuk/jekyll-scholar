@@ -156,11 +156,20 @@ module Jekyll
       def sort(unsorted)
         return unsorted if skip_sort?
 
-        sorted = unsorted.sort_by do |e|
-          e.values_at(*sort_keys).map { |v| v.nil? ? BibTeX::Value.new : v }
+        sorted = unsorted.sort do |e1, e2|
+          sort_keys
+            .map.with_index do |key, idx|
+              v1 = e1[key].nil? ? BibTeX::Value.new : e1[key]
+              v2 = e2[key].nil? ? BibTeX::Value.new : e2[key]
+              if (sort_order[idx] || sort_order.last) =~ /^(desc|reverse)/i
+                v2 <=> v1
+              else
+                v1 <=> v2
+              end
+            end
+            .find { |c| c != 0 } || 0
         end
-
-        sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
+ 
         sorted
       end
 
@@ -173,6 +182,133 @@ module Jekyll
           .map { |key| key == 'month' ? 'month_numeric' : key }
       end
 
+      def sort_order
+        return @sort_order unless @sort_order.nil?
+
+        @sort_order = Array(config['order'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+
+      def group?
+        config['group_by'] != 'none'
+      end
+ 
+      def group(ungrouped)
+        def grouper(items,keys,order)
+          groups = items
+            .group_by do |item|
+              group_value(keys.first,item)
+            end
+            .sort do |e1, e2|
+              v1 = group_sort_value(keys.first,e1[0])
+              v2 = group_sort_value(keys.first,e2[0])
+              if order.first =~ /^(desc|reverse)/i
+                v2 <=> v1
+              else
+                v1 <=> v2
+              end
+            end
+            .to_h
+          if keys.count == 1
+            groups
+          else
+            groups.merge(groups) do |key,items|
+              grouper(items,keys.drop(1), order.length > 1 ? order.drop(1) : order)
+            end
+          end
+        end
+        grouper(ungrouped,group_keys,group_order)
+      end
+ 
+      def group_keys
+        return @group_keys unless @group_keys.nil?
+
+        @group_keys = Array(config['group_by'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+          .map { |key| key == 'month' ? 'month_numeric' : key }
+      end
+ 
+      def group_order
+        return @group_order unless @group_order.nil?
+
+        @group_order = Array(config['group_order'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+ 
+      def group_sort_value(key,value)
+        case key
+        when 'type'
+          config['type_order'].find_index(value) || 99
+        else
+          value
+        end
+      end
+      
+      def group_value(key,item)
+        case key
+        when 'type'
+          config['type_aliases'][item.type.to_s] || item.type.to_s
+        else
+          value = item[key]
+          if value.numeric?
+            value.to_i
+          elsif value.date?
+            value.to_date
+          else
+            value.to_s
+          end
+        end
+      end
+
+      def group_tags
+        return @group_tags unless @group_tags.nil?
+
+        @group_tags = Array(config['bibliography_group_tag'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+ 
+      def group_name(key,value)
+        case key
+        when 'type'
+          config['type_names'][value] || value.to_s
+        when 'month_numeric'
+          case value
+          when 1
+            'January'
+          when 2
+            'February'
+          when 3
+            'March'
+          when 4
+            'April'
+          when 5
+            'May'
+          when 6
+            'June'
+          when 7
+            'July'
+          when 8
+            'August'
+          when 9
+            'September'
+          when 10
+            'October'
+          when 11
+            'November'
+          when 12
+            'December'
+          else
+            'Unknown'
+          end
+        else
+          value.to_s
+        end
+      end
+      
       def suppress_author?
         !!@suppress_author
       end
@@ -399,8 +535,10 @@ module Jekyll
         config['details_dir']
       end
 
-      def renderer
-        @renderer ||= CiteProc::Ruby::Renderer.new :format => 'html',
+      def renderer(force = false)
+        return @renderer if @renderer && !force
+          
+        @renderer = CiteProc::Ruby::Renderer.new :format => 'html',
           :style => style, :locale => config['locale']
       end
 
