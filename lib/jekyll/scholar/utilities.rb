@@ -282,7 +282,7 @@ module Jekyll
         end
       end
       
-      def month_name(month):
+      def month_name(month)
         case month
         when 1
           'January'
@@ -311,6 +311,7 @@ module Jekyll
         else
           'Unknown'
         end
+      end
 
       def suppress_author?
         !!@suppress_author
