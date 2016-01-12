@@ -54,23 +54,30 @@ module Jekyll
       end
 
       def render_groups(groups)
-        def group_renderer(groupsOrItems,keys,tags)
+        def group_renderer(groupsOrItems,keys,order,tags)
           if keys.count == 0
             renderer(force = true)
             render_items(groupsOrItems)
           else
             groupsOrItems
-              .map do |keyvalue,value|
+              .sort do |e1,e2|
+                if (order.first || group_order.last) =~ /^(desc|reverse)/i
+                  group_compare(keys.first,e2[0],e1[0])
+                else
+                  group_compare(keys.first,e1[0],e2[0])
+                end
+              end
+              .map do |e|
                 bibhead = content_tag(tags.first || group_tags.last,
-                                      group_name(keys.first, keyvalue),
+                                      group_name(keys.first, e[0]),
                                       :class => config['bibliography_class'])
-                bibentries = group_renderer(value, keys.drop(1), tags.drop(1))
+                bibentries = group_renderer(e[1], keys.drop(1), order.drop(1), tags.drop(1))
                 bibhead + "\n" + bibentries
               end
               .join("\n")
           end
         end
-        group_renderer(groups,group_keys,group_tags)
+        group_renderer(groups,group_keys,group_order,group_tags)
       end
       
       def render_items(items)

@@ -201,14 +201,6 @@ module Jekyll
             .group_by do |item|
               group_value(keys.first,item)
             end
-            .sort do |e1, e2|
-              if (order.first || group_order.last) =~ /^(desc|reverse)/i
-                group_compare(keys.first,e2[0],e1[0])
-              else
-                group_compare(keys.first,e1[0],e2[0])
-              end
-            end
-            .to_h
           if keys.count == 1
             groups
           else
