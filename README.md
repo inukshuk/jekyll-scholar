@@ -24,6 +24,20 @@ Or add it to your `Gemfile`:
 
     gem 'jekyll-scholar'
 
+### Github Pages
+    
+Note that it is not possible to use this plugin with the 
+  [default Github pages workflow](https://help.github.com/articles/using-jekyll-with-pages/). 
+Github does not allow any but a few select plugins to run for security reasons, 
+and Jekyll-Scholar is not among them. 
+You will have to generate your site locally and push the results to the `master` resp. `gh-pages` 
+branch of your site repository.
+You can keep sources, configuration and plugins in a separate branch; see e.g.
+  [here](http://davidensinger.com/2013/07/automating-jekyll-deployment-to-github-pages-with-rake/)
+for details.
+
+    
+
 Usage
 -----
 
@@ -66,8 +80,11 @@ default configuration is as follows:
 
 You can use any style that ships with
 [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g.,
-apa, mla, chicago-fullnote-bibliography), or else you can add a link
-to any CSL style (e.g., you could link to any of the styles available at
+apa, mla, chicago-fullnote-bibliography) which is usually the filename as seen
+  [here](https://github.com/citation-style-language/styles)
+sans the `.csl` ending; note that you have to use `dependent/style` if you want
+to use one from that directory.
+Alternatively you can add a link to any CSL style (e.g., you could link to any of the styles available at
 the official [CSL style repository](https://github.com/citation-style-language/styles)).
 
 The `locale` settings defines what language to use when formatting
