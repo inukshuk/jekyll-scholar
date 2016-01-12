@@ -38,6 +38,11 @@ module Jekyll
             details.write(site.dest)
 
             site.pages << details
+
+            site.regenerator.add_dependency(
+              site.in_source_dir(details.path),
+              bibtex_path
+            )
           end
 
         end
