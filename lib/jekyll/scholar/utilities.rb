@@ -202,7 +202,7 @@ module Jekyll
               group_value(keys.first,item)
             end
             .sort do |e1, e2|
-              if order.first =~ /^(desc|reverse)/i
+              if (order.first || group_order.last) =~ /^(desc|reverse)/i
                 group_compare(keys.first,e2[0],e1[0])
               else
                 group_compare(keys.first,e1[0],e2[0])
@@ -213,7 +213,7 @@ module Jekyll
             groups
           else
             groups.merge(groups) do |key,items|
-              grouper(items,keys.drop(1), order.length > 1 ? order.drop(1) : order)
+              grouper(items,keys.drop(1),order.drop(1))
             end
           end
         end
@@ -259,7 +259,7 @@ module Jekyll
       def group_value(key,item)
         case key
         when 'type'
-          config['type_aliases'][item.type.to_s] || item.type.to_s
+          type_aliases[item.type.to_s] || item.type.to_s
         else
           value = item[key]
           if value.numeric?
@@ -293,6 +293,10 @@ module Jekyll
 
       def type_order
         @type_order ||= config['type_order']
+      end
+
+      def type_aliases
+        @type_aliases ||= Scholar.defaults['type_aliases'].merge(config['type_aliases'])
       end
 
       def type_names

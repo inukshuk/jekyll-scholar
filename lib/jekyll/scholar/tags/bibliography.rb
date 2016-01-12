@@ -61,11 +61,10 @@ module Jekyll
           else
             groupsOrItems
               .map do |keyvalue,value|
-                bibhead = content_tag(tags.first,
+                bibhead = content_tag(tags.first || group_tags.last,
                                       group_name(keys.first, keyvalue),
                                       :class => config['bibliography_class'])
-                bibentries = group_renderer(value, keys.drop(1),
-                                      tags.length > 1 ? tags.drop(1) : tags)
+                bibentries = group_renderer(value, keys.drop(1), tags.drop(1))
                 bibhead + "\n" + bibentries
               end
               .join("\n")

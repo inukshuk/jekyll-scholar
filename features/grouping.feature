@@ -240,6 +240,34 @@ Feature: Grouping BibTeX Bibliographies
     And I should see "Books" in "_site/scholar.html"
 
   @tags @grouping
+  Scenario: Type Aliases
+    Given I have a scholar configuration with:
+      | key          | value                    |
+      | group_by     | type                     |
+      | type_aliases | { phdthesis: phdthesis } |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @mastersthesis{ruby1,
+        title     = {MSc Thesis},
+      }
+      @phdthesis{ruby2,
+        title     = {PhD Thesis},
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then I should see "PhD Theses" in "_site/scholar.html"
+    And I should not see "Master's Theses" in "_site/scholar.html"
+
+  @tags @grouping
   Scenario: Month Names
     Given I have a scholar configuration with:
       | key         | value                                                                                |

@@ -44,6 +44,8 @@ module Jekyll
         'incollection' => 'Book Chapters',
         'inproceedings' => 'Conference Articles',
         'thesis' => 'Theses',
+        'mastersthesis' => 'Master\'s Theses',
+        'phdthesis' => 'PhD Theses',
         'manual' => 'Manuals',
         'techreport' => 'Technical Reports',
         'misc' => 'Miscellaneous',
