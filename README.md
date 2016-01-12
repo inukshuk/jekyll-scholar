@@ -49,6 +49,9 @@ default configuration is as follows:
       sort_by: none
       order: ascending
 
+      group_by: none
+      group_order: ascending
+
       source: ./_bibliography
       bibliography: references.bib
       bibliography_template: "{{reference}}"
@@ -170,7 +173,8 @@ use the `--max` option:
     {% bibliography --max 5 %}
 
 This would generate a bibliography containing only the first 5 entries
-of your bibliography (after query filters and sort options have been applied).
+of your bibliography (after query filters and sort options have been
+applied). Limiting entries is disabled if grouping is active.
 
 ### Bibliography Template
 

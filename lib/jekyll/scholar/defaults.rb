@@ -55,6 +55,7 @@ module Jekyll
       },
       'type_order' => [],
 
+      'month_names' => nil,
     }.freeze
 
     class << self

@@ -1,5 +1,6 @@
 module Jekyll
   class Scholar
+    require 'date'
 
     # Load styles into static memory.
     # They should be thread safe as long as they are
@@ -201,12 +202,10 @@ module Jekyll
               group_value(keys.first,item)
             end
             .sort do |e1, e2|
-              v1 = group_sort_value(keys.first,e1[0])
-              v2 = group_sort_value(keys.first,e2[0])
               if order.first =~ /^(desc|reverse)/i
-                v2 <=> v1
+                group_compare(keys.first,e2[0],e1[0])
               else
-                v1 <=> v2
+                group_compare(keys.first,e1[0],e2[0])
               end
             end
             .to_h
@@ -238,12 +237,22 @@ module Jekyll
           .flatten
       end
  
-      def group_sort_value(key,value)
+      def group_compare(key,v1,v2)
         case key
         when 'type'
-          config['type_order'].find_index(value) || 99
+          o1 = type_order.find_index(v1)
+          o2 = type_order.find_index(v2)
+          if o1.nil? && o2.nil?
+            0
+          elsif o1.nil?
+            1
+          elsif o2.nil?
+            -1
+          else
+            o1 <=> o2
+          end
         else
-          value
+          v1 <=> v2
         end
       end
       
@@ -274,43 +283,26 @@ module Jekyll
       def group_name(key,value)
         case key
         when 'type'
-          config['type_names'][value] || value.to_s
+          type_names[value] || value.to_s
         when 'month_numeric'
-          month_name(value)
+          month_names[value] || "(unknown)"
         else
           value.to_s
         end
       end
-      
-      def month_name(month)
-        case month
-        when 1
-          'January'
-        when 2
-          'February'
-        when 3
-          'March'
-        when 4
-          'April'
-        when 5
-          'May'
-        when 6
-          'June'
-        when 7
-          'July'
-        when 8
-          'August'
-        when 9
-          'September'
-        when 10
-          'October'
-        when 11
-          'November'
-        when 12
-          'December'
-        else
-          'Unknown'
-        end
+
+      def type_order
+        @type_order ||= config['type_order']
+      end
+
+      def type_names
+        @type_names ||= Scholar.defaults['type_names'].merge(config['type_names'])
+      end
+
+      def month_names
+        return @month_names unless @month_names.nil?
+
+        @month_names = config['month_names'].nil? ? Date::MONTHNAMES : config['month_names'].unshift(nil)
       end
 
       def suppress_author?
