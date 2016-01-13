@@ -3,7 +3,7 @@ Feature: Details
   I want to publish my BibTeX bibliography on my blog
   And I want Jekyll to generate detail pages for all the entries in my bibliography
 
-  @generators @wip
+  @generators
   Scenario: A bibliography with a single entry
     Given I have a scholar configuration with:
       | key            | value             |
