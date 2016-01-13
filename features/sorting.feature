@@ -262,3 +262,40 @@ Feature: Sorting BibTeX Bibliographies
     And the "_site/scholar.html" file should exist
     Then "August 07" should come before "March 08" in "_site/scholar.html"
     And "March 08" should come before "December 08" in "_site/scholar.html"
+
+  @tags @sorting
+  Scenario: Multi-level Sort Order
+    Given I have a scholar configuration with:
+      | key     | value                 |
+      | sort_by | year, month           |
+      | order   | descending, ascending |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby1,
+        title     = {August 07},
+        year      = {2007},
+        month     = aug
+      }
+      @book{ruby2,
+        title     = {March 08},
+        year      = {2008},
+        month     = mar
+      }
+      @book{ruby3,
+        title     = {December 08},
+        year      = {2008},
+        month     = dec
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then "March 08" should come before "December 08" in "_site/scholar.html"
+    And "December 08" should come before "August 07" in "_site/scholar.html"

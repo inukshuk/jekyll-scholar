@@ -1,5 +1,6 @@
 module Jekyll
   class Scholar
+    require 'date'
 
     # Load styles into static memory.
     # They should be thread safe as long as they are
@@ -156,11 +157,20 @@ module Jekyll
       def sort(unsorted)
         return unsorted if skip_sort?
 
-        sorted = unsorted.sort_by do |e|
-          e.values_at(*sort_keys).map { |v| v.nil? ? BibTeX::Value.new : v }
+        sorted = unsorted.sort do |e1, e2|
+          sort_keys
+            .map.with_index do |key, idx|
+              v1 = e1[key].nil? ? BibTeX::Value.new : e1[key]
+              v2 = e2[key].nil? ? BibTeX::Value.new : e2[key]
+              if (sort_order[idx] || sort_order.last) =~ /^(desc|reverse)/i
+                v2 <=> v1
+              else
+                v1 <=> v2
+              end
+            end
+            .find { |c| c != 0 } || 0
         end
-
-        sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
+ 
         sorted
       end
 
@@ -171,6 +181,124 @@ module Jekyll
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
           .map { |key| key == 'month' ? 'month_numeric' : key }
+      end
+
+      def sort_order
+        return @sort_order unless @sort_order.nil?
+
+        @sort_order = Array(config['order'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+
+      def group?
+        config['group_by'] != 'none'
+      end
+ 
+      def group(ungrouped)
+        def grouper(items,keys,order)
+          groups = items
+            .group_by do |item|
+              group_value(keys.first,item)
+            end
+          if keys.count == 1
+            groups
+          else
+            groups.merge(groups) do |key,items|
+              grouper(items,keys.drop(1),order.drop(1))
+            end
+          end
+        end
+        grouper(ungrouped,group_keys,group_order)
+      end
+ 
+      def group_keys
+        return @group_keys unless @group_keys.nil?
+
+        @group_keys = Array(config['group_by'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+          .map { |key| key == 'month' ? 'month_numeric' : key }
+      end
+ 
+      def group_order
+        return @group_order unless @group_order.nil?
+
+        @group_order = Array(config['group_order'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+ 
+      def group_compare(key,v1,v2)
+        case key
+        when 'type'
+          o1 = type_order.find_index(v1)
+          o2 = type_order.find_index(v2)
+          if o1.nil? && o2.nil?
+            0
+          elsif o1.nil?
+            1
+          elsif o2.nil?
+            -1
+          else
+            o1 <=> o2
+          end
+        else
+          v1 <=> v2
+        end
+      end
+      
+      def group_value(key,item)
+        case key
+        when 'type'
+          type_aliases[item.type.to_s] || item.type.to_s
+        else
+          value = item[key]
+          if value.numeric?
+            value.to_i
+          elsif value.date?
+            value.to_date
+          else
+            value.to_s
+          end
+        end
+      end
+
+      def group_tags
+        return @group_tags unless @group_tags.nil?
+
+        @group_tags = Array(config['bibliography_group_tag'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+ 
+      def group_name(key,value)
+        case key
+        when 'type'
+          type_names[value] || value.to_s
+        when 'month_numeric'
+          month_names[value] || "(unknown)"
+        else
+          value.to_s
+        end
+      end
+
+      def type_order
+        @type_order ||= config['type_order']
+      end
+
+      def type_aliases
+        @type_aliases ||= Scholar.defaults['type_aliases'].merge(config['type_aliases'])
+      end
+
+      def type_names
+        @type_names ||= Scholar.defaults['type_names'].merge(config['type_names'])
+      end
+
+      def month_names
+        return @month_names unless @month_names.nil?
+
+        @month_names = config['month_names'].nil? ? Date::MONTHNAMES : config['month_names'].unshift(nil)
       end
 
       def suppress_author?
@@ -399,8 +527,10 @@ module Jekyll
         config['details_dir']
       end
 
-      def renderer
-        @renderer ||= CiteProc::Ruby::Renderer.new :format => 'html',
+      def renderer(force = false)
+        return @renderer if @renderer && !force
+          
+        @renderer = CiteProc::Ruby::Renderer.new :format => 'html',
           :style => style, :locale => config['locale']
       end
 

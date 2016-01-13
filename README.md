@@ -63,6 +63,9 @@ default configuration is as follows:
       sort_by: none
       order: ascending
 
+      group_by: none
+      group_order: ascending
+
       source: ./_bibliography
       bibliography: references.bib
       bibliography_template: "{{reference}}"
@@ -99,6 +102,33 @@ The `use_raw_bibtex_entry` option will disable parsing of Liquid tags that
 are embedded in the Bibtex fields. This option provides a way to circumvent 
 the problem that the double braces functionality of BibTex is accidentally 
 parsed by Liquid, while it was intended to keep the exact capitalization style.
+
+The `sort_by` and `order` options specify if and how bibliography
+entries are sorted. Entries can be sorted on multiple fields, by using
+a list of keys, e.g. `sort_by: year,month`. Ordering can be specified
+per sort level, e.g. `order: descending,ascending` will sort the years
+descending, but per year the months are ascending. If there are more
+sort keys than order directives, the last order entry is used for the
+remaining keys.
+
+The `group_by` and `group_order` options specify how bibliography
+items are grouped. Grouping can be multi-level as well,
+e.g. `group_by: type, year` groups entries per publication type, and
+within those groups per year. Ordering for groups is specified in the
+same way as the sort order. Publication types -- specified with group
+key `type`, can be ordered by adding `type_order` to the
+configuration. For example, `type_order: article,techreport` lists
+journal articles before technical reports. Types not mentioned in
+`type_order` are considered smaller than types that are
+mentioned. Types can be merge in one group using the `type_aliases`
+setting. By default `phdthesis` and `mastersthesis` are grouped as
+`thesis`. By using, for example, `type_aliases: { inproceeding =>
+article}`, journal and conference articles appear in a single
+group. The display names for entry types are specified with
+`type_names`. Names for common types are provided, but they can be
+extended or overridden. For example, the default name for `article` is
+*Journal Articles*, but it can be changed to *Papers* using
+`type_name: { article => 'Papers' }`.
 
 ### Bibliographies
 
@@ -187,7 +217,8 @@ use the `--max` option:
     {% bibliography --max 5 %}
 
 This would generate a bibliography containing only the first 5 entries
-of your bibliography (after query filters and sort options have been applied).
+of your bibliography (after query filters and sort options have been
+applied). Limiting entries is disabled if grouping is active.
 
 ### Bibliography Template
 
