@@ -15,6 +15,7 @@ module Jekyll
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
 
+        data['title'] = entry.title.to_s
         data.merge!(reference_data(entry))
       end
 

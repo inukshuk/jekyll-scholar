@@ -3,7 +3,7 @@ Feature: Details
   I want to publish my BibTeX bibliography on my blog
   And I want Jekyll to generate detail pages for all the entries in my bibliography
 
-  @generators
+  @generators @wip
   Scenario: A bibliography with a single entry
     Given I have a scholar configuration with:
       | key            | value             |
@@ -16,6 +16,7 @@ Feature: Details
         title     = {The Ruby Programming Language},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
         year      = {2008},
+        comment   = {A Comment},
         publisher = {O'Reilly Media}
       }
       """
@@ -27,7 +28,8 @@ Feature: Details
       <html>
       <head></head>
       <body>
-      {{ page.entry.title }}
+      {{ page.title }}
+      {{ page.entry.comment }}
       </body>
       </html>
       """
@@ -35,6 +37,7 @@ Feature: Details
     Then the _site directory should exist
     And the "_site/bibliography/ruby.html" file should exist
     And I should see "The Ruby Programming Language" in "_site/bibliography/ruby.html"
+    And I should see "A Comment" in "_site/bibliography/ruby.html"
 
   @generators
   Scenario: LaTeX conversion is applied to everything except the bibtex field
