@@ -384,7 +384,6 @@ a specific page. As an example, the tag
 will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
 fallback to the default BibTeX file.
 
-<!-- elotroalex edit: added documentation for changes -->
 #### Citation pointing to another page in your site
 In some cases, you might want your citation to link to another page on your cite (ex. a separate works cited page). As a solution, Jekyll-Scholar provides the `--relative` tag. For example, if you wanted the link to point to an ID in a bibliography.html page, you would use:
 
