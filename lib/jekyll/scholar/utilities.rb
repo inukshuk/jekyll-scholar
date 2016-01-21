@@ -17,7 +17,11 @@ module Jekyll
     # #site readers
     module Utilities
 
-      attr_reader :config, :site, :context, :prefix, :text, :offset, :max
+    #elotroalex edit: added local variable relative  
+
+      attr_reader :config, :site, :context, :prefix, :text, :offset, :max, :relative
+
+
 
       def split_arguments(arguments)
 
@@ -52,11 +56,17 @@ module Jekyll
 
           opts.on('-q', '--query QUERY') do |query|
             @query = query
-          end
+          end       
 
           opts.on('-p', '--prefix PREFIX') do |prefix|
             @prefix = prefix
           end
+
+    # elotroalex edit: added flag for relative url for link_to
+
+          opts.on('-r', '--relative RELATIVE') do |relative|
+            @relative = relative
+          end             
 
           opts.on('-t', '--text TEXT') do |text|
             @text = text
@@ -567,6 +577,12 @@ module Jekyll
         (context['citation_numbers'] ||= {})[key] ||= cited_keys.length
       end
 
+    # #elotroalex edit: Added new method to control href output for cite  
+
+      def link_target_for key
+        "#{relative}##{[prefix, key].compact.join('-')}"
+      end
+
       def cite(keys)
         items = keys.map do |key|
           if bibliography.key?(key)
@@ -577,7 +593,7 @@ module Jekyll
           end
         end
 
-        link_to "##{[prefix, keys[0]].compact.join('-')}", render_citation(items)
+        link_to link_target_for(keys[0]), render_citation(items)
       end
 
       def cite_details(key, text)
