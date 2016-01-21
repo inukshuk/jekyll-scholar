@@ -93,7 +93,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTslomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqptTslomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
