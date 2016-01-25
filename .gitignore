@@ -4,3 +4,4 @@ demo
 .bundle
 coverage
 .ruby-version
+.DS_Store
