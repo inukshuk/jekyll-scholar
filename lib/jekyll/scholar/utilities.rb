@@ -575,7 +575,7 @@ module Jekyll
       end
 
       def link_target_for key
-        "#{relative}##{[prefix, key].compact.join('-')}"
+        "#{base_url}#{relative.strip}##{[prefix, key].compact.join('-')}"
       end
 
       def cite(keys)
