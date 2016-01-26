@@ -55,15 +55,15 @@ module Jekyll
 
           opts.on('-q', '--query QUERY') do |query|
             @query = query
-          end       
+          end
 
           opts.on('-p', '--prefix PREFIX') do |prefix|
             @prefix = prefix
           end
 
           opts.on('-r', '--relative RELATIVE') do |relative|
-            @relative = relative
-          end             
+            @relative = relative.to_s.strip
+          end
 
           opts.on('-t', '--text TEXT') do |text|
             @text = text
@@ -575,7 +575,7 @@ module Jekyll
       end
 
       def link_target_for key
-        "#{base_url}#{relative.to_s.strip}##{[prefix, key].compact.join('-')}"
+        "#{base_url}#{relative}##{[prefix, key].compact.join('-')}"
       end
 
       def cite(keys)
