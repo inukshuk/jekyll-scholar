@@ -16,10 +16,10 @@ rescue LoadError
 end
 
 require 'test/unit'
-
 require 'jekyll/scholar'
+require 'tmpdir'
 
-TEST_DIR = File.join('/', 'tmp', 'jekyll')
+TEST_DIR = File.join(Dir.tmpdir, 'jekyll')
 
 def run_jekyll(options = {})
 
