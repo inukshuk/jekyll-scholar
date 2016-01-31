@@ -18,7 +18,7 @@ module Jekyll
     module Utilities
 
 
-      attr_reader :config, :site, :context, :prefix, :text, :offset, :max, :relative
+      attr_reader :config, :site, :context, :prefix, :text, :offset, :max, :relative, :group_by
 
 
 
@@ -85,12 +85,16 @@ module Jekyll
             @style = style
           end
 
+          opts.on('-g', '--group_by GROUP') do |group_by|
+            @group_by = group_by
+          end
+
           opts.on('-T', '--template TEMPLATE') do |template|
             @bibliography_template = template
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqrptTslomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqrptTsglomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|group_by|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -199,7 +203,7 @@ module Jekyll
       end
 
       def group?
-        config['group_by'] != 'none'
+        (group_by.nil? && config['group_by'] != 'none') || (!group_by.nil? && group_by != 'none')
       end
  
       def group(ungrouped)
@@ -222,7 +226,7 @@ module Jekyll
       def group_keys
         return @group_keys unless @group_keys.nil?
 
-        @group_keys = Array(config['group_by'])
+        @group_keys = Array((group_by.nil? || group_by.empty?) ? config['group_by'] : group_by)
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
           .map { |key| key == 'month' ? 'month_numeric' : key }
