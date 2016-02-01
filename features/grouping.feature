@@ -302,3 +302,67 @@ Feature: Grouping BibTeX Bibliographies
     And I should not see "January" in "_site/scholar.html"
     And I should see "Dezember" in "_site/scholar.html"
     And I should not see "December" in "_site/scholar.html"
+
+  @tags @grouping
+  Scenario: Local grouping override - no grouping
+    Given I have a scholar configuration with:
+      | group_by    | year
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby1,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      @book{ruby2,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2007},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references --group_by none %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then I should not see "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
+    And I should not see "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
+
+  @tags @grouping
+  Scenario: Local grouping override - grouping by year
+    Given I have a scholar configuration with:
+      | group_by    | none
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby1,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      @book{ruby2,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2007},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references --group_by none %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then I should see "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
+    And I should see "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
