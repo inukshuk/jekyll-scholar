@@ -306,7 +306,7 @@ Feature: Grouping BibTeX Bibliographies
   @tags @grouping
   Scenario: Local grouping override - no grouping
     Given I have a scholar configuration with:
-      | group_by    | year
+      | group_by    | year |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -338,7 +338,7 @@ Feature: Grouping BibTeX Bibliographies
   @tags @grouping
   Scenario: Local grouping override - grouping by year
     Given I have a scholar configuration with:
-      | group_by    | none
+      | group_by    | none |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
