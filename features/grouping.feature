@@ -40,7 +40,7 @@ Feature: Grouping BibTeX Bibliographies
     Given I have a scholar configuration with:
       | key         | value             |
       | group_by    | year              |
-      | group_order | ascending         | 
+      | group_order | ascending         |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -73,7 +73,7 @@ Feature: Grouping BibTeX Bibliographies
     Given I have a scholar configuration with:
       | key         | value             |
       | group_by    | year              |
-      | group_order | descending        | 
+      | group_order | descending        |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -106,7 +106,7 @@ Feature: Grouping BibTeX Bibliographies
     Given I have a scholar configuration with:
       | key         | value                |
       | group_by    | year,month           |
-      | group_order | descending,ascending | 
+      | group_order | descending,ascending |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -359,7 +359,7 @@ Feature: Grouping BibTeX Bibliographies
       """
       ---
       ---
-      {% bibliography -f references --group_by none %}
+      {% bibliography -f references --group_by year %}
       """
     When I run jekyll
     Then the _site directory should exist
