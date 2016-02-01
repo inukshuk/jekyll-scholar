@@ -202,10 +202,18 @@ module Jekyll
           .flatten
       end
 
-      def group?
-        (group_by.nil? && config['group_by'] != 'none') || (!group_by.nil? && group_by != 'none')
+      def group_by
+        if group_by.nil? || group_by.empty?
+          @group_by = config['group_by']
+        else
+          @group_by = 'none'
+        end
       end
  
+      def group?
+        group_by != 'none'
+      end
+
       def group(ungrouped)
         def grouper(items,keys,order)
           groups = items
@@ -226,7 +234,7 @@ module Jekyll
       def group_keys
         return @group_keys unless @group_keys.nil?
 
-        @group_keys = Array((group_by.nil? || group_by.empty?) ? config['group_by'] : group_by)
+        @group_keys = Array(group_by)
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
           .map { |key| key == 'month' ? 'month_numeric' : key }
