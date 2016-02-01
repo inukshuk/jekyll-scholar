@@ -18,7 +18,7 @@ module Jekyll
     module Utilities
 
 
-      attr_reader :config, :site, :context, :prefix, :text, :offset, :max, :relative, :group_by
+      attr_reader :config, :site, :context, :prefix, :text, :offset, :max, :relative
 
 
 
@@ -203,13 +203,9 @@ module Jekyll
       end
 
       def group_by
-        if group_by.nil? || group_by.empty?
-          @group_by = config['group_by']
-        else
-          @group_by = 'none'
-        end
+        @group_by ||= config['group_by']
       end
- 
+
       def group?
         group_by != 'none'
       end
@@ -230,7 +226,7 @@ module Jekyll
         end
         grouper(ungrouped,group_keys,group_order)
       end
- 
+
       def group_keys
         return @group_keys unless @group_keys.nil?
 
@@ -239,7 +235,7 @@ module Jekyll
           .flatten
           .map { |key| key == 'month' ? 'month_numeric' : key }
       end
- 
+
       def group_order
         return @group_order unless @group_order.nil?
 
@@ -247,7 +243,7 @@ module Jekyll
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
       end
- 
+
       def group_compare(key,v1,v2)
         case key
         when 'type'
@@ -266,7 +262,7 @@ module Jekyll
           v1 <=> v2
         end
       end
-      
+
       def group_value(key,item)
         case key
         when 'type'
