@@ -485,10 +485,14 @@ module Jekyll
           e[key.to_s] = value.to_s
 
           if value.is_a?(BibTeX::Names)
+            e["#{key}_array"] = arr = []
             value.each.with_index do |name, idx|
+              parts = {}
               name.each_pair do |k, v|
                 e["#{key}_#{idx}_#{k}"] = v.to_s
+                parts[k.to_s] = v.to_s
               end
+              arr << parts
             end
           end
         end
