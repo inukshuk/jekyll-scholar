@@ -335,7 +335,7 @@ Feature: Grouping BibTeX Bibliographies
     Then I should not see "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
     And I should not see "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
 
-  @tags @grouping @wip
+  @tags @grouping
   Scenario: Local grouping override - grouping by year
     Given I have a scholar configuration with:
       | key         | value             |

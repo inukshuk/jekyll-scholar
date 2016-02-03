@@ -93,12 +93,16 @@ module Jekyll
             self.group_order = group_order
           end
 
+          opts.on('-O', '--type_order ORDER') do |type_order|
+            @group_by = type_order
+          end
+
           opts.on('-T', '--template TEMPLATE') do |template|
             @bibliography_template = template
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqrptTsgGlomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|group_(?:by|order)|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqrptTsgGOlomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|group_(?:by|order)|type_order|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -294,7 +298,7 @@ module Jekyll
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
       end
- 
+
       def group_name(key,value)
         case key
         when 'type'
