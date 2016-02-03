@@ -21,3 +21,4 @@ require 'jekyll/scholar/tags/reference'
 require 'jekyll/scholar/generators/details'
 
 require 'jekyll/scholar/plugins/markdown_links'
+require 'jekyll/scholar/plugins/superscript'
