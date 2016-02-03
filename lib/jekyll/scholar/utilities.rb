@@ -89,12 +89,16 @@ module Jekyll
             @group_by = group_by
           end
 
+          opts.on('-G', '--group_order ORDER') do |group_order|
+            self.group_order = group_order
+          end
+
           opts.on('-T', '--template TEMPLATE') do |template|
             @bibliography_template = template
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqrptTsglomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|group_by|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqrptTsgGlomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|group_(?:by|order)|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -181,7 +185,7 @@ module Jekyll
             end
             .find { |c| c != 0 } || 0
         end
- 
+
         sorted
       end
 
@@ -211,20 +215,21 @@ module Jekyll
       end
 
       def group(ungrouped)
-        def grouper(items,keys,order)
-          groups = items
-            .group_by do |item|
-              group_value(keys.first,item)
-            end
+        def grouper(items, keys, order)
+          groups = items.group_by do |item|
+            group_value(keys.first, item)
+          end
+
           if keys.count == 1
             groups
           else
-            groups.merge(groups) do |key,items|
-              grouper(items,keys.drop(1),order.drop(1))
+            groups.merge(groups) do |key, items|
+              grouper(items, keys.drop(1), order.drop(1))
             end
           end
         end
-        grouper(ungrouped,group_keys,group_order)
+
+        grouper(ungrouped, group_keys, group_order)
       end
 
       def group_keys
@@ -237,9 +242,12 @@ module Jekyll
       end
 
       def group_order
-        return @group_order unless @group_order.nil?
+        self.group_order = config['group_order'] if @group_order.nil?
+        @group_order
+      end
 
-        @group_order = Array(config['group_order'])
+      def group_order=(value)
+        @group_order = Array(value)
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
       end

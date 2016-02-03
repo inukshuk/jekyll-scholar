@@ -335,10 +335,12 @@ Feature: Grouping BibTeX Bibliographies
     Then I should not see "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
     And I should not see "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
 
-  @tags @grouping
+  @tags @grouping @wip
   Scenario: Local grouping override - grouping by year
     Given I have a scholar configuration with:
-      | group_by    | none |
+      | key         | value             |
+      | group_by    | none              |
+      | group_order | ascending         |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -359,10 +361,11 @@ Feature: Grouping BibTeX Bibliographies
       """
       ---
       ---
-      {% bibliography -f references --group_by year %}
+      {% bibliography -f references --group_by year --group_order descending %}
       """
     When I run jekyll
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     Then I should see "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
     And I should see "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
+    And "2008" should come before "2007" in "_site/scholar.html"
