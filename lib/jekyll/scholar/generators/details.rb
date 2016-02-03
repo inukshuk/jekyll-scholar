@@ -15,8 +15,8 @@ module Jekyll
         process(@name)
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
 
-        data['title'] = entry.title.to_s if entry.field?(:title)
         data.merge!(reference_data(entry))
+        data['title'] = data['entry']['title'] if data['entry'].has_key?('title')
       end
 
     end
