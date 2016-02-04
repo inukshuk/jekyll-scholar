@@ -63,6 +63,24 @@ Feature: BibTeX
     And the "_site/references.html" file should exist
     And I should see "Look, an umlaut: ü!" in "_site/references.html"
 
+  @superscript
+  Scenario: Simple Bibliography with LaTeX superscript
+    Given I have a scholar configuration with:
+      | key   | value |
+      | style | apa   |
+    And I have a page "references.bib":
+      """
+      ---
+      ---
+      @misc{umlaut,
+        title     = {Look, \textsuperscript{superscript}!},
+      }
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/references.html" file should exist
+    And I should see "Look, <sup>superscript</sup>!" in "_site/references.html"
+
   @tags @bibtex
   Scenario: Embedded BibTeX
     Given I have a scholar configuration with:
