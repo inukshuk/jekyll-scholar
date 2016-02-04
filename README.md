@@ -74,6 +74,9 @@ default configuration is as follows:
       join_strings:    true
       
       use_raw_bibtex_entry: false
+      bibtex_filters:
+      - superscript
+      - latex
 
       details_dir:    bibliography
       details_layout: bibtex.html
@@ -129,6 +132,12 @@ group. The display names for entry types are specified with
 extended or overridden. For example, the default name for `article` is
 *Journal Articles*, but it can be changed to *Papers* using
 `type_name: { article => 'Papers' }`.
+
+The `bibtex_filters` option configures which
+[BibTeX-Ruby](https://github.com/inukshuk/bibtex-ruby) formatting filters
+values of entries should be passed through. This defaults to the `latex`
+filter which converts LaTeX character escapes into unicode, and `superscript`
+which converts the `\textsuperscript` command into a HTML `<sup>` tag.
 
 ### Bibliographies
 
