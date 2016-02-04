@@ -1,7 +1,7 @@
 module Jekyll
   class Scholar
 
-    class BibliographyTag < Liquid::Tag
+    class BibliographyGroupIndexTag < Liquid::Tag
       include Scholar::Utilities
 
       def initialize(tag_name, arguments, tokens)
@@ -45,12 +45,7 @@ module Jekyll
         if group?
           groups = group(items)
           bibliography = render_groups(groups)
-        else
-          items = items[offset..max] if limit_entries?
-          bibliography = render_items(items)
         end
-
-        bibliography
       end
 
       def render_groups(groups)
@@ -69,37 +64,20 @@ module Jekyll
               end
               .map do |e|
                 title = group_name(keys.first, e[0])
-                anchor = title.delete(' ')
-                bibhead = content_tag(tags.first || group_tags.last,
-                                      title,
-                                      {:class => config['bibliography_class'], :id => anchor})
-                bibentries = group_renderer(e[1], keys.drop(1), order.drop(1), tags.drop(1))
-                bibhead + "\n" + bibentries
+                anchor = '#' + title.delete(' ')
+                group = content_tag(config['bibgroupindex_item_tag'],
+                                    link_to(anchor, title))
+                group + "\n"
               end
               .join("\n")
           end
         end
-        group_renderer(groups,group_keys,group_order,group_tags)
+        content_tag config['bibgroupindex_list_tag'], group_renderer(groups,group_keys,group_order,group_tags), :class => config['bibliography_group_index_class']
       end
-      
-      def render_items(items)
-        bibliography = items.each_with_index.map { |entry, index|
-          reference = bibliography_tag(entry, index + 1)
 
-          if generate_details?
-            reference << link_to(details_link_for(entry),
-              config['details_link'], :class => config['details_link_class'])
-          end
-
-          content_tag config['bibliography_item_tag'], reference
-        }.join("\n")
-
-        content_tag config['bibliography_list_tag'], bibliography, :class => config['bibliography_class']
-      end
-      
     end
 
   end
 end
 
-Liquid::Template.register_tag('bibliography', Jekyll::Scholar::BibliographyTag)
+Liquid::Template.register_tag('bibgroupindex', Jekyll::Scholar::BibliographyGroupIndexTag)
