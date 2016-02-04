@@ -60,6 +60,7 @@ Feature: Details
       <html>
       <head></head>
       <body>
+      Page title: {{ page.title }}
       Title: {{ page.entry.title }}
       {{ page.entry.bibtex }}
       </body>
@@ -68,6 +69,7 @@ Feature: Details
     When I run jekyll
     Then the _site directory should exist
     And the "_site/bibliography/ruby.html" file should exist
+    And I should see "Page title: An Umlaut ä!" in "_site/bibliography/ruby.html"
     And I should see "Title: An Umlaut ä!" in "_site/bibliography/ruby.html"
     And I should see "title = {An Umlaut \\\"a!}" in "_site/bibliography/ruby.html"
 
@@ -93,6 +95,7 @@ Feature: Details
       <html>
       <head></head>
       <body>
+      Page title: {{ page.title }}
       Title: {{ page.entry.title }}
       {{ page.entry.bibtex }}
       </body>
@@ -101,6 +104,7 @@ Feature: Details
     When I run jekyll
     Then the _site directory should exist
     And the "_site/bibliography/ruby.html" file should exist
+    And I should see "Page title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "Title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "title = {An Umlaut \\\"a!}" in "_site/bibliography/ruby.html"
 
