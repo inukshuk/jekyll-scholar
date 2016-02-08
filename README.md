@@ -385,9 +385,12 @@ will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
 fallback to the default BibTeX file.
 
 #### Citation pointing to another page in your site
-In some cases, you might want your citation to link to another page on your cite (ex. a separate works cited page). As a solution, Jekyll-Scholar provides the `--relative` tag. For example, if you wanted the link to point to an ID in a bibliography.html page, you would use:
+In some cases, you might want your citation to link to another page on your cite (ex. a separate works cited page). As a solution, add a relative path to your scholar configurations:
 
-    {% cite ruby --relative bibliography.html %}
+~~~ yaml
+    scholar:
+      relative: "/relative/path/file.html"
+~~~
 
 #### Multiple bibliographies within one document (like [multibib.sty](http://www.ctan.org/pkg/multibib))
 

@@ -18,7 +18,7 @@ module Jekyll
     module Utilities
 
 
-      attr_reader :config, :site, :context, :prefix, :text, :offset, :max, :relative
+      attr_reader :config, :site, :context, :prefix, :text, :offset, :max
 
 
 
@@ -61,10 +61,6 @@ module Jekyll
             @prefix = prefix
           end
 
-          opts.on('-r', '--relative RELATIVE') do |relative|
-            @relative = relative.to_s.strip
-          end
-
           opts.on('-t', '--text TEXT') do |text|
             @text = text
           end
@@ -90,7 +86,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqrptTslomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqptTslomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -382,7 +378,7 @@ module Jekyll
 
       #elotroalex
       def relative
-        @relative || config['relative']
+        config['relative']
       end
 
       def reference_tag(entry, index = nil)
