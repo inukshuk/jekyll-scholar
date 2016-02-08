@@ -380,6 +380,11 @@ module Jekyll
         File.join site.source, source
       end
 
+      #elotroalex
+      def relative
+        @relative || config['relative']
+      end
+
       def reference_tag(entry, index = nil)
         return missing_reference unless entry
 
@@ -574,8 +579,8 @@ module Jekyll
         (context['citation_numbers'] ||= {})[key] ||= cited_keys.length
       end
 
-      def link_target_for key
-        "#{base_url}#{relative}##{[prefix, key].compact.join('-')}"
+      def link_target_for(key)
+        "#{relative}##{[prefix, key].compact.join('-')}"
       end
 
       def cite(keys)
