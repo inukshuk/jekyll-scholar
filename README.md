@@ -25,18 +25,18 @@ Or add it to your `Gemfile`:
     gem 'jekyll-scholar'
 
 ### Github Pages
-    
-Note that it is not possible to use this plugin with the 
+
+Note that it is not possible to use this plugin with the
   [default Github pages workflow](https://help.github.com/articles/using-jekyll-with-pages/). 
-Github does not allow any but a few select plugins to run for security reasons, 
-and Jekyll-Scholar is not among them. 
+Github does not allow any but a few select plugins to run for security reasons,
+and Jekyll-Scholar is not among them.
 You will have to generate your site locally and push the results to the `master` resp. `gh-pages` 
 branch of your site repository.
 You can keep sources, configuration and plugins in a separate branch; see e.g.
   [here](http://davidensinger.com/2013/07/automating-jekyll-deployment-to-github-pages-with-rake/)
 for details.
 
-    
+
 
 Usage
 -----
@@ -72,7 +72,7 @@ default configuration is as follows:
 
       replace_strings: true
       join_strings:    true
-      
+
       use_raw_bibtex_entry: false
       bibtex_filters:
       - superscript
@@ -394,9 +394,13 @@ will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
 fallback to the default BibTeX file.
 
 #### Citation pointing to another page in your site
-In some cases, you might want your citation to link to another page on your cite (ex. a separate works cited page). As a solution, Jekyll-Scholar provides the `--relative` tag. For example, if you wanted the link to point to an ID in a bibliography.html page, you would use:
+In some cases, you might want your citation to link to another page on your cite (ex. a separate works cited page). As a solution, add a relative path to your scholar configurations:
 
-    {% cite ruby --relative bibliography.html %}
+~~~ yaml
+    scholar:
+      relative: "/relative/path/file.html"
+~~~
+
 
 #### Multiple bibliographies within one document (like [multibib.sty](http://www.ctan.org/pkg/multibib))
 

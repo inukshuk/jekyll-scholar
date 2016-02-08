@@ -18,7 +18,7 @@ module Jekyll
     module Utilities
 
 
-      attr_reader :config, :site, :context, :prefix, :text, :offset, :max, :relative
+      attr_reader :config, :site, :context, :prefix, :text, :offset, :max
 
 
 
@@ -61,10 +61,6 @@ module Jekyll
             @prefix = prefix
           end
 
-          opts.on('-r', '--relative RELATIVE') do |relative|
-            @relative = relative.to_s.strip
-          end
-
           opts.on('-t', '--text TEXT') do |text|
             @text = text
           end
@@ -102,7 +98,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqrptTsgGOlomA]|\B--(?:cited(_in_order)?|file|query|relative|prefix|text|style|group_(?:by|order)|type_order|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqptTsgGOlomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -400,6 +396,10 @@ module Jekyll
         File.join site.source, source
       end
 
+      def relative
+        config['relative']
+      end
+
       def reference_tag(entry, index = nil)
         return missing_reference unless entry
 
@@ -560,7 +560,7 @@ module Jekyll
 
       def renderer(force = false)
         return @renderer if @renderer && !force
-          
+
         @renderer = CiteProc::Ruby::Renderer.new :format => 'html',
           :style => style, :locale => config['locale']
       end
@@ -598,8 +598,8 @@ module Jekyll
         (context['citation_numbers'] ||= {})[key] ||= cited_keys.length
       end
 
-      def link_target_for key
-        "#{base_url}#{relative}##{[prefix, key].compact.join('-')}"
+      def link_target_for(key)
+        "#{relative}##{[prefix, key].compact.join('-')}"
       end
 
       def cite(keys)
