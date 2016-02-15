@@ -3,7 +3,7 @@ gemspec
 
 group :development do
 
-  if RUBY_VERSION.start_with?('2.2')
+  if RUBY_VERSION >= '2.2'
     gem 'test-unit'
   else
     gem 'minitest', '< 5.0'
