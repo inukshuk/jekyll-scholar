@@ -29,6 +29,33 @@ Feature: Citations
     And the "_site/scholar.html" file should exist
     And I should see "Flanagan" in "_site/scholar.html"
 
+  @tags @cite @file
+  Scenario: Citing from another bibliography
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/other_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby --file other_references %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Flanagan" in "_site/scholar.html"
+
   @tags @cite @suppress-author
   Scenario: Citations With Suppressed Author
     Given I have a scholar configuration with:
@@ -356,7 +383,7 @@ Feature: Citations
          Author = {Erich Gamma and Richard Helm and Ralph Johnson and John Vlissides},
          Title = {Design Patterns: Elements of Reusable Object-Oriented Software},
          Publisher = {Addison-Wesley Professional},
-         Year = {1994},                   
+         Year = {1994},
       }
       """
     And I have a "_data" directory
