@@ -512,9 +512,6 @@ module Jekyll
         e
       end
 
-      def bibtex_skip_fields
-      end
-
       def generate_details?
         site.layouts.key?(File.basename(config['details_layout'], '.html'))
       end
