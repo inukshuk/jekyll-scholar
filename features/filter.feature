@@ -41,9 +41,9 @@ Feature: BibTeX
   @tags @filters
   Scenario: Jekyll Filters
     Given I have a scholar configuration with:
-      | key    | value             |
-      | source | ./_bibliography   |
-      | bibliography_template | template |
+      | key                   | value             |
+      | source                | ./_bibliography   |
+      | bibliography_template | template          |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
