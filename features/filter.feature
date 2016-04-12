@@ -279,3 +279,79 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "<sup>ü ü ž</sup>" in "_site/scholar.html"
+
+  @tags @superscript
+  Scenario: LaTeX Superscript as HTML with embedded LaTeX chars left untouched
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | superscript |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {\textsuperscript{\"u \"{u} \v{z}}}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "<sup>\\"u \\"\{u\} \\v\{z\}</sup>" in "_site/scholar.html"
+
+  @tags @superscript
+  Scenario: LaTeX Superscript with subsequent groups as HTML
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | superscript |
+      | latex       |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \textsuperscript{superscript text} this should not be superscript {even} {with {additional} groups}.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is <sup>superscript text</sup> this should not be superscript even with additional groups." in "_site/scholar.html"
+
+  @tags @superscript
+  Scenario: LaTeX Superscript with subsequent groups untouched in HTML
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | superscript |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \textsuperscript{superscript text} this should not be superscript {even} {with {additional} groups}.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is <sup>superscript text</sup> this should not be superscript \{even\} \{with \{additional\} groups\}." in "_site/scholar.html"
