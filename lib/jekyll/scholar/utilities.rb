@@ -18,7 +18,8 @@ module Jekyll
     module Utilities
 
 
-      attr_reader :config, :site, :context, :prefix, :text, :offset, :max
+      attr_reader :config, :site, :context,
+        :prefix, :text, :offset, :max, :label
 
 
 
@@ -69,6 +70,10 @@ module Jekyll
             locators << locator
           end
 
+          opts.on('-L', '--label LABEL') do |label|
+            @label = label
+          end
+
           opts.on('-o', '--offset OFFSET') do |offset|
             @offset = offset.to_i
           end
@@ -98,7 +103,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTsgGOlomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqptTsgGOlLomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -569,6 +574,7 @@ module Jekyll
 
           item = citation_item_for entry, citation_number(entry.key)
           item.locator = locator
+          item.label = label unless label.nil?
 
           item
         }, STYLES[style].citation
