@@ -250,6 +250,39 @@ Feature: Citations
         year      = {2008},
         publisher = {O'Reilly Media}
       }
+      @book{microscope,
+        title     = {Ruby Under a Microscope},
+        author    = {Pat Shaughnessy},
+        year      = {2013},
+        publisher = {No Starch Press}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby microscope --label chapter --locator 2-3 -L figure -l 4,5 %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Matsumoto, 2008, chaps. 2-3; Shaughnessy, 2013, figs. 4,5" in "_site/scholar.html"
+
+  @tags @cite @locator @label
+  Scenario: Citations with multiple locator labels
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
       """
     And I have a page "scholar.html":
       """
@@ -260,7 +293,7 @@ Feature: Citations
     When I run jekyll
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
-    And I should see "Flanagan &amp; Matsumoto, 2008, chap. 3" in "_site/scholar.html"
+    And I should see "Matsumoto, 2008, chap. 3" in "_site/scholar.html"
 
   @tags @cite @citation_number
   Scenario: Multiple citations using citation numbers

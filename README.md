@@ -361,12 +361,17 @@ like: `...as Matz explains (2008, p. 42)`.
 
 #### Page numbers and locators
 
-If you would like to add page numbers to your citation, you can use the
-`-l` or `--locator` option. For example, `{% cite ruby -l 23-5 %}` would
+If you would like to add page numbers or similar locators to your citation,
+use the `-l` or `--locator` option. For example, `{% cite ruby --locator 23-5 %}` would
 produce a citation like `(Matsumoto, 2008, pp. 23-5)`.
 
 When quoting multiple items (see above) you can add multiple locators after
 the list of ids. For example, `{% cite ruby microscope -l 2 -l 24 & 32 %}`.
+
+Page is the default locator, however, you can indicate the type of locator
+by adding a `-L` or `--label` option (one for each locator) for instance,
+`{% cite ruby microscope --label chapter --locator 3 -L figure -l 24 & 32 %}`
+produces something like: `(Matsumoto, 2008, chap. 3; Shaughnessy, 2013, figs. 24 & 32)`.
 
 #### Displaying formatted references
 

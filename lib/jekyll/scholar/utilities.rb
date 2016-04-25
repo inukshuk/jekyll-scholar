@@ -18,9 +18,7 @@ module Jekyll
     module Utilities
 
 
-      attr_reader :config, :site, :context,
-        :prefix, :text, :offset, :max, :label
-
+      attr_reader :config, :site, :context, :prefix, :text, :offset, :max
 
 
       def split_arguments(arguments)
@@ -71,7 +69,7 @@ module Jekyll
           end
 
           opts.on('-L', '--label LABEL') do |label|
-            @label = label
+            labels << label
           end
 
           opts.on('-o', '--offset OFFSET') do |offset|
@@ -110,6 +108,10 @@ module Jekyll
 
       def locators
         @locators ||= []
+      end
+
+      def labels
+        @labels ||= []
       end
 
       def bibtex_files
@@ -568,7 +570,7 @@ module Jekyll
       end
 
       def render_citation(items)
-        renderer.render items.zip(locators).map { |entry, locator|
+        renderer.render items.zip(locators.zip(labels)).map { |entry, (locator, label)|
           cited_keys << entry.key
           cited_keys.uniq!
 
