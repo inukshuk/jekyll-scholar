@@ -11,6 +11,8 @@ module Jekyll
       'bibliography_group_tag' => 'h2,h3,h4,h5',
       'bibliography_list_tag'  => 'ol',
       'bibliography_item_tag'  => 'li',
+      'bibliography_list_attributes' => {},
+      'bibliography_item_attributes' => {},
 
       'source'                 => './_bibliography',
       'bibliography'           => 'references.bib',
