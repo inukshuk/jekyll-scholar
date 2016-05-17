@@ -15,6 +15,6 @@ notifications:
       - sylvester@keil.or.at
     on_success: change
     on_failure: always
-#matrix:
-#  allow_failures:
-#    - rvm: rbx-2
+matrix:
+  allow_failures:
+    - rvm: rbx-2
