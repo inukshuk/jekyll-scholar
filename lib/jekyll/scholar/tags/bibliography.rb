@@ -89,10 +89,12 @@ module Jekyll
               config['details_link'], :class => config['details_link_class'])
           end
 
-          content_tag config['bibliography_item_tag'], reference
+          content_tag config['bibliography_item_tag'], reference, config['bibliography_item_attributes']
         }.join("\n")
 
-        content_tag config['bibliography_list_tag'], bibliography, :class => config['bibliography_class']
+        content_tag config['bibliography_list_tag'], bibliography,
+          { :class => config['bibliography_class'] }.merge(config['bibliography_list_attributes'])
+
       end
       
     end
