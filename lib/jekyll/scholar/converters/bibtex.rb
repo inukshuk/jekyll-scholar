@@ -30,7 +30,8 @@ module Jekyll
       end
 
       def convert(content)
-        content = BibTeX.parse(content, :strict => true, :include => [:meta_content], :filter => [:latex]).map do |b|
+        content = BibTeX.parse(content, :strict => true, :include => [:meta_content],
+                               :filter => @config['scholar']['bibtex_filters']).map do |b|
           if b.respond_to?(:to_citeproc)
             render_bibliography b
           else

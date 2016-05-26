@@ -3,10 +3,11 @@ gemspec
 
 group :development do
 
-  if RUBY_VERSION.start_with?('2.2')
+  if RUBY_VERSION >= '2.2'
     gem 'test-unit'
   else
     gem 'minitest', '< 5.0'
+    gem 'listen', '~>3.0.0'
   end
 
   gem 'rake'
@@ -14,7 +15,6 @@ group :development do
   gem 'shoulda', '~> 3.5'
   gem 'cucumber', '1.3.11'
   gem 'redcarpet'
-  gem 'launchy', '~> 2.3'
 
   gem 'unicode_utils'
 

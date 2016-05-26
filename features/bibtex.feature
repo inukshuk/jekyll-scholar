@@ -63,6 +63,24 @@ Feature: BibTeX
     And the "_site/references.html" file should exist
     And I should see "Look, an umlaut: ü!" in "_site/references.html"
 
+  @superscript
+  Scenario: Simple Bibliography with LaTeX superscript
+    Given I have a scholar configuration with:
+      | key   | value |
+      | style | apa   |
+    And I have a page "references.bib":
+      """
+      ---
+      ---
+      @misc{umlaut,
+        title     = {Look, \textsuperscript{superscript}!},
+      }
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/references.html" file should exist
+    And I should see "Look, <sup>superscript</sup>!" in "_site/references.html"
+
   @tags @bibtex
   Scenario: Embedded BibTeX
     Given I have a scholar configuration with:
@@ -141,6 +159,63 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "<abbr>1 book \[ruby\]</abbr>Matsumoto" in "_site/scholar.html"
+
+  @tags @bibliography @config @template
+  Scenario: Simple Bibliography With Custom Template
+    Given I have a scholar configuration with:
+      | key                   | value                                         |
+      | source                | ./_bibliography                               |
+      | bibliography_template | <abbr>{{index}} {{entry.type}} [{{key}}]</abbr>{{entry.author_array[1].last}} |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "<abbr>1 book \[ruby\]</abbr>Matsumoto" in "_site/scholar.html"
+
+  @tags @bibliography @config @template @names
+  Scenario: Simple Bibliography With Custom Template and Name Parsing
+    Given I have a scholar configuration with:
+      | key                   | value                         |
+      | source                | ./_bibliography               |
+      | bibliography_template | <span>{{entry.author}}</span> |
+    And I have the following BibTeX options:
+      | key                   | value  |
+      | parse_names           | false  |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {David Flanagan and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "David Flanagan and Matsumoto, Yukihiro" in "_site/scholar.html"
 
   @tags @filter
   Scenario: Filtered Bibliography Loaded From Default Directory

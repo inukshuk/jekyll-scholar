@@ -24,6 +24,20 @@ Or add it to your `Gemfile`:
 
     gem 'jekyll-scholar'
 
+### Github Pages
+
+Note that it is not possible to use this plugin with the
+  [default Github pages workflow](https://help.github.com/articles/using-jekyll-with-pages/). 
+Github does not allow any but a few select plugins to run for security reasons,
+and Jekyll-Scholar is not among them.
+You will have to generate your site locally and push the results to the `master` resp. `gh-pages` 
+branch of your site repository.
+You can keep sources, configuration and plugins in a separate branch; see e.g.
+  [here](http://davidensinger.com/2013/07/automating-jekyll-deployment-to-github-pages-with-rake/)
+for details.
+
+
+
 Usage
 -----
 
@@ -49,14 +63,20 @@ default configuration is as follows:
       sort_by: none
       order: ascending
 
+      group_by: none
+      group_order: ascending
+
       source: ./_bibliography
       bibliography: references.bib
       bibliography_template: "{{reference}}"
 
       replace_strings: true
       join_strings:    true
-      
+
       use_raw_bibtex_entry: false
+      bibtex_filters:
+      - superscript
+      - latex
 
       details_dir:    bibliography
       details_layout: bibtex.html
@@ -66,8 +86,11 @@ default configuration is as follows:
 
 You can use any style that ships with
 [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g.,
-apa, mla, chicago-fullnote-bibliography), or else you can add a link
-to any CSL style (e.g., you could link to any of the styles available at
+apa, mla, chicago-fullnote-bibliography) which is usually the filename as seen
+  [here](https://github.com/citation-style-language/styles)
+sans the `.csl` ending; note that you have to use `dependent/style` if you want
+to use one from that directory.
+Alternatively you can add a link to any CSL style (e.g., you could link to any of the styles available at
 the official [CSL style repository](https://github.com/citation-style-language/styles)).
 
 The `locale` settings defines what language to use when formatting
@@ -82,6 +105,39 @@ The `use_raw_bibtex_entry` option will disable parsing of Liquid tags that
 are embedded in the Bibtex fields. This option provides a way to circumvent 
 the problem that the double braces functionality of BibTex is accidentally 
 parsed by Liquid, while it was intended to keep the exact capitalization style.
+
+The `sort_by` and `order` options specify if and how bibliography
+entries are sorted. Entries can be sorted on multiple fields, by using
+a list of keys, e.g. `sort_by: year,month`. Ordering can be specified
+per sort level, e.g. `order: descending,ascending` will sort the years
+descending, but per year the months are ascending. If there are more
+sort keys than order directives, the last order entry is used for the
+remaining keys.
+
+The `group_by` and `group_order` options specify how bibliography
+items are grouped. Grouping can be multi-level as well,
+e.g. `group_by: type, year` groups entries per publication type, and
+within those groups per year. Ordering for groups is specified in the
+same way as the sort order. Publication types -- specified with group
+key `type`, can be ordered by adding `type_order` to the
+configuration. For example, `type_order: article,techreport` lists
+journal articles before technical reports. Types not mentioned in
+`type_order` are considered smaller than types that are
+mentioned. Types can be merge in one group using the `type_aliases`
+setting. By default `phdthesis` and `mastersthesis` are grouped as
+`thesis`. By using, for example, `type_aliases: { inproceeding =>
+article}`, journal and conference articles appear in a single
+group. The display names for entry types are specified with
+`type_names`. Names for common types are provided, but they can be
+extended or overridden. For example, the default name for `article` is
+*Journal Articles*, but it can be changed to *Papers* using
+`type_name: { article => 'Papers' }`.
+
+The `bibtex_filters` option configures which
+[BibTeX-Ruby](https://github.com/inukshuk/bibtex-ruby) formatting filters
+values of entries should be passed through. This defaults to the `latex`
+filter which converts LaTeX character escapes into unicode, and `superscript`
+which converts the `\textsuperscript` command into a HTML `<sup>` tag.
 
 ### Bibliographies
 
@@ -170,7 +226,8 @@ use the `--max` option:
     {% bibliography --max 5 %}
 
 This would generate a bibliography containing only the first 5 entries
-of your bibliography (after query filters and sort options have been applied).
+of your bibliography (after query filters and sort options have been
+applied). Limiting entries is disabled if grouping is active.
 
 ### Bibliography Template
 
@@ -304,12 +361,17 @@ like: `...as Matz explains (2008, p. 42)`.
 
 #### Page numbers and locators
 
-If you would like to add page numbers to your citation, you can use the
-`-l` or `--locator` option. For example, `{% cite ruby -l 23-5 %}` would
+If you would like to add page numbers or similar locators to your citation,
+use the `-l` or `--locator` option. For example, `{% cite ruby --locator 23-5 %}` would
 produce a citation like `(Matsumoto, 2008, pp. 23-5)`.
 
 When quoting multiple items (see above) you can add multiple locators after
 the list of ids. For example, `{% cite ruby microscope -l 2 -l 24 & 32 %}`.
+
+Page is the default locator, however, you can indicate the type of locator
+by adding a `-L` or `--label` option (one for each locator) for instance,
+`{% cite ruby microscope --label chapter --locator 3 -L figure -l 24 & 32 %}`
+produces something like: `(Matsumoto, 2008, chap. 3; Shaughnessy, 2013, figs. 24 & 32)`.
 
 #### Displaying formatted references
 
@@ -335,6 +397,15 @@ a specific page. As an example, the tag
 
 will attempt to read the key `ruby` from file `/home/foo/bar.bib`. It will not
 fallback to the default BibTeX file.
+
+#### Citation pointing to another page in your site
+In some cases, you might want your citation to link to another page on your cite (ex. a separate works cited page). As a solution, add a relative path to your scholar configurations:
+
+~~~ yaml
+    scholar:
+      relative: "/relative/path/file.html"
+~~~
+
 
 #### Multiple bibliographies within one document (like [multibib.sty](http://www.ctan.org/pkg/multibib))
 

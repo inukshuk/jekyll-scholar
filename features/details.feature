@@ -16,6 +16,7 @@ Feature: Details
         title     = {The Ruby Programming Language},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
         year      = {2008},
+        comment   = {A Comment},
         publisher = {O'Reilly Media}
       }
       """
@@ -27,7 +28,8 @@ Feature: Details
       <html>
       <head></head>
       <body>
-      {{ page.entry.title }}
+      {{ page.title }}
+      {{ page.entry.comment }}
       </body>
       </html>
       """
@@ -35,6 +37,7 @@ Feature: Details
     Then the _site directory should exist
     And the "_site/bibliography/ruby.html" file should exist
     And I should see "The Ruby Programming Language" in "_site/bibliography/ruby.html"
+    And I should see "A Comment" in "_site/bibliography/ruby.html"
 
   @generators
   Scenario: LaTeX conversion is applied to everything except the bibtex field
@@ -57,6 +60,7 @@ Feature: Details
       <html>
       <head></head>
       <body>
+      Page title: {{ page.title }}
       Title: {{ page.entry.title }}
       {{ page.entry.bibtex }}
       </body>
@@ -65,6 +69,7 @@ Feature: Details
     When I run jekyll
     Then the _site directory should exist
     And the "_site/bibliography/ruby.html" file should exist
+    And I should see "Page title: An Umlaut ä!" in "_site/bibliography/ruby.html"
     And I should see "Title: An Umlaut ä!" in "_site/bibliography/ruby.html"
     And I should see "title = {An Umlaut \\\"a!}" in "_site/bibliography/ruby.html"
 
@@ -90,6 +95,7 @@ Feature: Details
       <html>
       <head></head>
       <body>
+      Page title: {{ page.title }}
       Title: {{ page.entry.title }}
       {{ page.entry.bibtex }}
       </body>
@@ -98,6 +104,7 @@ Feature: Details
     When I run jekyll
     Then the _site directory should exist
     And the "_site/bibliography/ruby.html" file should exist
+    And I should see "Page title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "Title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "title = {An Umlaut \\\"a!}" in "_site/bibliography/ruby.html"
 

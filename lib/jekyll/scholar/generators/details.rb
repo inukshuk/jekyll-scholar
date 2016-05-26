@@ -16,6 +16,7 @@ module Jekyll
         read_yaml(File.join(base, '_layouts'), config['details_layout'])
 
         data.merge!(reference_data(entry))
+        data['title'] = data['entry']['title'] if data['entry'].has_key?('title')
       end
 
     end
@@ -38,6 +39,11 @@ module Jekyll
             details.write(site.dest)
 
             site.pages << details
+
+            site.regenerator.add_dependency(
+              site.in_source_dir(details.path),
+              bibtex_path
+            )
           end
 
         end

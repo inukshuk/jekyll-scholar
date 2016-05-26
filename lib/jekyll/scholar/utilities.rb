@@ -1,5 +1,6 @@
 module Jekyll
   class Scholar
+    require 'date'
 
     # Load styles into static memory.
     # They should be thread safe as long as they are
@@ -16,7 +17,9 @@ module Jekyll
     # #site readers
     module Utilities
 
+
       attr_reader :config, :site, :context, :prefix, :text, :offset, :max
+
 
       def split_arguments(arguments)
 
@@ -65,6 +68,10 @@ module Jekyll
             locators << locator
           end
 
+          opts.on('-L', '--label LABEL') do |label|
+            labels << label
+          end
+
           opts.on('-o', '--offset OFFSET') do |offset|
             @offset = offset.to_i
           end
@@ -77,18 +84,34 @@ module Jekyll
             @style = style
           end
 
+          opts.on('-g', '--group_by GROUP') do |group_by|
+            @group_by = group_by
+          end
+
+          opts.on('-G', '--group_order ORDER') do |group_order|
+            self.group_order = group_order
+          end
+
+          opts.on('-O', '--type_order ORDER') do |type_order|
+            @group_by = type_order
+          end
+
           opts.on('-T', '--template TEMPLATE') do |template|
             @bibliography_template = template
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTslomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|template|locator|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfqptTsgGOlLomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
 
       def locators
         @locators ||= []
+      end
+
+      def labels
+        @labels ||= []
       end
 
       def bibtex_files
@@ -122,7 +145,7 @@ module Jekyll
 
       def bibliography
         unless @bibliography
-          @bibliography = BibTeX.parse(
+          @bibliography = BibTeX::Bibliography.parse(
             bibtex_paths.reduce('') { |s, p| s << IO.read(p) },
             bibtex_options
           )
@@ -156,11 +179,20 @@ module Jekyll
       def sort(unsorted)
         return unsorted if skip_sort?
 
-        sorted = unsorted.sort_by do |e|
-          e.values_at(*sort_keys).map { |v| v.nil? ? BibTeX::Value.new : v }
+        sorted = unsorted.sort do |e1, e2|
+          sort_keys
+            .map.with_index do |key, idx|
+              v1 = e1[key].nil? ? BibTeX::Value.new : e1[key]
+              v2 = e2[key].nil? ? BibTeX::Value.new : e2[key]
+              if (sort_order[idx] || sort_order.last) =~ /^(desc|reverse)/i
+                v2 <=> v1
+              else
+                v1 <=> v2
+              end
+            end
+            .find { |c| c != 0 } || 0
         end
 
-        sorted.reverse! if config['order'] =~ /^(desc|reverse)/i
         sorted
       end
 
@@ -171,6 +203,132 @@ module Jekyll
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
           .map { |key| key == 'month' ? 'month_numeric' : key }
+      end
+
+      def sort_order
+        return @sort_order unless @sort_order.nil?
+
+        @sort_order = Array(config['order'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+
+      def group_by
+        @group_by ||= config['group_by']
+      end
+
+      def group?
+        group_by != 'none'
+      end
+
+      def group(ungrouped)
+        def grouper(items, keys, order)
+          groups = items.group_by do |item|
+            group_value(keys.first, item)
+          end
+
+          if keys.count == 1
+            groups
+          else
+            groups.merge(groups) do |key, items|
+              grouper(items, keys.drop(1), order.drop(1))
+            end
+          end
+        end
+
+        grouper(ungrouped, group_keys, group_order)
+      end
+
+      def group_keys
+        return @group_keys unless @group_keys.nil?
+
+        @group_keys = Array(group_by)
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+          .map { |key| key == 'month' ? 'month_numeric' : key }
+      end
+
+      def group_order
+        self.group_order = config['group_order'] if @group_order.nil?
+        @group_order
+      end
+
+      def group_order=(value)
+        @group_order = Array(value)
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+
+      def group_compare(key,v1,v2)
+        case key
+        when 'type'
+          o1 = type_order.find_index(v1)
+          o2 = type_order.find_index(v2)
+          if o1.nil? && o2.nil?
+            0
+          elsif o1.nil?
+            1
+          elsif o2.nil?
+            -1
+          else
+            o1 <=> o2
+          end
+        else
+          v1 <=> v2
+        end
+      end
+
+      def group_value(key,item)
+        case key
+        when 'type'
+          type_aliases[item.type.to_s] || item.type.to_s
+        else
+          value = item[key]
+          if value.numeric?
+            value.to_i
+          elsif value.date?
+            value.to_date
+          else
+            value.to_s
+          end
+        end
+      end
+
+      def group_tags
+        return @group_tags unless @group_tags.nil?
+
+        @group_tags = Array(config['bibliography_group_tag'])
+          .map { |key| key.to_s.split(/\s*,\s*/) }
+          .flatten
+      end
+
+      def group_name(key,value)
+        case key
+        when 'type'
+          type_names[value] || value.to_s
+        when 'month_numeric'
+          month_names[value] || "(unknown)"
+        else
+          value.to_s
+        end
+      end
+
+      def type_order
+        @type_order ||= config['type_order']
+      end
+
+      def type_aliases
+        @type_aliases ||= Scholar.defaults['type_aliases'].merge(config['type_aliases'])
+      end
+
+      def type_names
+        @type_names ||= Scholar.defaults['type_names'].merge(config['type_names'])
+      end
+
+      def month_names
+        return @month_names unless @month_names.nil?
+
+        @month_names = config['month_names'].nil? ? Date::MONTHNAMES : config['month_names'].unshift(nil)
       end
 
       def suppress_author?
@@ -243,6 +401,10 @@ module Jekyll
         return source if source.start_with?('/') && File.exists?(source)
 
         File.join site.source, source
+      end
+
+      def relative
+        config['relative']
       end
 
       def reference_tag(entry, index = nil)
@@ -342,18 +504,19 @@ module Jekyll
           e[key.to_s] = value.to_s
 
           if value.is_a?(BibTeX::Names)
+            e["#{key}_array"] = arr = []
             value.each.with_index do |name, idx|
+              parts = {}
               name.each_pair do |k, v|
                 e["#{key}_#{idx}_#{k}"] = v.to_s
+                parts[k.to_s] = v.to_s
               end
+              arr << parts
             end
           end
         end
 
         e
-      end
-
-      def bibtex_skip_fields
       end
 
       def generate_details?
@@ -399,18 +562,21 @@ module Jekyll
         config['details_dir']
       end
 
-      def renderer
-        @renderer ||= CiteProc::Ruby::Renderer.new :format => 'html',
+      def renderer(force = false)
+        return @renderer if @renderer && !force
+
+        @renderer = CiteProc::Ruby::Renderer.new :format => 'html',
           :style => style, :locale => config['locale']
       end
 
       def render_citation(items)
-        renderer.render items.zip(locators).map { |entry, locator|
+        renderer.render items.zip(locators.zip(labels)).map { |entry, (locator, label)|
           cited_keys << entry.key
           cited_keys.uniq!
 
           item = citation_item_for entry, citation_number(entry.key)
           item.locator = locator
+          item.label = label unless label.nil?
 
           item
         }, STYLES[style].citation
@@ -437,6 +603,10 @@ module Jekyll
         (context['citation_numbers'] ||= {})[key] ||= cited_keys.length
       end
 
+      def link_target_for(key)
+        "#{relative}##{[prefix, key].compact.join('-')}"
+      end
+
       def cite(keys)
         items = keys.map do |key|
           if bibliography.key?(key)
@@ -447,7 +617,7 @@ module Jekyll
           end
         end
 
-        link_to "##{[prefix, keys[0]].compact.join('-')}", render_citation(items)
+        link_to link_target_for(keys[0]), render_citation(items)
       end
 
       def cite_details(key, text)
