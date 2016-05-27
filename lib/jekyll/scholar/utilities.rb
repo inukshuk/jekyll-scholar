@@ -351,10 +351,14 @@ module Jekyll
         repo = Hash.new { |h,k| h[k] = {} }
 
         return repo unless repository?
-
-        Dir[File.join(repository_path, '**/*')].each do |path|
+        
+        # ensure that the base directory format is literally 
+        # the same as the entries that are in the directory
+        base = Dir[site.source][0] 
+        
+        Dir[File.join(site.source, repository_path, '**/*')].each do |path|
           extname = File.extname(path)
-          repo[File.basename(path, extname)][extname[1..-1]] = path
+          repo[File.basename(path, extname)][extname[1..-1]] = Pathname(path).relative_path_from(Pathname(base))
         end
 
         repo
@@ -396,7 +400,7 @@ module Jekyll
 
       def scholar_source
         source = config['source']
-
+        
         # Improve by using Pathname from stdlib?
         return source if source.start_with?('/') && File.exists?(source)
 
