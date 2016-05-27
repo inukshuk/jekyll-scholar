@@ -60,8 +60,8 @@ Feature: PDF Repository
       | repository            | papers            |
       | bibliography_template | bibliography      |
     And I have a "src" directory
-    And I have a "_bibliography" directory
-    And I have a file "_bibliography/references.bib":
+    And I have a "src/_bibliography" directory
+    And I have a file "src/_bibliography/references.bib":
       """
       @book{ruby,
         title     = {The Ruby Programming Language},
@@ -79,14 +79,14 @@ Feature: PDF Repository
       """
       The PPT
       """
-    And I have a "_layouts" directory
-    And I have a file "_layouts/bibliography.html":
+    And I have a "src/_layouts" directory
+    And I have a file "src/_layouts/bibliography.html":
       """
       ---
       ---
       {{ reference }} Link: {{ link }} Slides: {{ links.ppt }}
       """
-    And I have a page "scholar.html":
+    And I have a page "src/scholar.html":
       """
       ---
       ---
