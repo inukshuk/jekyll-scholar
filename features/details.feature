@@ -242,3 +242,32 @@ Feature: Details
     Then the _site directory should exist
     And the "_site/bibliography/august.html" file should exist
     And I should see "month = {August}" in "_site/bibliography/august.html"
+
+  @tags @details
+  Scenario: No details
+    Given I have a scholar configuration with:
+      | key            | value             |
+      | source         | ./_bibliography   |
+      | bibliogaphy    | references        |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And the "_site/bibliography/ruby.html" file should not exist
+    And I should not see "<a[^>]+href=\"/bibliography/ruby.html\">" in "_site/scholar.html"
