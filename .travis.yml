@@ -5,9 +5,9 @@ sudo: false
 cache: bundler
 rvm:
   - 2.3.0
-  - 2.2.0
-  - 2.1.0
-  - 2.0.0
+  - 2.2
+  - 2.1
+  - 2.0
   - rbx-2
 notifications:
   email:
