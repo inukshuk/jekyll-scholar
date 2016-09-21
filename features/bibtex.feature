@@ -368,4 +368,4 @@ Feature: BibTeX
     When I run jekyll
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
-    And I should see "{%raw%}@book" in "_site/scholar.html"
+    And I should not see "{%[\w*]raw[\w*]%}" in "_site/scholar.html"

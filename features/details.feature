@@ -109,8 +109,8 @@ Feature: Details
     And I should see "title = {An Umlaut \\\"a!}" in "_site/bibliography/ruby.html"
     
 
-  @generators @bibtex
-  Scenario: Raw input can be turned off, and should not generate {%raw%} tags on the details page
+  @generators
+  Scenario: Raw input can be turned on, but should not generate any {%raw%} tags on the details page, and also not parse the liquid tags inside the bibtex
     Given I have a scholar configuration with:
       | key            | value             |
       | source         | ./_bibliography   |
@@ -120,8 +120,20 @@ Feature: Details
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
-      @book{ruby,
-        title     = {{ some test }}
+      @book{sdf,
+        title     = {{SDF^3}}
+        }
+      """
+    And I have a file "bibliography.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {%bibliography%}
+      </body>
+      </html>
       """
     And I have a "_layouts" directory
     And I have a file "_layouts/details.html":
@@ -139,8 +151,9 @@ Feature: Details
       """
     When I run jekyll
     Then the _site directory should exist
-    And the "_site/bibliography/ruby.html" file should exist
-    And I should not see "{%raw%}" in "_site/bibliography/ruby.html"
+    And the "_site/bibliography/sdf.html" file should exist
+    And I should not see "{%raw%}" in "_site/bibliography/sdf.html"
+    And I should see "SDF\^3" in "_site/bibliography/sdf.html"
 
   @tags @details
   Scenario: Links to Detail Pages are Generated Automatically
