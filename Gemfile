@@ -2,12 +2,10 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-
   if RUBY_VERSION >= '2.2.2'
     gem 'test-unit'
   else
     gem 'minitest', '< 5.0'
-    gem 'listen', '~>3.0.0'
   end
 
   gem 'rake'
@@ -17,7 +15,13 @@ group :development do
   gem 'redcarpet'
 
   gem 'unicode_utils'
+end
 
+group :extra do
+    gem 'listen', '~>3.0.0'
+end
+
+group :coverage do
   gem 'simplecov', '~>0.9', :require => false
   gem 'rubinius-coverage', :platform => :rbx
   gem 'coveralls', :require => false
