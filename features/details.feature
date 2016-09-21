@@ -107,6 +107,40 @@ Feature: Details
     And I should see "Page title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "Title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "title = {An Umlaut \\\"a!}" in "_site/bibliography/ruby.html"
+    
+
+  @generators @bibtex
+  Scenario: Raw input can be turned off, and should not generate {%raw%} tags on the details page
+    Given I have a scholar configuration with:
+      | key            | value             |
+      | source         | ./_bibliography   |
+      | details_layout | details.html      |
+      | bibtex_filters |                   |
+      | use_raw_bibtex_entry | true        |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {{ some test }}
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      Page title: {{ page.title }}
+      Title: {{ page.entry.title }}
+      {{ page.entry.bibtex }}
+      </body>
+      </html>
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/bibliography/ruby.html" file should exist
+    And I should not see "{%raw%}" in "_site/bibliography/ruby.html"
 
   @tags @details
   Scenario: Links to Detail Pages are Generated Automatically
