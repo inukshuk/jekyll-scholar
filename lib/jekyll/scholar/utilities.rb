@@ -455,14 +455,23 @@ module Jekyll
 
       def bibliography_tag(entry, index)
         return missing_reference unless entry
-
-        liquid_template.render(
+        
+        tmp = liquid_template.render(
           reference_data(entry,index)
             .merge(site.site_payload)
             .merge({
               'index' => index,
               'details' => details_link_for(entry)
             }),
+          {
+            :registers => { :site => site },
+            :filters => [Jekyll::Filters]
+          }
+        )
+        # process the generated reference with Liquid, to get the same behaviour as 
+        # when it is used on a page
+        Liquid::Template.parse(tmp).render(
+          site.site_payload, 
           {
             :registers => { :site => site },
             :filters => [Jekyll::Filters]
