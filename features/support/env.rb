@@ -32,7 +32,7 @@ def prepend_test_dir(options, key)
 end
 
 def run_jekyll(options = {})
-  
+
   options = Jekyll.configuration(options)
 
   prepend_test_dir(options, 'source')

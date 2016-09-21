@@ -5,18 +5,12 @@ matrix:
   include:
   - rvm: 2.3.1
     env: WITH_COVERALLS=true
-  - rvm: 2.2
-    env: WITH_COVERALLS=false
   - rvm: 2.1
     env: WITH_COVERALLS=false
   - rvm: 2.0
     env: WITH_COVERALLS=false
-  - rvm: jruby-19mode
-    env: WITH_COVERALLS=false
   - rvm: rbx-2
     env: WITH_COVERALLS=false
-  allow_failures:
-  - rvm: rbx-2
 install:
 - if [[ $WITH_COVERALLS = "true" ]]; then
     bundle install --without debug extra;
