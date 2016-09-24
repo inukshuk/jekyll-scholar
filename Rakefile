@@ -15,9 +15,13 @@ Cucumber::Rake::Task.new(:features)
 
 task :default => [:features]
 
-require 'coveralls/rake/task'
-Coveralls::RakeTask.new
-task :test_with_coveralls => [:features, 'coveralls:push']
+begin
+  require 'coveralls/rake/task'
+  Coveralls::RakeTask.new
+  task :test_with_coveralls => [:features, 'coveralls:push']
+rescue LoadError => e
+  # ignore
+end
 
 task :release do |t|
   system "gem build jekyll-scholar.gemspec"

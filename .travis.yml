@@ -1,20 +1,29 @@
 language: ruby
-bundler_args: --without debug
-script: bundle exec rake test_with_coveralls
 sudo: false
 cache: bundler
-rvm:
-  - 2.3.0
-  - 2.2.0
-  - 2.1.0
-  - 2.0.0
-  - rbx-2
+matrix:
+  include:
+  - rvm: 2.3.1
+    env: WITH_COVERALLS=true
+  - rvm: 2.1
+    env: WITH_COVERALLS=false
+  - rvm: 2.0
+    env: WITH_COVERALLS=false
+install:
+- if [[ $WITH_COVERALLS = "true" ]]; then
+    bundle install --without debug extra;
+  else
+    bundle install --without debug extra coverage;
+  fi
+script:
+- if [[ $WITH_COVERALLS = "true" ]]; then
+    bundle exec rake test_with_coveralls;
+  else
+    bundle exec rake;
+  fi
 notifications:
   email:
     recipients:
       - sylvester@keil.or.at
     on_success: change
-    on_failure: always
-matrix:
-  allow_failures:
-    - rvm: rbx-2
+    on_failure: change
