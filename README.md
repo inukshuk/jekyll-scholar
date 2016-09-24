@@ -73,7 +73,7 @@ default configuration is as follows:
       replace_strings: true
       join_strings:    true
 
-      use_raw_bibtex_entry: false
+      use_raw_bibtex_entry: true # do not process Liquid tags inside Bibtex
       bibtex_filters:
       - superscript
       - latex

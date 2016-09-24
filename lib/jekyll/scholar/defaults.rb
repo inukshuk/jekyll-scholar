@@ -28,7 +28,7 @@ module Jekyll
       'details_dir'            => 'bibliography',
       'details_layout'         => 'bibtex.html',
       'details_link'           => 'Details',
-      'use_raw_bibtex_entry'   => false,
+      'use_raw_bibtex_entry'   => true,
 
       'bibliography_class'     => 'bibliography',
       'bibliography_template'  => '{{reference}}',
