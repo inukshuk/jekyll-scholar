@@ -73,7 +73,7 @@ default configuration is as follows:
       replace_strings: true
       join_strings:    true
 
-      use_raw_bibtex_entry: false
+      use_raw_bibtex_entry: true
       bibtex_filters:
       - superscript
       - latex
@@ -101,10 +101,11 @@ The `source` option indicates where your bibliographies are stored;
 `bibliography` is the name of your default bibliography. For best results,
 please ensure that your Bibliography is encoded as ASCII or UTF-8.
 
-The `use_raw_bibtex_entry` option will disable parsing of Liquid tags that 
-are embedded in the Bibtex fields. This option provides a way to circumvent 
-the problem that the double braces functionality of BibTex is accidentally 
-parsed by Liquid, while it was intended to keep the exact capitalization style.
+The `use_raw_bibtex_entry` option by default disable parsing of Liquid tags 
+embedded in the Bibtex fields. This option provides a way to circumvent the 
+problem that (the conflicting syntax of) the double braces functionality of 
+BibTex is accidentally parsed by Liquid, while it was intended to keep the 
+exact capitalization style.
 
 The `sort_by` and `order` options specify if and how bibliography
 entries are sorted. Entries can be sorted on multiple fields, by using
