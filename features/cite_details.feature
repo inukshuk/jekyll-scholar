@@ -36,7 +36,6 @@ Feature: Citations
       | source                | ./_bibliography  |
       | bibliography_template | {{entry.bibtex}} |
       | details_layout        | details.html     |
-      | use_raw_bibtex_entry  | true             |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -65,6 +64,7 @@ Feature: Citations
       | source                | ./_bibliography  |
       | bibliography_template | {{entry.bibtex}} |
       | details_layout        | details.html     |
+      | use_raw_bibtex_entry  | false            |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
