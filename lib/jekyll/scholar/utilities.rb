@@ -161,7 +161,7 @@ module Jekyll
       end
 
       def entries
-        sort bibliography[query || config['query']]
+        sort bibliography[query || config['query']].select { |x| x.instance_of? BibTeX::Entry}
       end
 
       def offset
