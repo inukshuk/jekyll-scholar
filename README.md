@@ -352,6 +352,19 @@ of the items you wish to quote separated by spaces. For example,
 
     <a href="#ruby">(Flanagan &amp; Matsumoto 2008; Shaughnessy 2013)</a>
 
+#### Citations when there's more than one bibliography
+
+Let's return to the example above where you have two bibliographies stored 
+in `_bibliography/books.bib` and `_bibliography/papers.bib`. We also must
+have the main bibliography, e.g., `_bibliography/references.bib`. As we
+know from above, it's possible to use bibliographies other than the main
+bibliography by calling `{% bibliography --file books %}` or 
+`{% bibliography --file papers %}`. 
+
+Though what if we want to cite an article that's not in the main bibliography? 
+We use the same approach as above; to cite an article in the `books.bib` 
+bibliography, we simply call `{% cite ruby --file books %}` 
+
 #### Suppressing author names
 
 Sometimes you want to suppress author names in a citation, because the
