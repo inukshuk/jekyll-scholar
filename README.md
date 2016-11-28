@@ -126,13 +126,13 @@ journal articles before technical reports. Types not mentioned in
 `type_order` are considered smaller than types that are
 mentioned. Types can be merge in one group using the `type_aliases`
 setting. By default `phdthesis` and `mastersthesis` are grouped as
-`thesis`. By using, for example, `type_aliases: { inproceeding =>
+`thesis`. By using, for example, `type_aliases: { inproceedings:
 article}`, journal and conference articles appear in a single
 group. The display names for entry types are specified with
 `type_names`. Names for common types are provided, but they can be
 extended or overridden. For example, the default name for `article` is
 *Journal Articles*, but it can be changed to *Papers* using
-`type_name: { article => 'Papers' }`.
+`type_names: { article: Papers }`.
 
 The `bibtex_filters` option configures which
 [BibTeX-Ruby](https://github.com/inukshuk/bibtex-ruby) formatting filters
