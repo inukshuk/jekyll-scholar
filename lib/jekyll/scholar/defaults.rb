@@ -1,20 +1,31 @@
 module Jekyll
   class Scholar
     @defaults = {
+      # Style used for citations and bibliographies
       'style'                  => 'apa',
+      # Sets languages used in bibliography
       'locale'                 => 'en',
 
+      # Keys used to sort bibliography
       'sort_by'                => 'none',
+      # Order used to sort biobliography
       'order'                  => 'ascending',
       'group_by'               => 'none',
       'group_order'            => 'ascending',
+      # HTML tags used for bibliography group names
       'bibliography_group_tag' => 'h2,h3,h4,h5',
+      # HTML tag used for list of bibliography entries
       'bibliography_list_tag'  => 'ol',
+      # HTML tag used for individual bibliography entries
       'bibliography_item_tag'  => 'li',
+      # Attributes applied to HTML tag for list of bibliography entries
       'bibliography_list_attributes' => {},
+      # Attributes applied to HTML tag for bibliography entries
       'bibliography_item_attributes' => {},
 
+      # Name of folder references files are stored in
       'source'                 => './_bibliography',
+      # Name of default references file
       'bibliography'           => 'references.bib',
       'repository'             => nil,
 
