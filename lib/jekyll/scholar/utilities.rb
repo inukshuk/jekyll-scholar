@@ -688,15 +688,23 @@ module Jekyll
         self
       end
 
-      def style_cache(style)
-        style_path =
-          if Pathname.new(style).absolute?
-            style
+      # Try to resolve local style paths
+      # relative to Jekyll's source directory
+      def style_cache(style_name)
+        style =
+          if site && site.source
+            site_relative_style = File.join(site.source, style_name)
+
+            if Pathname.new(style_name).relative? && File.exist?(site_relative_style)
+              site_relative_style
+            else
+              style_name
+            end
           else
-            File.join(site.source, style)
+            style_name
           end
 
-        STYLES[style_path]
+        STYLES[style]
       end
     end
 
