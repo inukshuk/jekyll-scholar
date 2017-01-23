@@ -592,12 +592,12 @@ module Jekyll
           item.label = label unless label.nil?
 
           item
-        }, STYLES[style].citation
+        }, style_cache(style).citation
       end
 
       def render_bibliography(entry, index = nil)
         renderer.render citation_item_for(entry, index),
-          STYLES[style].bibliography
+          style_cache(style).bibliography
       end
 
       def citation_item_for(entry, citation_number = nil)
@@ -686,6 +686,17 @@ module Jekyll
         @context, @site, = context, context.registers[:site]
         config.merge!(site.config['scholar'] || {})
         self
+      end
+
+      def style_cache(style)
+        style_path =
+          if Pathname.new(style).absolute?
+            style
+          else
+            File.join(site.source, style)
+          end
+
+        STYLES[style_path]
       end
     end
 
