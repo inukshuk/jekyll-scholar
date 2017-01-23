@@ -369,3 +369,49 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should not see "{%[\w*]raw[\w*]%}" in "_site/scholar.html"
+
+  @config @bibliography @style
+  Scenario: A custom style with Jekyll source directory set
+    Given I have a configuration file with:
+      | key     | value              |
+      | source  | src                |
+    And I have a scholar configuration with:
+      | key     | value              |
+      | source  | _bibliography      |
+      | style   | _styles/custom.csl |
+    And I have a "src" directory
+    And I have a "src/_bibliography" directory
+    And I have a "src/_styles" directory
+    And I have a file "src/_styles/custom.csl":
+      """
+      <style>
+        <citation>
+          <layout>
+            <text variable="title"/>
+          </layout>
+        </citation>
+        <bibliography>
+          <layout>
+            <text variable="title"/>
+          </layout>
+        </bibliography>
+      </style>
+      """
+    And I have a file "src/_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "src/scholar.html":
+      """
+      ---
+      ---
+      {% bibliography --style _styles/custom.csl %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And I should see "The Ruby Programming Language" in "_site/scholar.html"
