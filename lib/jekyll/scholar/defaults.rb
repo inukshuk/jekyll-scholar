@@ -27,7 +27,13 @@ module Jekyll
       'source'                 => './_bibliography',
       # Name of default references file
       'bibliography'           => 'references.bib',
+
+      # The repository folder with your entries' attachemnts, slides, etc.
       'repository'             => nil,
+
+      # Delimiter for files in repositories;
+      # this character may not be part of your entry keys!
+      'repository_file_delimiter' => '.',
 
       'bibtex_options'         => { :strip => false, :parse_months => true },
       'bibtex_filters'         => [ :superscript, :latex ],
@@ -70,7 +76,8 @@ module Jekyll
       },
       'type_order' => [],
 
-      'month_names' => nil,
+      'month_names' => nil
+
     }.freeze
 
     class << self

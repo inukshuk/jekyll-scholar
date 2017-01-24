@@ -239,6 +239,7 @@ module Jekyll
         grouper(ungrouped, group_keys, group_order)
       end
 
+
       def group_keys
         return @group_keys unless @group_keys.nil?
 
@@ -351,14 +352,15 @@ module Jekyll
         repo = Hash.new { |h,k| h[k] = {} }
 
         return repo unless repository?
-        
-        # ensure that the base directory format is literally 
+
+        # ensure that the base directory format is literally
         # the same as the entries that are in the directory
-        base = Dir[site.source][0] 
-        
+        base = Dir[site.source][0]
+
         Dir[File.join(site.source, repository_path, '**/*')].each do |path|
-          extname = File.extname(path)
-          repo[File.basename(path, extname)][extname[1..-1]] = Pathname(path).relative_path_from(Pathname(base))
+          parts = path.split(repository_file_delimiter, 2)
+          repo[File.basename(parts[0])][parts[1]] =
+            Pathname(path).relative_path_from(Pathname(base))
         end
 
         repo
@@ -366,6 +368,10 @@ module Jekyll
 
       def repository_path
         config['repository']
+      end
+
+      def repository_file_delimiter
+        config['repository_file_delimiter']
       end
 
       def replace_strings?
@@ -400,7 +406,7 @@ module Jekyll
 
       def scholar_source
         source = config['source']
-        
+
         # Improve by using Pathname from stdlib?
         return source if source.start_with?('/') && File.exists?(source)
 
@@ -455,7 +461,7 @@ module Jekyll
 
       def bibliography_tag(entry, index)
         return missing_reference unless entry
-        
+
         tmp = liquid_template.render(
           reference_data(entry,index)
             .merge(site.site_payload)
@@ -471,7 +477,7 @@ module Jekyll
         # process the generated reference with Liquid, to get the same behaviour as 
         # when it is used on a page
         Liquid::Template.parse(tmp).render(
-          site.site_payload, 
+          site.site_payload,
           {
             :registers => { :site => site },
             :filters => [Jekyll::Filters]

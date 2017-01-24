@@ -79,7 +79,7 @@ module Jekyll
         end
         group_renderer(groups,group_keys,group_order,group_tags)
       end
-      
+
       def render_items(items)
         bibliography = items.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
@@ -96,7 +96,7 @@ module Jekyll
           { :class => config['bibliography_class'] }.merge(config['bibliography_list_attributes'])
 
       end
-      
+
     end
 
   end
