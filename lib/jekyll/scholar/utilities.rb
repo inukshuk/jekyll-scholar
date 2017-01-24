@@ -5,12 +5,7 @@ module Jekyll
     # Load styles into static memory.
     # They should be thread safe as long as they are
     # treated as being read-only.
-    STYLES = Hash.new do |h, k|
-      style = CSL::Style.load k
-      style = style.independent_parent unless style.independent?
-      h[k.to_s] = style
-    end
-
+    STYLES = {}
 
     # Utility methods used by several Scholar plugins. The methods in this
     # module may depend on the presence of #config, #bibtex_files, and
@@ -598,12 +593,12 @@ module Jekyll
           item.label = label unless label.nil?
 
           item
-        }, style_cache(style).citation
+        }, styles(style).citation
       end
 
       def render_bibliography(entry, index = nil)
         renderer.render citation_item_for(entry, index),
-          style_cache(style).bibliography
+          styles(style).bibliography
       end
 
       def citation_item_for(entry, citation_number = nil)
@@ -694,23 +689,27 @@ module Jekyll
         self
       end
 
-      # Try to resolve local style paths
-      # relative to Jekyll's source directory
-      def style_cache(style_name)
-        style =
-          if site && site.source
-            site_relative_style = File.join(site.source, style_name)
+      def load_style(uri)
+        begin
+          style = CSL::Style.load uri
+        rescue CSL::ParseError => error
+          # Try to resolve local style paths
+          # relative to Jekyll's source directory
+          site_relative_style = File.join(site.source, uri)
 
-            if Pathname.new(style_name).relative? && File.exist?(site_relative_style)
-              site_relative_style
-            else
-              style_name
-            end
-          else
-            style_name
-          end
+          raise error unless File.exist?(site_relative_style)
+          style = CSL::Style.load site_relative_style
+        end
 
-        STYLES[style]
+        if style.independent?
+          style
+        else
+          style.independent_parent
+        end
+      end
+
+      def styles(style)
+        STYLES[style] ||= load_style(style)
       end
     end
 
