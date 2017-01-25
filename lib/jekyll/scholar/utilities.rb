@@ -353,8 +353,8 @@ module Jekyll
         base = Dir[site.source][0]
 
         Dir[File.join(site.source, repository_path, '**/*')].each do |path|
-          parts = path.split(repository_file_delimiter, 2)
-          repo[File.basename(parts[0])][parts[1]] =
+          parts = File.basename(path).split(repository_file_delimiter, 2)
+          repo[parts[0]][parts[1]] =
             Pathname(path).relative_path_from(Pathname(base))
         end
 

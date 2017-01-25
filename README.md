@@ -433,12 +433,12 @@ to link to supporting material in a ZIP archive:
 
     {{ reference }} [<a href="{{links.zip}}">Supporting Materials</a>]
 
-Jekyll-Scholar matches files which begin with a BibTeX key and are immediately
-followed by a delimiter (default: "."). All text proceeding the delimiter is
-treated as the file extension. For example, if two files named `key.pdf` and
-`key.slides.pdf` are found, `{{links.pdf}}` and `{{links['slides.pdf']}}` will
-both be populated. You can use the configuration option
-`repository_file_delimiter` to change the default delimiter.
+Since version 5.9.0, Jekyll-Scholar matches files which begin with a BibTeX key
+and are immediately followed by a delimiter (default: "."). All text proceeding
+the delimiter is treated as the file extension. For example, if two files named
+`key.pdf` and `key.slides.pdf` are found, `{{links.pdf}}` and
+`{{links['slides.pdf']}}` will both be populated.  You can use the configuration
+option `repository_file_delimiter` to change the default delimiter.
 
 
 ### Detail Pages
