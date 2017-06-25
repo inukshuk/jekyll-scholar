@@ -24,6 +24,29 @@ Feature: BibTeX
     And the "_site/references.html" file should exist
     And I should see "<i>The Ruby Programming Language</i>" in "_site/references.html"
 
+  @converters @post
+  Scenario: Simple Bibliography
+    Given I have a scholar configuration with:
+      | key   | value |
+      | style | apa   |
+     And I have a "_posts" directory
+     And I have a page "_posts/2017-06-26-references.bib":
+      """
+      ---
+      ---
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/2017/06/26/references.html" file should exist
+    And I should see "<i>The Ruby Programming Language</i>" in "_site/2017/06/26/references.html"
+
+  @converters
   Scenario: Markdown Formatted Bibliography
     Given I have a scholar configuration with:
       | key   | value |
@@ -107,7 +130,35 @@ Feature: BibTeX
     And the "_site/references.html" file should exist
     And I should see "<i>The Ruby Programming Language</i>" in "_site/references.html"
 
-  @tags
+  @tags @bibtex @post
+  Scenario: Embedded BibTeX
+    Given I have a scholar configuration with:
+      | key   | value |
+      | style | apa   |
+     And I have a "_posts" directory
+     And I have a page "_posts/2017-06-26-references.md":
+      """
+      ---
+      ---
+      References
+      ==========
+
+      {% bibtex %}
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      {% endbibtex %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/2017/06/26/references.html" file should exist
+    And I should see "<i>The Ruby Programming Language</i>" in "_site/2017/06/26/references.html"
+
+  @tags @bibliography
+  @tags @bibliography
   Scenario: Simple Bibliography Loaded From Default Directory
     Given I have a scholar configuration with:
       | key    | value             |
@@ -132,6 +183,33 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "<i>The Ruby Programming Language</i>" in "_site/scholar.html"
+
+  @tags @bibliography @post
+  Scenario: Simple Bibliography in a Jekyll Post
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_posts" directory
+    And I have a page "_posts/2017-06-26-scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/2017/06/26/scholar.html" file should exist
+    And I should see "<i>The Ruby Programming Language</i>" in "_site/2017/06/26/scholar.html"
 
   @tags @bibliography @config @template
   Scenario: Simple Bibliography With Custom Template

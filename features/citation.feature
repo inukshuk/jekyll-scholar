@@ -29,6 +29,34 @@ Feature: Citations
     And the "_site/scholar.html" file should exist
     And I should see "Flanagan" in "_site/scholar.html"
 
+  @tags @cite @post
+  Scenario: A Simple Citation in a Post
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_posts" directory
+    And I have a page "_posts/2017-06-26-scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/2017/06/26/scholar.html" file should exist
+    And I should see "Flanagan" in "_site/2017/06/26/scholar.html"
+
   @tags @cite @file
   Scenario: Citing from another bibliography
     Given I have a scholar configuration with:
@@ -139,6 +167,36 @@ Feature: Citations
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "<blockquote><p>We <3 Ruby</p><cite><a .*#ruby.+\(Flanagan" in "_site/scholar.html"
+
+  @tags @quote @post
+  Scenario: A Simple Block-Quote in a Post
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_posts" directory
+    And I have a page "_posts/2017-06-26-scholar.html":
+      """
+      ---
+      ---
+      {% quote ruby %}
+      We <3 Ruby
+      {% endquote %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/2017/06/26/scholar.html" file should exist
+    And I should see "<blockquote><p>We <3 Ruby</p><cite><a .*#ruby.+\(Flanagan" in "_site/2017/06/26/scholar.html"
 
   @tags @cite
   Scenario: A prefixed citation

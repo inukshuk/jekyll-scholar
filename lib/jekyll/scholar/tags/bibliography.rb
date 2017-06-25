@@ -16,7 +16,7 @@ module Jekyll
         set_context_to context
 
         # Add bibtex files to dependency tree
-        if context.registers[:page] and context.registers[:page].has_key? "path"
+        if context.registers[:page] and context.registers[:page].key? "path"
           bibtex_paths.each do |bibtex_path|
             site.regenerator.add_dependency(
               site.in_source_dir(context.registers[:page]["path"]),
