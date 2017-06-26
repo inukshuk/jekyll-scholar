@@ -36,7 +36,7 @@ module Jekyll
       'repository_file_delimiter' => '.',
 
       'bibtex_options'         => { :strip => false, :parse_months => true },
-      'bibtex_filters'         => [ :superscript, :latex ],
+      'bibtex_filters'         => [ :smallcaps, :superscript, :latex ],
       'bibtex_skip_fields'     => [ :abstract, :month_numeric ],
 
       'replace_strings'        => true,

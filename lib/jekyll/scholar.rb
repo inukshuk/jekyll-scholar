@@ -22,3 +22,4 @@ require 'jekyll/scholar/generators/details'
 
 require 'jekyll/scholar/plugins/markdown_links'
 require 'jekyll/scholar/plugins/superscript'
+require 'jekyll/scholar/plugins/smallcaps'
