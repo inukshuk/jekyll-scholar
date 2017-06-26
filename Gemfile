@@ -22,7 +22,7 @@ group :extra do
 end
 
 group :coverage do
-  gem 'simplecov', '~>0.9', :require => false
+  gem 'simplecov', '~>0.14', :require => false
   gem 'rubinius-coverage', :platform => :rbx
   gem 'coveralls', :require => false
 end
