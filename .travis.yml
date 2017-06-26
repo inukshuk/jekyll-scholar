@@ -7,8 +7,6 @@ matrix:
     env: WITH_COVERALLS=true
   - rvm: 2.3
     env: WITH_COVERALLS=false
-  - rvm: 2.2
-    env: WITH_COVERALLS=false
 install:
 - if [[ $WITH_COVERALLS = "true" ]]; then
     bundle install --without debug extra;
