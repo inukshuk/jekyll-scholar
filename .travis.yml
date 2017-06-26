@@ -3,11 +3,11 @@ sudo: false
 cache: bundler
 matrix:
   include:
-  - rvm: 2.3.1
+  - rvm: 2.4
     env: WITH_COVERALLS=true
-  - rvm: 2.1
+  - rvm: 2.3
     env: WITH_COVERALLS=false
-  - rvm: 2.0
+  - rvm: 2.2
     env: WITH_COVERALLS=false
 install:
 - if [[ $WITH_COVERALLS = "true" ]]; then
