@@ -355,3 +355,130 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "This is <sup>superscript text</sup> this should not be superscript \{even\} \{with \{additional\} groups\}." in "_site/scholar.html"
+
+  @tags @smallcap
+  Scenario: LaTeX Superscript as HTML
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | smallcaps |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \textsc{smallcaps text}.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is <font style=\"font-variant: small-caps\">smallcaps text</font>." in "_site/scholar.html"
+
+  @tags @smallcaps
+  Scenario: LaTeX Superscript with embedded LaTeX chars as HTML
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | smallcaps |
+      | latex       |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {\textsc{\"u \"{u} \v{z}}}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "<font style=\"font-variant: small-caps\">ü ü ž</font>" in "_site/scholar.html"
+
+  @tags @smallcaps
+  Scenario: LaTeX Superscript as HTML with embedded LaTeX chars left untouched
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | smallcaps |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {\textsc{\"u \"{u} \v{z}}}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "<font style=\"font-variant: small-caps\">\\"u \\"\{u\} \\v\{z\}</font>" in "_site/scholar.html"
+
+  @tags @smallcaps
+  Scenario: LaTeX Superscript with subsequent groups as HTML
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | smallcaps |
+      | latex       |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \textsc{smallcaps text} this should not be smallcaps {even} {with {additional} groups}.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is <font style=\"font-variant: small-caps\">smallcaps text</font> this should not be smallcaps even with additional groups." in "_site/scholar.html"
+
+  @tags @smallcaps
+  Scenario: LaTeX Superscript with subsequent groups untouched in HTML
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | smallcaps |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \textsc{smallcaps text} this should not be smallcaps {even} {with {additional} groups}.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is <font style=\"font-variant: small-caps\">smallcaps text</font> this should not be smallcaps \{even\} \{with \{additional\} groups\}." in "_site/scholar.html"
