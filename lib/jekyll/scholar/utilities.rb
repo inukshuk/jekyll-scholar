@@ -610,7 +610,7 @@ module Jekyll
       end
 
       def cited_keys
-        context['cited'] ||= []
+        context['cited'] = context.environments.first['page']['cited']  ||= []
       end
 
       def citation_number(key)
@@ -663,7 +663,7 @@ module Jekyll
       end
 
       def cited_references
-        context && context['cited'] || []
+        context && cited_keys
       end
 
       def keys
