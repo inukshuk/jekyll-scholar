@@ -506,7 +506,7 @@ module Jekyll
             tmp.delete name if tmp.field?(name)
           end
 
-          e['bibtex'] = tmp.to_s
+          e['bibtex'] = tmp.to_s({ quotes: config['bibtex_quotes'] })
         end
 
         if raw_bibtex?
