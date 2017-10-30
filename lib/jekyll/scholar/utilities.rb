@@ -498,7 +498,7 @@ module Jekyll
         e['type'] = entry.type.to_s
 
         if entry.field_names(config['bibtex_skip_fields']).empty?
-          e['bibtex'] = entry.to_s
+          e['bibtex'] = entry.to_s({ quotes: config['bibtex_quotes'] })
         else
           tmp = entry.dup
 

@@ -38,6 +38,7 @@ module Jekyll
       'bibtex_options'         => { :strip => false, :parse_months => true },
       'bibtex_filters'         => [ :smallcaps, :superscript, :latex ],
       'bibtex_skip_fields'     => [ :abstract, :month_numeric ],
+      'bibtex_quotes'          => ['{', '}'],
 
       'replace_strings'        => true,
       'join_strings'           => true,
