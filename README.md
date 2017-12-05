@@ -48,7 +48,7 @@ to a file in your plugin directory (e.g., to `_plugins/ext.rb`):
 Alternatively, add `jekyll-scholar` to your `gem` list in your Jekyll
 configuration:
 
-    gems: ['jekyll/scholar']
+    plugins: ['jekyll/scholar']
 
 ### Configuration
 
