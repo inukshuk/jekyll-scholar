@@ -51,6 +51,10 @@ module Jekyll
             @query = query
           end
 
+          opts.on('-h', '--bibliography_list_tag TAG') do |tag|
+            @bibliography_list_tag = tag
+          end
+
           opts.on('-p', '--prefix PREFIX') do |prefix|
             @prefix = prefix
           end
@@ -96,10 +100,18 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTsgGOlLomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
+
+      def bibliography_list_tag 
+         if @bibliography_list_tag.nil? then 
+            return config['bibliography_list_tag'] 
+         else 
+            return @bibliography_list_tag 
+         end
+      end 
 
       def locators
         @locators ||= []
