@@ -50,7 +50,12 @@ module Jekyll
           bibliography = render_items(items)
         end
 
-        bibliography
+        if bib_count 
+           puts entries.size
+           entries.size
+        else 
+           bibliography
+        end
       end
 
       def render_groups(groups)
