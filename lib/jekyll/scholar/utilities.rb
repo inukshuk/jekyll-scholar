@@ -30,6 +30,11 @@ module Jekyll
         return if arguments.nil? || arguments.empty?
 
         parser = OptionParser.new do |opts|
+
+          opts.on('-b', '--bib_count') do |bib_count|
+            @bib_count = true
+          end
+
           opts.on('-c', '--cited') do |cited|
             @cited = true
           end
@@ -96,10 +101,14 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfqptTsgGOlLomA]|\B--(?:cited(_in_order)?|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[bcCfqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bib_count|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
+
+      def bib_count 
+         @bib_count
+      end 
 
       def locators
         @locators ||= []
