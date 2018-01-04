@@ -129,7 +129,8 @@ module Jekyll
 
       def bibtex_paths
         @bibtex_paths ||= bibtex_files.map { |file|
-          extend_path file
+           interpolated_file = interpolate file
+           extend_path interpolated_file 
         }
       end
 
