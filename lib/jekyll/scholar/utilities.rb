@@ -30,6 +30,10 @@ module Jekyll
         return if arguments.nil? || arguments.empty?
 
         parser = OptionParser.new do |opts|
+          opts.on('-b', '--bib_count') do |bib_count|
+            @bib_count = true
+          end
+
           opts.on('-c', '--cited') do |cited|
             @cited = true
           end
@@ -100,10 +104,14 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[bcCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bib_count|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
+
+      def bib_count
+         @bib_count
+      end 
 
       def bibliography_list_tag 
          if @bibliography_list_tag.nil? then 
