@@ -13,6 +13,7 @@ require 'jekyll/scholar/utilities'
 
 require 'jekyll/scholar/converters/bibtex'
 require 'jekyll/scholar/tags/bibliography'
+require 'jekyll/scholar/tags/bibliography_count'
 require 'jekyll/scholar/tags/bibtex'
 require 'jekyll/scholar/tags/cite'
 require 'jekyll/scholar/tags/cite_details'
