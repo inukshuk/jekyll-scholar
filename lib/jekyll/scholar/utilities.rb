@@ -100,22 +100,18 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[bcCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bib_count|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
 
-      def bib_count
-         @bib_count
-      end 
-
-      def bibliography_list_tag 
-         if @bibliography_list_tag.nil? then 
-            return config['bibliography_list_tag'] 
-         else 
-            return @bibliography_list_tag 
+      def bibliography_list_tag
+         if @bibliography_list_tag.nil?
+            config['bibliography_list_tag']
+         else
+            @bibliography_list_tag
          end
-      end 
+      end
 
       def locators
         @locators ||= []
@@ -729,7 +725,7 @@ module Jekyll
         STYLES[style] ||= load_style(style)
       end
 
-      def build_dependency_tree
+      def update_dependency_tree
          # Add bibtex files to dependency tree
          if context.registers[:page] and context.registers[:page].key? "path"
             bibtex_paths.each do |bibtex_path|
@@ -739,11 +735,9 @@ module Jekyll
                )
             end
          end
+      end
 
-
-      end 
-
-      def adjust_cited_items
+      def cited_entries
         items = entries
         if cited_only?
           items = if skip_sort?
@@ -761,7 +755,7 @@ module Jekyll
         end
 
         items
-      end 
+      end
     end
 
   end

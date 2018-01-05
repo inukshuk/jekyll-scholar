@@ -16,13 +16,9 @@ module Jekyll
         set_context_to context
 
         # Add bibtex files to dependency tree.
-        build_dependency_tree
+        update_dependency_tree
 
-        # Select cited items.
-        items = adjust_cited_items
-
-        # Return number of items.
-        items.size
+        cited_entries.size
       end
 
     end

@@ -16,10 +16,9 @@ module Jekyll
         set_context_to context
 
         # Add bibtex files to dependency tree.
-        build_dependency_tree
+        update_dependency_tree
 
-        # Select cited items.
-        items = adjust_cited_items
+        items = cited_entries
 
         if group?
           groups = group(items)
@@ -35,7 +34,7 @@ module Jekyll
       def render_groups(groups)
         def group_renderer(groupsOrItems,keys,order,tags)
           if keys.count == 0
-            renderer(force = true)
+            renderer(true)
             render_items(groupsOrItems)
           else
             groupsOrItems
