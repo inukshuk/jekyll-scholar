@@ -15,32 +15,11 @@ module Jekyll
       def render(context)
         set_context_to context
 
-        # Add bibtex files to dependency tree
-        if context.registers[:page] and context.registers[:page].key? "path"
-          bibtex_paths.each do |bibtex_path|
-            site.regenerator.add_dependency(
-              site.in_source_dir(context.registers[:page]["path"]),
-              bibtex_path
-            )
-          end
-        end
+        # Add bibtex files to dependency tree.
+        build_dependency_tree
 
-        items = entries
-
-        if cited_only?
-          items = if skip_sort?
-            cited_references.uniq.map do |key|
-              items.detect { |e| e.key == key }
-            end
-          else
-            entries.select do |e|
-              cited_references.include? e.key
-            end
-          end
-
-          # See #90
-          cited_keys.clear
-        end
+        # Select cited items.
+        items = adjust_cited_items
 
         if group?
           groups = group(items)
