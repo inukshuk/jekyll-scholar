@@ -30,7 +30,7 @@ module Jekyll
         return if arguments.nil? || arguments.empty?
 
         parser = OptionParser.new do |opts|
-          opts.on('-c', '--cited') do |cited|
+         opts.on('-c', '--cited') do |cited|
             @cited = true
           end
 
@@ -100,10 +100,14 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[bcCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bib_count|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
+
+      def bib_count
+         @bib_count
+      end 
 
       def bibliography_list_tag 
          if @bibliography_list_tag.nil? then 
@@ -724,6 +728,40 @@ module Jekyll
       def styles(style)
         STYLES[style] ||= load_style(style)
       end
+
+      def build_dependency_tree
+         # Add bibtex files to dependency tree
+         if context.registers[:page] and context.registers[:page].key? "path"
+            bibtex_paths.each do |bibtex_path|
+               site.regenerator.add_dependency(
+                  site.in_source_dir(context.registers[:page]["path"]),
+                  bibtex_path
+               )
+            end
+         end
+
+
+      end 
+
+      def adjust_cited_items
+        items = entries
+        if cited_only?
+          items = if skip_sort?
+            cited_references.uniq.map do |key|
+              items.detect { |e| e.key == key }
+            end
+          else
+            entries.select do |e|
+              cited_references.include? e.key
+            end
+          end
+
+          # See #90
+          cited_keys.clear
+        end
+
+        items
+      end 
     end
 
   end
