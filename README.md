@@ -175,7 +175,7 @@ rendered in a bibliography. This tag accepts the same parameters as the
 
     {% bibliography_count -f references --quer @book[year <=2000] %}
 
-See (#186)[https://github.com/inukshuk/jekyll-scholar/blob/master/features/186.feature] 
+See [#186](https://github.com/inukshuk/jekyll-scholar/blob/master/features/186.feature)
 for further examples.
 
 ### Bibliography Template
