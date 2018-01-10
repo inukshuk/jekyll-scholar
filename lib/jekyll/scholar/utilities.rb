@@ -222,7 +222,7 @@ module Jekyll
       end
 
       def group_by
-        @group_by ||= config['group_by']
+        @group_by = interpolate(@group_by) || config['group_by']
       end
 
       def group?
@@ -436,7 +436,7 @@ module Jekyll
       end
 
       def style
-        @style || config['style']
+        interpolate(@style)|| config['style']
       end
 
       def missing_reference
