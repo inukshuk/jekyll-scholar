@@ -13,8 +13,6 @@ group :development do
   gem 'shoulda', '~> 3.5'
   gem 'cucumber', '1.3.11'
   gem 'redcarpet'
-
-  gem 'unicode_utils'
 end
 
 group :extra do
