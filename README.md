@@ -167,6 +167,17 @@ This would generate a bibliography containing only the first 5 entries
 of your bibliography (after query filters and sort options have been
 applied). Limiting entries is disabled if grouping is active.
 
+### Return number of publications in bibliography
+
+The `bibliography_count` returns the number of items that would be 
+rendered in a bibliography. This tag accepts the same parameters as the 
+`bibliography` tag. 
+
+    {% bibliography_count -f references --query @book[year <=2000] %}
+
+See [#186](https://github.com/inukshuk/jekyll-scholar/blob/master/features/186.feature)
+for further examples.
+
 ### Bibliography Template
 
 Your bibliography is always rendered as an ordered list. Additionally,
