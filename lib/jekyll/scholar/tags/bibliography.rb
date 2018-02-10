@@ -59,7 +59,7 @@ module Jekyll
       end
 
       def render_items(items)
-        bibliography = items.each_with_index.map { |entry, index|
+        bibliography = items.compact.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
 
           if generate_details?
