@@ -122,6 +122,11 @@ module Jekyll
       end
 
       def bibtex_files
+        if config['bibliography'].include? '*'
+          @bibtex_files ||= Dir.glob(File.join(config["source"], config['bibliography'])).collect do |f|
+            Pathname(f).relative_path_from(Pathname(config['source'])).to_s
+          end
+        end
         @bibtex_files ||= [config['bibliography']]
       end
 
