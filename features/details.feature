@@ -197,6 +197,58 @@ Feature: Details
     And I should see "<a[^>]+href=\"/bibliography/ruby.html\">" in "_site/scholar.html"
 
   @tags @details
+  Scenario: Links to Detail Pages are Generated Automatically With Globbing
+    Given I have a scholar configuration with:
+      | key            | value             |
+      | source         | ./_bibliography   |
+      | bibliography   | glob              |
+      | details_layout | details.html      |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/a.bib":
+      """
+      @book{a,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a file "_bibliography/b.bib":
+      """
+      @book{b,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {{ page.entry.title }}
+      </body>
+      </html>
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And the "_site/bibliography/a.html" file should exist
+    And the "_site/bibliography/b.html" file should exist
+    And I should see "<a[^>]+href=\"/bibliography/a.html\">" in "_site/scholar.html"
+    And I should see "<a[^>]+href=\"/bibliography/b.html\">" in "_site/scholar.html"
+
+  @tags @details
   Scenario: Links to Detail Pages Work With Pretty URLs
     Given I have a configuration file with "permalink" set to "pretty"
     And I have a scholar configuration with:

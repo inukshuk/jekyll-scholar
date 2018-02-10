@@ -122,6 +122,9 @@ module Jekyll
       end
 
       def bibtex_files
+	if config['bibliography'] == "glob"
+		@bibtex_files ||= Dir.glob("**/*.bib{,tex}", base: config['source'])
+	end
         @bibtex_files ||= [config['bibliography']]
       end
 
