@@ -6,7 +6,7 @@ matrix:
   - rvm: 2.5
     env: WITH_COVERALLS=true
   - rvm: 2.4
-    env: WITH_COVERALLS=true
+    env: WITH_COVERALLS=false
   - rvm: 2.3
     env: WITH_COVERALLS=false
 install:
