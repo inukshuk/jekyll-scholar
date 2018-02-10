@@ -160,7 +160,7 @@ Feature: Details
     Given I have a scholar configuration with:
       | key            | value             |
       | source         | ./_bibliography   |
-      | bibliogaphy    | references        |
+      | bibliography   | references        |
       | details_layout | details.html      |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
@@ -254,7 +254,7 @@ Feature: Details
     And I have a scholar configuration with:
       | key            | value             |
       | source         | ./_bibliography   |
-      | bibliogaphy    | references        |
+      | bibliography   | references        |
       | details_layout | details.html      |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
@@ -390,7 +390,7 @@ Feature: Details
     Given I have a scholar configuration with:
       | key            | value             |
       | source         | ./_bibliography   |
-      | bibliogaphy    | references        |
+      | bibliography   | references        |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
