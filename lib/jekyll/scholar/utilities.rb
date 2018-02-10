@@ -557,6 +557,8 @@ module Jekyll
 
         if site.config['permalink'] == 'pretty'
           name << '/'
+        elsif site.config['permalink'].end_with? '/'
+          name << '/'
         else
           name << '.html'
         end
