@@ -201,7 +201,7 @@ Feature: Details
     Given I have a scholar configuration with:
       | key            | value             |
       | source         | ./_bibliography   |
-      | bibliography   | glob              |
+      | bibliography   | "*.bib"           |
       | details_layout | details.html      |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/a.bib":
