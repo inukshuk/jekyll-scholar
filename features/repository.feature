@@ -246,3 +246,46 @@ Feature: PDF Repository
     And I should see "The Ruby Programming Language" in "_site/scholar.html"
     And I should see "Link: /papers.dir/ruby.pdf" in "_site/scholar.html"
     And I should see "Slides: /papers.dir/ruby.slides.pdf" in "_site/scholar.html"
+
+  @repository
+  Scenario: A bibliography with a single entry with a complex name
+    Given I have a scholar configuration with:
+      | key                   | value             |
+      | source                | ./_bibliography   |
+      | repository            | papers            |
+      | bibliography_template | bibliography      |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{test:book/ruby/Flanagan08,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "papers" directory
+    And I have a "papers/test_book" directory
+    And I have a "papers/test_book/ruby" directory
+    And I have a file "papers/test_book/ruby/Flanagan08.pdf":
+      """
+      The PDF
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/bibliography.html":
+      """
+      ---
+      ---
+      {{ reference }} Link: {{ link }}
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/papers/test_book/ruby/Flanagan08.pdf" file should exist
+    And I should see "The Ruby Programming Language" in "_site/scholar.html"
+    And I should see "Link: /papers/test_book/ruby/Flanagan08.pdf" in "_site/scholar.html"

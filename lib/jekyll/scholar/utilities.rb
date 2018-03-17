@@ -371,7 +371,8 @@ module Jekyll
         base = Dir[site.source][0]
 
         Dir[File.join(site.source, repository_path, '**/*')].each do |path|
-          parts = File.basename(path).split(repository_file_delimiter, 2)
+          parts = Pathname(path).relative_path_from(Pathname(File.join(base, repository_path)))
+          parts = parts.to_path.split(repository_file_delimiter, 2)
           repo[parts[0]][parts[1]] =
             Pathname(path).relative_path_from(Pathname(base))
         end
@@ -570,7 +571,9 @@ module Jekyll
       end
 
       def repository_link_for(entry, base = base_url)
-        links = repository[entry.key]
+        name = entry.key.to_s.dup
+        name.gsub!(/[:\s]+/, '_')
+        links = repository[name]
         url   = links['pdf'] || links['ps']
 
         return unless url
@@ -579,7 +582,9 @@ module Jekyll
       end
 
       def repository_links_for(entry, base = base_url)
-        Hash[repository[entry.key].map { |ext, url|
+        name = entry.key.to_s.dup
+        name.gsub!(/[:\s]+/, '_')
+        Hash[repository[name].map { |ext, url|
           [ext, File.join(base, url)]
         }]
       end
