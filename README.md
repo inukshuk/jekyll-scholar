@@ -8,7 +8,6 @@ and gives your blog posts citation super-powers.
 
 [![Build Status](https://travis-ci.org/inukshuk/jekyll-scholar.png?branch=master)](https://travis-ci.org/inukshuk/jekyll-scholar)
 [![Coverage Status](https://coveralls.io/repos/inukshuk/jekyll-scholar/badge.png)](https://coveralls.io/r/inukshuk/jekyll-scholar)
-[![Dependency Status](https://gemnasium.com/inukshuk/jekyll-scholar.png)](https://gemnasium.com/inukshuk/jekyll-scholar)
 
 Already using Jekyll-Scholar and interested to help out? Please get in touch with us if you would like to become a maintainer!
 
