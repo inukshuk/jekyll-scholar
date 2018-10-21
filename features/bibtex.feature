@@ -364,6 +364,53 @@ Feature: BibTeX
     And I should not see "<i>The Ruby Programming Language</i>" in "_site/scholar.html"
     And I should see "<i>Smalltalk Best Practice Patterns</i>" in "_site/scholar.html"
 
+  @filter @regex
+  Scenario: Filter using interpolated query variable
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @article{testa,
+        title={test1},
+        author={Albert, Alex A and Booth, Brian and Cook, Cathy},
+        journal={Irrelevant},
+        year={2018}
+      }
+      @article{testb,
+        title={test2},
+        author={Booth, Brian and Albert, Alex and Cook, Cathy},
+        journal={Irrelevant},
+        year={2018}
+      }
+      @article{testc,
+        title={test3},
+        author={Cook, Cathy and Booth, Brian and Albert, Alex},
+        journal={Irrelevant},
+        year={2018}
+      }
+      @article{testd,
+        title={test4},
+        author={Done, Daniel},
+        journal={Irrelevant},
+        year={2018}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography --query @*[author ~= \bAlbert\b] %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "test1" in "_site/scholar.html"
+    And I should see "test2" in "_site/scholar.html"
+    And I should see "test3" in "_site/scholar.html"
+    And I should not see "test4" in "_site/scholar.html"
+
   @tags @bibliography @prefix
   Scenario: A Prefixed Bibliography
     Given I have a scholar configuration with:
