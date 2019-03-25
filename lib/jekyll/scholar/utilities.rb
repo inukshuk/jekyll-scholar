@@ -147,7 +147,7 @@ module Jekyll
       def bibtex_paths
         @bibtex_paths ||= bibtex_files.map { |file|
            interpolated_file = interpolate file
-           extend_path interpolated_file 
+           extend_path interpolated_file
         }
       end
 
@@ -488,7 +488,7 @@ module Jekyll
             :filters => [Jekyll::Filters]
           }
         )
-        # process the generated reference with Liquid, to get the same behaviour as 
+        # process the generated reference with Liquid, to get the same behaviour as
         # when it is used on a page
         Liquid::Template.parse(tmp).render(
           site.site_payload,
@@ -656,7 +656,7 @@ module Jekyll
           end
         end
 
-        link_to link_target_for(keys[0]), render_citation(items)
+        link_to link_target_for(keys[0]), render_citation(items), {class: config['cite_class']}
       end
 
       def cite_details(key, text)

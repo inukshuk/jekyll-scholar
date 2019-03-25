@@ -58,6 +58,8 @@ module Jekyll
 
       'query'                  => '@*',
 
+      'cite_class'             => 'citation',
+
       'type_names' => {
         'article' => 'Journal Articles',
         'book' => 'Books',
