@@ -23,10 +23,10 @@ Or add it to your `Gemfile`:
 ### Github Pages
 
 Note that it is not possible to use this plugin with the
-  [default Github pages workflow](https://help.github.com/articles/using-jekyll-with-pages/). 
+  [default Github pages workflow](https://help.github.com/articles/using-jekyll-with-pages/).
 Github does not allow any but a few select plugins to run for security reasons,
 and Jekyll-Scholar is not among them.
-You will have to generate your site locally and push the results to the `master` resp. `gh-pages` 
+You will have to generate your site locally and push the results to the `master` resp. `gh-pages`
 branch of your site repository.
 You can keep sources, configuration and plugins in a separate branch; see e.g.
   [here](http://davidensinger.com/2013/07/automating-jekyll-deployment-to-github-pages-with-rake/)
@@ -64,7 +64,7 @@ description of all options and their defaults, see
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `style` | `apa` | Indicates the style used for the bibliography and citations. You can use any style that ships with [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g., apa, mla, chicago-fullnote-bibliography) which is usually the filename as seen [here](https://github.com/citation-style-language/styles) without the `.csl` ending; note that you have to use `dependent/style` if you want to use one from that directory. Alternatively you can add a link to any CSL  style (e.g., you could link to any of the styles available at the official [CSL style repository](https://github.com/citation-style-language/styles)). | 
+| `style` | `apa` | Indicates the style used for the bibliography and citations. You can use any style that ships with [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g., apa, mla, chicago-fullnote-bibliography) which is usually the filename as seen [here](https://github.com/citation-style-language/styles) without the `.csl` ending; note that you have to use `dependent/style` if you want to use one from that directory. Alternatively you can add a link to any CSL  style (e.g., you could link to any of the styles available at the official [CSL style repository](https://github.com/citation-style-language/styles)). |
 | `locale` | `en` | Defines what language to use when formatting your references (this typically applies to localized terms, e.g., 'Eds.' for editors in English). |
 | `source` | `./_bibliography` |  Indicates where your bibliographies are stored. |
 | `bibliography` | `references.bib` | Indicates the name of your default bibliography. For best results, please ensure that your bibliography is encoded as ASCII or UTF-8. A string that contains a `*` will be passed to `Dir::glob`, so `**/*.bib{,tex}` will find all files named `*.bib` and `*.bibtex` under `source`.  |
@@ -168,9 +168,9 @@ applied). Limiting entries is disabled if grouping is active.
 
 ### Return number of publications in bibliography
 
-The `bibliography_count` returns the number of items that would be 
-rendered in a bibliography. This tag accepts the same parameters as the 
-`bibliography` tag. 
+The `bibliography_count` returns the number of items that would be
+rendered in a bibliography. This tag accepts the same parameters as the
+`bibliography` tag.
 
     {% bibliography_count -f references --query @book[year <=2000] %}
 
@@ -301,16 +301,16 @@ of the items you wish to quote separated by spaces. For example,
 
 #### Citations when there's more than one bibliography
 
-Let's return to the example above where you have two bibliographies stored 
+Let's return to the example above where you have two bibliographies stored
 in `_bibliography/books.bib` and `_bibliography/papers.bib`. We also must
 have the main bibliography, e.g., `_bibliography/references.bib`. As we
 know from above, it's possible to use bibliographies other than the main
-bibliography by calling `{% bibliography --file books %}` or 
-`{% bibliography --file papers %}`. 
+bibliography by calling `{% bibliography --file books %}` or
+`{% bibliography --file papers %}`.
 
-Though what if we want to cite an article that's not in the main bibliography? 
-We use the same approach as above; to cite an article in the `books.bib` 
-bibliography, we simply call `{% cite ruby --file books %}` 
+Though what if we want to cite an article that's not in the main bibliography?
+We use the same approach as above; to cite an article in the `books.bib`
+bibliography, we simply call `{% cite ruby --file books %}`
 
 #### Suppressing author names
 
@@ -422,6 +422,15 @@ assigned unique identifiers linking to the respective references
 section, although both posts will be rendered into a single HTML
 document.
 
+#### Add a custom class for the citation reference
+By default Jekyll Scholar generate a link with a class:
+
+    <a href="#ruby" class="citation">(Derrida, 1975)</a>
+
+You can custom this class in your configuration:
+
+    scholar:
+      cite_class: citation
 
 ### File Repositories
 
