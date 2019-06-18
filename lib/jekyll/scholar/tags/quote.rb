@@ -11,6 +11,8 @@ module Jekyll
 
         @config = Scholar.defaults.dup
         @keys, arguments = split_arguments arguments
+
+        optparse(arguments)
       end
 
       def render(context)
