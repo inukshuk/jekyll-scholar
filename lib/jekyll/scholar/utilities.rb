@@ -622,9 +622,30 @@ module Jekyll
       end
 
       def render_bibliography(entry, index = nil)
+
+        entry.language = entry['language']
+      
+        if config['allow_locale_overrides'] == true && entry.language != "" && entry.language != config['locale']
+          begin
+            new_locale = CSL::Locale.load(entry.language) 
+            unless new_locale.nil?
+              original_locale, renderer.locale = renderer.locale, new_locale
+            end
+          rescue ParseError
+            # locale not found
+          end
+        end 
+
         renderer.render citation_item_for(entry, index),
-          styles(style).bibliography
+            styles(style).bibliography  
+
+        ensure
+          unless original_locale.nil?
+            renderer.locale = original_locale
+          end
       end
+
+
 
       def citation_item_for(entry, citation_number = nil)
         CiteProc::CitationItem.new id: entry.id do |c|
