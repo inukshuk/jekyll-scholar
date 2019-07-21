@@ -7,6 +7,8 @@ module Jekyll
     # treated as being read-only.
     STYLES = {}
 
+    LOCALES = {}
+
     # Utility methods used by several Scholar plugins. The methods in this
     # module may depend on the presence of #config, #bibtex_files, and
     # #site readers
@@ -112,6 +114,11 @@ module Jekyll
             @bibliography_list_tag
          end
       end
+
+      def allow_locale_overrides?
+        !!config['allow_locale_overrides']
+      end
+
 
       def locators
         @locators ||= []
@@ -622,30 +629,19 @@ module Jekyll
       end
 
       def render_bibliography(entry, index = nil)
-
-        entry.language = entry['language']
-      
-        if config['allow_locale_overrides'] == true && entry.language != "" && entry.language != config['locale']
-          begin
-            new_locale = CSL::Locale.load(entry.language) 
-            unless new_locale.nil?
-              original_locale, renderer.locale = renderer.locale, new_locale
-            end
-          rescue ParseError
-            # locale not found
-          end
-        end 
+        begin
+          original_locale, renderer.locale =
+            renderer.locale, locales(entry.language)
+        rescue
+          # Locale failed to load; just use original one!
+        end if allow_locale_overrides? &&
+          entry['language'] != renderer.locale.language
 
         renderer.render citation_item_for(entry, index),
-            styles(style).bibliography  
-
-        ensure
-          unless original_locale.nil?
-            renderer.locale = original_locale
-          end
+            styles(style).bibliography
+      ensure
+        renderer.locale = original_locale unless original_locale.nil?
       end
-
-
 
       def citation_item_for(entry, citation_number = nil)
         CiteProc::CitationItem.new id: entry.id do |c|
@@ -756,6 +752,10 @@ module Jekyll
 
       def styles(style)
         STYLES[style] ||= load_style(style)
+      end
+
+      def locales(lang)
+        LOCALES[lang] ||= CSL::Locale.load(lang)
       end
 
       def update_dependency_tree
