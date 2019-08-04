@@ -5,10 +5,12 @@ module Jekyll
       include Scholar::Utilities
 
       def initialize(site, base, dir, entry)
-        @site, @base, @dir = site, base, dir
+        @site, @base, @dir, @entry = site, base, dir, entry
 
         @config = Scholar.defaults.merge(site.config['scholar'] || {})
 
+        # Specify a temporary filename for now based upon the citation key. Jekyll
+        # will modify this according to the URL template below
         @name = entry.key.to_s.gsub(/[:\s]+/, '_')
         @name << '.html'
 
@@ -19,6 +21,10 @@ module Jekyll
         data['title'] = data['entry']['title'] if data['entry'].has_key?('title')
       end
 
+      def url
+        # Reuse the logic in the utilities module for deciding URLs
+        details_link_for(@entry)
+      end
     end
 
     class DetailsGenerator < Generator

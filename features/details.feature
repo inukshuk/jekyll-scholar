@@ -334,6 +334,59 @@ Feature: Details
     And I should see "<a[^>]+href=\"/bibliography/ruby/\">" in "_site/scholar/index.html"
     And the "_site/bibliography/ruby/index.html" file should exist
 
+  @tags @details
+  Scenario: Detail page URLs can have custom permalinks
+    Given I have a configuration file with "permalink" set to "/:title/"
+    And I have a scholar configuration with:
+      | key                | value                                  |
+      | source             | ./_bibliography                        |
+      | bibliography       | references                             |
+      | details_layout     | details.html                           |
+      | details_permalink  | /:details_dir/:year/:doi:extension     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{rubydoi,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media},
+        doi       = {10.0000/1111}
+      }
+
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {{ page.entry.title }}
+      </body>
+      </html>
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar/index.html" file should exist
+    And I should see "<a[^>]+href=\"/bibliography/2008/10.0000/1111/\">" in "_site/scholar/index.html"
+    And I should see "<a[^>]+href=\"/bibliography/2008/ruby/\">" in "_site/scholar/index.html"
+    And the "_site/bibliography/2008/10.0000/1111/index.html" file should exist
+    And the "_site/bibliography/2008/ruby/index.html" file should exist
+
   @generators @parse_months
   Scenario: Months are parsed by default
     Given I have a scholar configuration with:
