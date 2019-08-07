@@ -46,6 +46,22 @@ module Jekyll
       'details_dir'            => 'bibliography',
       'details_layout'         => 'bibtex.html',
       'details_link'           => 'Details',
+
+      # 'details_permalink': URL template for generating the filenames of the details pages.
+      #
+      # Example: if we had a citation key 'ruby':
+      #   '/:details_dir/:year/:key:extension' would produce:
+      #     '/bibliography/2008/ruby.html'        if global permalinks end in .html
+      #     '/bibliography/2008/ruby/index.html'  if global permalinks end in "/" or are set to "pretty"
+      #
+      # Valid template parameters:
+      #    ":details_dir"   The value of the details_dir field in the scholar config
+      #    ":key"           The bibtex citation key.
+      #    ":doi"           The DOI. If the DOI is missing or blank, this returns the citation key. 
+      #    ":extension"     Either of ".html" or "/index.html" depending upon the global permalink setting.
+      # Template parameters can also include any key defined in the bibtex file, e.g. ":year", ":title", etc.
+      # Bibtex keys such as 'title' are slugified in the same way as Jekyll treats blog post titles.
+      'details_permalink'       => '/:details_dir/:key:extension', 
       'use_raw_bibtex_entry'   => true,
 
       'bibliography_class'     => 'bibliography',
