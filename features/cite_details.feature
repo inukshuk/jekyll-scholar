@@ -86,7 +86,7 @@ Feature: Citations
     And I should not see "ab" in "_site/bibliography/a.html"
     
   @tags @bibliography @config @template @cite_details
-  Scenario: Raw bibtex template in details page
+  Scenario: Raw bibtex template in details page with ignored option
     Given I have a scholar configuration with:
       | key                   | value            |
       | source                | ./_bibliography  |
@@ -111,8 +111,8 @@ Feature: Citations
     Then the _site directory should exist
     
     And the "_site/bibliography/a.html" file should exist
-    And I should not see "{{'b' | prepend: 'a'}}" in "_site/bibliography/a.html"
-    And I should see "ab" in "_site/bibliography/a.html"
+    And I should see "{{'b' | prepend: 'a'}}" in "_site/bibliography/a.html"
+    And I should not see "ab" in "_site/bibliography/a.html"
     
   @tags @cite_details
   Scenario: A Simple Cite Details Link With A Text Argument

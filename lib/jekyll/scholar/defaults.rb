@@ -62,7 +62,6 @@ module Jekyll
       # Template parameters can also include any key defined in the bibtex file, e.g. ":year", ":title", etc.
       # Bibtex keys such as 'title' are slugified in the same way as Jekyll treats blog post titles.
       'details_permalink'       => '/:details_dir/:key:extension', 
-      'use_raw_bibtex_entry'   => true,
 
       'bibliography_class'     => 'bibliography',
       'bibliography_template'  => '{{reference}}',

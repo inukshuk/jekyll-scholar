@@ -110,13 +110,12 @@ Feature: Details
     
 
   @generators
-  Scenario: Raw input can be turned on, but should not generate any {%raw%} tags on the details page, and also not parse the liquid tags inside the bibtex
+  Scenario: Liquid tags should not be parsed inside the bibtex
     Given I have a scholar configuration with:
       | key            | value             |
       | source         | ./_bibliography   |
       | details_layout | details.html      |
       | bibtex_filters |                   |
-      | use_raw_bibtex_entry | true        |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -152,7 +151,6 @@ Feature: Details
     When I run jekyll
     Then the _site directory should exist
     And the "_site/bibliography/sdf.html" file should exist
-    And I should not see "{%raw%}" in "_site/bibliography/sdf.html"
     And I should see "SDF\^3" in "_site/bibliography/sdf.html"
 
   @tags @details
