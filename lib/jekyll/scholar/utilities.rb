@@ -356,10 +356,6 @@ module Jekyll
         !!@suppress_author
       end
 
-      def raw_bibtex?
-        config['use_raw_bibtex_entry']
-      end
-
       def repository?
         !config['repository'].nil? && !config['repository'].empty?
       end
@@ -533,10 +529,6 @@ module Jekyll
           end
 
           e['bibtex'] = tmp.to_s({ quotes: config['bibtex_quotes'] })
-        end
-
-        if raw_bibtex?
-          e['bibtex'] = "{%raw%}#{e['bibtex']}{%endraw%}"
         end
 
         entry.fields.each do |key, value|

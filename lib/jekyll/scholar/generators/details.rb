@@ -38,6 +38,12 @@ module Jekyll
       def generate(site)
         @site, @config = site, Scholar.defaults.merge(site.config['scholar'] || {})
 
+        # Check for removed option and warn if it is set
+        if @config.include? 'use_raw_bibtex_entry'
+          Jekyll.logger.warn('Jekyll-scholar:',
+                             'Option `use_raw_bibtex_entry` is no longer supported')
+        end
+
         if generate_details?
           entries.each do |entry|
             details = Details.new(site, site.source, File.join('', details_path), entry)
