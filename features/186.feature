@@ -89,19 +89,22 @@ Feature: BibTeX
         title     = {Smalltalk Best Practice Patterns},
         author    = {Kent Beck},
         year      = {1996},
-        publisher = {Prentice Hall}
+        publisher = {Prentice Hall},
+        public    = {yes}
       }
       @book{ruby,
         title     = {The Ruby Programming Language v1},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
         year      = {1998},
-        publisher = {O'Reilly Media}
+        publisher = {O'Reilly Media},
+        public    = {yes}
       }
       @book{ruby2,
         title     = {The Ruby Programming Language v2},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
         year      = {2008},
-        publisher = {O'Reilly Media}
+        publisher = {O'Reilly Media},
+        public    = {no}
       }
       """
     And I have a page "scholar.html":
