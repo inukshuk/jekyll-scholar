@@ -559,3 +559,28 @@ Feature: BibTeX
     And the "_site/scholar.html" file should exist
     And I should see "This is lowerthis." in "_site/scholar.html"
 
+  @tags @textregistered
+  Scenario: LaTeX textregistered as HTML registered symbol
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | textregistered |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \textregistered to me.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is &#0174 to me." in "_site/scholar.html"
+
