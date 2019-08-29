@@ -557,3 +557,46 @@ Feature: BibTeX
     And the "_site/scholar.html" file should exist
     And I should see "Estudios de Asia y Africa</i>, n.º 22" in "_site/scholar.html"
     And I should see "Estudios De Asia y Africa</i>, no. 22" in "_site/scholar.html"
+
+
+  @tags @bibliography @duplicates
+  Scenario: Non-english reference
+    Given I have a scholar configuration with:
+      | key                    | value                         |
+      | source                 | ./_bibliography               |
+      | bibliography           | my_references                 |
+      | allow_locale_overrides | true                          |
+      | style                  | chicago-fullnote-bibliography |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @article{one,
+        title = {Ideología y narrativa en el Ramayana de Valmiki},
+        number = {22},
+        language = {es},
+        journal = {Estudios de Asia y Africa},
+        author = {Pollock, Sheldon I.},
+        year = {1987},
+        pages = {336--54}
+      }
+      @article{one,
+        title = {{Ideología y narrativa en el Ramayana de Valmiki}},
+        number = {22},
+        journal = {Estudios de Asia y Africa},
+        author = {Pollock, Sheldon I.},
+        year = {1987},
+        pages = {336--54}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Estudios de Asia y Africa</i>, n.º 22" in "_site/scholar.html"
+    And I should see "Estudios De Asia y Africa</i>, no. 22" in "_site/scholar.html"
+
