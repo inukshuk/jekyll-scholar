@@ -163,10 +163,6 @@ module Jekyll
         bibtex_paths[0]
       end
 
-      def remove_duplicates(bib)
-
-      end 
-
       def bibliography
         unless @bibliography
           @bibliography = BibTeX::Bibliography.parse(
@@ -177,8 +173,6 @@ module Jekyll
           @bibliography.join if join_strings? && replace_strings?
         end
 
-        #remove_duplicates(@bibliography)
-        
         @bibliography
       end
 
