@@ -534,3 +534,28 @@ Feature: BibTeX
     And the "_site/scholar.html" file should exist
     And I should see "This is <i>italics</i>." in "_site/scholar.html"
 
+  @tags @lowercase
+  Scenario: LaTeX lowercase as lowercase
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | lowercase |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \lowercase{LOWERTHIS}.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is lowerthis." in "_site/scholar.html"
+
