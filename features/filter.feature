@@ -509,7 +509,7 @@ Feature: BibTeX
     And I should see "This is <i>italics</i>." in "_site/scholar.html"
 
 
-  @tags @italics @textit
+  @tags @textit
   Scenario: LaTeX textit as HTML italics
     Given I have a scholar configuration with:
       | key    | value             |
