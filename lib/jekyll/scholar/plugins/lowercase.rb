@@ -7,7 +7,7 @@ module Jekyll
         puts "value:"
         puts value.to_s 
         value.to_s.gsub(/\\lowercase(\{(?:[^{}]|\g<1>)*\})/) {
-          "<i>#{$1[1..-2]}</i>"
+          "#{$1[1..-2].downcase}"
         }
       end
     end
