@@ -32,12 +32,17 @@ module Jekyll
         return if arguments.nil? || arguments.empty?
 
         parser = OptionParser.new do |opts|
+
          opts.on('-c', '--cited') do |cited|
             @cited = true
           end
 
           opts.on('-C', '--cited_in_order') do |cited|
             @cited, @skip_sort = true, true
+          end
+
+          opts.on('-r', '--remove_duplicates') do |remove_duplicates|
+            @remove_duplicates = true
           end
 
           opts.on('-A', '--suppress_author') do |cited|
@@ -102,7 +107,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomA]|\B--(?:cited(_in_order)?|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|))/)
+        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomAr]|\B--(?:cited(_in_order)?|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|remove_duplicates|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -174,7 +179,9 @@ module Jekyll
         end
 
         # Remove duplicate entries
-        @bibliography .uniq!
+        @bibliography.uniq! if remove_duplicates?
+
+        @bibliography
       end
 
       def query
@@ -352,6 +359,10 @@ module Jekyll
 
         @month_names = config['month_names'].nil? ? Date::MONTHNAMES : config['month_names'].unshift(nil)
       end
+
+      def remove_duplicates?
+        @remove_duplicates || config['remove_duplicates']
+      end 
 
       def suppress_author?
         !!@suppress_author
