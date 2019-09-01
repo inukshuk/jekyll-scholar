@@ -174,7 +174,7 @@ module Jekyll
         end
 
         # Remove duplicate entries
-        @bibliography.uniq!
+        @bibliography .uniq!
       end
 
       def query

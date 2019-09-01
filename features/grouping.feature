@@ -285,7 +285,7 @@ Feature: Grouping BibTeX Bibliographies
       @book{ruby2,
         title     = {The Ruby Programming Language},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
-        year      = {2008},
+        year      = {2018},
         month     = dec
       }
       """

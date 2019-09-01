@@ -216,7 +216,7 @@ Feature: Details
       @book{b,
         title     = {The Ruby Programming Language},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
-        year      = {2008},
+        year      = {2018},
         publisher = {O'Reilly Media}
       }
       """
@@ -355,7 +355,7 @@ Feature: Details
       @book{ruby,
         title     = {The Ruby Programming Language},
         author    = {Flanagan, David and Matsumoto, Yukihiro},
-        year      = {2008},
+        year      = {2018},
         publisher = {O'Reilly Media}
       }
       """
@@ -381,9 +381,9 @@ Feature: Details
     Then the _site directory should exist
     And the "_site/scholar/index.html" file should exist
     And I should see "<a[^>]+href=\"/bibliography/2008/10.0000/1111/\">" in "_site/scholar/index.html"
-    And I should see "<a[^>]+href=\"/bibliography/2008/ruby/\">" in "_site/scholar/index.html"
+    And I should see "<a[^>]+href=\"/bibliography/2018/ruby/\">" in "_site/scholar/index.html"
     And the "_site/bibliography/2008/10.0000/1111/index.html" file should exist
-    And the "_site/bibliography/2008/ruby/index.html" file should exist
+    And the "_site/bibliography/2018/ruby/index.html" file should exist
 
   @generators @parse_months
   Scenario: Months are parsed by default
