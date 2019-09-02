@@ -42,6 +42,8 @@ module Jekyll
 
       'replace_strings'        => true,
       'join_strings'           => true,
+      # Remove duplicate entries from bibliography
+      'remove_duplicates'      => false,
 
       'details_dir'            => 'bibliography',
       'details_layout'         => 'bibtex.html',
