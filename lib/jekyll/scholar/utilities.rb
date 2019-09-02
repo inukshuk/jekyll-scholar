@@ -41,8 +41,9 @@ module Jekyll
             @cited, @skip_sort = true, true
           end
 
-          opts.on('-r', '--remove_duplicates') do |remove_duplicates|
+          opts.on('-r', '--remove_duplicates [MATCH_FIELDS]') do |match_field|
             @remove_duplicates = true
+            @match_fields = match_field.split(/,\s+/) if not match_field.nil? 
           end
 
           opts.on('-A', '--suppress_author') do |cited|
@@ -125,6 +126,10 @@ module Jekyll
       end
 
 
+      def match_fields
+        @match_fields ||= []
+      end 
+
       def locators
         @locators ||= []
       end
@@ -179,7 +184,7 @@ module Jekyll
         end
 
         # Remove duplicate entries
-        @bibliography.uniq! if remove_duplicates?
+        @bibliography.uniq!(*match_fields) if remove_duplicates?
 
         @bibliography
       end
