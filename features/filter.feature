@@ -584,3 +584,28 @@ Feature: BibTeX
     And the "_site/scholar.html" file should exist
     And I should see "This is &#0174 to me." in "_site/scholar.html"
 
+  @tags @tiny
+  Scenario: LaTeX tiny as HTML registered symbol
+    Given I have a scholar configuration with:
+      | key    | value             |
+      | source | ./_bibliography   |
+    And I have the following BibTeX filters:
+      | tiny |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title     = {This is \tiny{i is tiny} to me.}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "This is <p style=\"font-size:10px\">i is tiny</p> to me." in "_site/scholar.html"
+
