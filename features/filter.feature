@@ -607,5 +607,5 @@ Feature: BibTeX
     When I run jekyll
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
-    And I should see "This is <p style=\"font-size:10px\">i is tiny</p> to me." in "_site/scholar.html"
+    And I should see "This is <span class=tiny>i is tiny</span> to me." in "_site/scholar.html"
 
