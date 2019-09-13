@@ -44,7 +44,7 @@ Feature: Interpolations ...
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "The Ruby Programming Language" in "_site/scholar.html"
- 
+
 
   @tags @grouping
   Scenario: Local grouping override - grouping by year with interpolation
@@ -81,3 +81,35 @@ Feature: Interpolations ...
     Then I should see "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
     And I should see "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
     And "2008" should come before "2007" in "_site/scholar.html"
+
+  @tags @reference @liquid @interpolate
+  Scenario: Interpolate liquid variables in queries
+    Given I have a scholar configuration with:
+      | key                | value             |
+      | source             | ./_bibliography   |
+      | bibliography       | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{a,
+        title     = {Book A},
+        year      = {2008}
+      }
+      @book{b,
+        title     = {Book B},
+        year      = {2018}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% assign from = 2000 %}
+      {% assign to = 2010 %}
+      {% bibliography --query @book[year >= {{from}} && year <= {{to}}] %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Book A" in "_site/scholar.html"
+    And I should not see "Book B" in "_site/scholar.html"
