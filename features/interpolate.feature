@@ -113,3 +113,35 @@ Feature: Interpolations ...
     And the "_site/scholar.html" file should exist
     And I should see "Book A" in "_site/scholar.html"
     And I should not see "Book B" in "_site/scholar.html"
+
+  @tags @bibliography @liquid @interpolate
+  Scenario: Interpolate page variables in queries
+    Given I have a scholar configuration with:
+      | key                | value             |
+      | source             | ./_bibliography   |
+      | bibliography       | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{a,
+        title     = {Book A},
+        year      = {2008}
+      }
+      @book{b,
+        title     = {Book B},
+        year      = {2018}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      year_from: 2000
+      ---
+      {% assign to = 2010 %}
+      {% bibliography --query @book[year >= {{page.year_from}} && year <= {{to}}] %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "Book A" in "_site/scholar.html"
+    And I should not see "Book B" in "_site/scholar.html"
