@@ -96,7 +96,7 @@ Feature: Cited-only Bibliographies
       ---
       ---
       {% cite smalltalk %}
-      {% bibliography --cited --prefix one %}
+      {% bibliography --cited --clear --prefix one %}
 
       {% cite ruby %}
       {% bibliography --cited --prefix two %}

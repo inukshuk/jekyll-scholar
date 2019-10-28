@@ -41,6 +41,10 @@ module Jekyll
             @cited, @skip_sort = true, true
           end
 
+          opts.on('--clear') do |cited|
+            @clear = true
+          end
+
           opts.on('-r', '--remove_duplicates [MATCH_FIELDS]') do |match_field|
             @remove_duplicates = true
             @match_fields = match_field.split(/,\s+/) if not match_field.nil? 
@@ -108,7 +112,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomAr]|\B--(?:cited(_in_order)?|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|remove_duplicates|))/)
+        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomAr]|\B--(?:cited(_in_order)?|clear|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|remove_duplicates|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -128,7 +132,7 @@ module Jekyll
 
       def match_fields
         @match_fields ||= []
-      end 
+      end
 
       def locators
         @locators ||= []
@@ -418,6 +422,10 @@ module Jekyll
 
       def cited_only?
         !!@cited
+      end
+
+      def clear?
+        !!@clear
       end
 
       def skip_sort?
@@ -809,7 +817,7 @@ module Jekyll
                   end
 
           # See #90
-          cited_keys.clear
+          cited_keys.clear if clear?
         end
 
         items
