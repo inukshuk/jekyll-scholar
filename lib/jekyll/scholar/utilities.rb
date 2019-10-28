@@ -33,7 +33,7 @@ module Jekyll
 
         parser = OptionParser.new do |opts|
 
-         opts.on('-c', '--cited') do |cited|
+          opts.on('-c', '--cited') do |cited|
             @cited = true
           end
 
@@ -114,11 +114,11 @@ module Jekyll
       end
 
       def bibliography_list_tag
-         if @bibliography_list_tag.nil?
-            config['bibliography_list_tag']
-         else
-            @bibliography_list_tag
-         end
+        if @bibliography_list_tag.nil?
+          config['bibliography_list_tag']
+        else
+          @bibliography_list_tag
+        end
       end
 
       def allow_locale_overrides?
@@ -163,8 +163,8 @@ module Jekyll
 
       def bibtex_paths
         @bibtex_paths ||= bibtex_files.map { |file|
-           interpolated_file = interpolate file
-           extend_path interpolated_file
+          interpolated_file = interpolate file
+          extend_path interpolated_file
         }
       end
 
@@ -215,14 +215,14 @@ module Jekyll
         sorted = unsorted.sort do |e1, e2|
           sort_keys
             .map.with_index do |key, idx|
-              v1 = e1[key].nil? ? BibTeX::Value.new : e1[key]
-              v2 = e2[key].nil? ? BibTeX::Value.new : e2[key]
-              if (sort_order[idx] || sort_order.last) =~ /^(desc|reverse)/i
-                v2 <=> v1
-              else
-                v1 <=> v2
-              end
+            v1 = e1[key].nil? ? BibTeX::Value.new : e1[key]
+            v2 = e2[key].nil? ? BibTeX::Value.new : e2[key]
+            if (sort_order[idx] || sort_order.last) =~ /^(desc|reverse)/i
+              v2 <=> v1
+            else
+              v1 <=> v2
             end
+          end
             .find { |c| c != 0 } || 0
         end
 
@@ -498,15 +498,15 @@ module Jekyll
 
         tmp = liquid_template.render(
           reference_data(entry,index)
-            .merge(site.site_payload)
-            .merge({
-              'index' => index,
-              'details' => details_link_for(entry)
-            }),
-          {
-            :registers => { :site => site },
-            :filters => [Jekyll::Filters]
-          }
+          .merge(site.site_payload)
+          .merge({
+          'index' => index,
+          'details' => details_link_for(entry)
+        }),
+        {
+          :registers => { :site => site },
+          :filters => [Jekyll::Filters]
+        }
         )
         # process the generated reference with Liquid, to get the same behaviour as
         # when it is used on a page
@@ -660,10 +660,10 @@ module Jekyll
         rescue
           # Locale failed to load; just use original one!
         end if allow_locale_overrides? &&
-          entry['language'] != renderer.locale.language
+        entry['language'] != renderer.locale.language
 
         renderer.render citation_item_for(entry, index),
-            styles(style).bibliography
+          styles(style).bibliography
       ensure
         renderer.locale = original_locale unless original_locale.nil?
       end
@@ -784,29 +784,29 @@ module Jekyll
       end
 
       def update_dependency_tree
-         # Add bibtex files to dependency tree
-         if context.registers[:page] and context.registers[:page].key? "path"
-            bibtex_paths.each do |bibtex_path|
-               site.regenerator.add_dependency(
-                  site.in_source_dir(context.registers[:page]["path"]),
-                  bibtex_path
-               )
-            end
-         end
+        # Add bibtex files to dependency tree
+        if context.registers[:page] and context.registers[:page].key? "path"
+          bibtex_paths.each do |bibtex_path|
+            site.regenerator.add_dependency(
+              site.in_source_dir(context.registers[:page]["path"]),
+              bibtex_path
+            )
+          end
+        end
       end
 
       def cited_entries
         items = entries
         if cited_only?
           items = if skip_sort?
-            cited_references.uniq.map do |key|
-              items.detect { |e| e.key == key }
-            end
-          else
-            entries.select do |e|
-              cited_references.include? e.key
-            end
-          end
+                    cited_references.uniq.map do |key|
+                      items.detect { |e| e.key == key }
+                    end
+                  else
+                    entries.select do |e|
+                      cited_references.include? e.key
+                    end
+                  end
 
           # See #90
           cited_keys.clear
