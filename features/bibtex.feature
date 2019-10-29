@@ -557,3 +557,35 @@ Feature: BibTeX
     And the "_site/scholar.html" file should exist
     And I should see "Estudios de Asia y Africa</i>, n.º 22" in "_site/scholar.html"
     And I should see "Estudios De Asia y Africa</i>, no. 22" in "_site/scholar.html"
+
+  @latex
+  Scenario: Simple Bibliography with LaTeX directives
+    Given I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{rosso_image_2006,
+        address = {{Paris}},
+        series = {{Arch{\'e}ologie et histoire de l'art}},
+        title = {{L'image de l'empereur en Gaule romaine :  portraits et inscriptions}},
+        isbn = {978-2-7355-0583-8},
+        lccn = {Tolbiac - Rez de Jardin - Philosophie, histoire, sciences de l'homme - Magasin - 2006-174258},
+        shorttitle = {{L'image de l'empereur en Gaule romaine}},
+        language = {fre},
+        number = {20},
+        publisher = {{{\'E}d. du Comit{\'e} des travaux historiques et scientifiques}},
+        author = {Rosso, Emmanuelle},
+        year = {2006},
+        keywords = {Empereurs,Inscriptions latines,Sculpture de portraits romaine},
+        note = {ill., couv. ill. 27 cm. Ouvrage issu des m{\'e}moires de ma{\^i}trise et de DEA. Bibliogr. p. 561-582. Notes bibliogr.}
+      }
+      """
+    And I have a page "test.md":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/test.html" file should exist
+    And I should see "L’image de l’empereur en Gaule romaine" in "_site/test.html"
