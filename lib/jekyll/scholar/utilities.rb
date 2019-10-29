@@ -166,7 +166,7 @@ module Jekyll
       end
 
       def bibtex_paths
-        @bibtex_paths ||= bibtex_files.map { |file|
+        bibtex_files.map { |file|
           interpolated_file = interpolate file
           extend_path interpolated_file
         }
@@ -178,20 +178,34 @@ module Jekyll
       end
 
       def bibliography
-        unless @bibliography
-          @bibliography = BibTeX::Bibliography.parse(
-            bibtex_paths.reduce('') { |s, p| s << IO.read(p) },
-            bibtex_options
-          )
-          @bibliography.replace_strings if replace_strings?
-          @bibliography.join if join_strings? && replace_strings?
+        paths = bibtex_paths
+
+        # Clear @bibliography if sources change! See #282
+        unless @paths.nil? || @paths == paths
+          @bibliography = nil
         end
 
-        # Remove duplicate entries
-        @bibliography.uniq!(*match_fields) if remove_duplicates?
+        unless @bibliography
+          @bibliography = BibTeX::Bibliography.parse(
+            paths.reduce('') { |s, p| s << IO.read(p) },
+            bibtex_options
+          )
+
+          @paths = paths
+
+          @bibliography.replace_strings if replace_strings?
+          @bibliography.join if join_strings? && replace_strings?
+
+          # Remove duplicate entries
+          @bibliography.uniq!(*match_fields) if remove_duplicates?
+        end
 
         @bibliography
       end
+
+      def bibliography_stale?
+      end
+
 
       def query
         interpolate @query
