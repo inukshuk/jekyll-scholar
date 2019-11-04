@@ -641,10 +641,11 @@ module Jekyll
         end
 
         # generate the URL
-        URL.new(
-          :template => config['details_permalink'],
-          :placeholders => url_placeholders
-        ).to_s
+        File.join(base, 
+          URL.new(
+            :template => config['details_permalink'],
+            :placeholders => url_placeholders
+          ).to_s)
       end
 
       def base_url
