@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('jekyll', '~> 4.0')
   s.add_runtime_dependency('citeproc-ruby', '~> 1.0')
   s.add_runtime_dependency('csl-styles', '~> 1.0')
-  s.add_runtime_dependency('bibtex-ruby', '~> 4.0', '>= 4.0.13')
+  s.add_runtime_dependency('bibtex-ruby', '~> 5.0')
 
   s.files        = `git ls-files`.split("\n")
   s.test_files   = `git ls-files -- {test,spec,features}/*`.split("\n")
