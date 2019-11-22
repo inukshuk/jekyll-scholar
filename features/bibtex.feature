@@ -619,7 +619,7 @@ Feature: BibTeX
     Given I have a scholar configuration with:
       | key                   | value                           |
       | source                | ./_bibliography                 |
-      | bibliography_template | <pre>{{entry.raw_bibtex}}</pre> |
+      | bibliography_template | <pre>{{entry.bibtex}}</pre> |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
       """
@@ -638,3 +638,4 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "{{No Escape}}" in "_site/scholar.html"
+    And I should not see "raw" in "_site/scholar.html"

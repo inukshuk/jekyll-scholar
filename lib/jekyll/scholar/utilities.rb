@@ -518,7 +518,7 @@ module Jekyll
       def bibliography_tag(entry, index)
         return missing_reference unless entry
 
-        tmp = liquid_template.render(
+        liquid_template.render(
           reference_data(entry,index)
           .merge(site.site_payload)
           .merge({
@@ -528,17 +528,7 @@ module Jekyll
         {
           :registers => { :site => site },
           :filters => [Jekyll::Filters]
-        }
-        )
-        # process the generated reference with Liquid, to get the same behaviour as
-        # when it is used on a page
-        Liquid::Template.parse(tmp).render(
-          site.site_payload,
-          {
-            :registers => { :site => site },
-            :filters => [Jekyll::Filters]
-          }
-        )
+        })
       end
 
       def reference_data(entry, index = nil)
@@ -570,7 +560,7 @@ module Jekyll
           e['bibtex'] = tmp.to_s({ quotes: config['bibtex_quotes'] })
         end
 
-        e['raw_bibtex'] = "{%raw%}#{e['bibtex']}{%endraw%}"
+        #e['raw_bibtex'] = "{%raw%}#{e['bibtex']}{%endraw%}"
 
         entry.fields.each do |key, value|
           value = value.convert(*bibtex_filters) unless bibtex_filters.empty?
