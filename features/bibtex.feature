@@ -589,3 +589,28 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/test.html" file should exist
     And I should see "L’image de l’empereur en Gaule romaine" in "_site/test.html"
+    And I should see "Paris" in "_site/test.html"
+
+  Scenario: Simple Bibliography With Custom Template and Double Braces
+    Given I have a scholar configuration with:
+      | key                   | value                    |
+      | source                | ./_bibliography          |
+      | bibliography_template | <h1>{{entry.title}}</h1> |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{x,
+        title = {{No Escape}},
+        year  = {2019}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "<h1>No Escape</h1>" in "_site/scholar.html"
