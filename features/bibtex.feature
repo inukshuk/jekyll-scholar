@@ -614,3 +614,27 @@ Feature: BibTeX
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "<h1>No Escape</h1>" in "_site/scholar.html"
+
+  Scenario: Simple Bibliography With Custom Template and Raw BibTeX
+    Given I have a scholar configuration with:
+      | key                   | value                           |
+      | source                | ./_bibliography                 |
+      | bibliography_template | <pre>{{entry.raw_bibtex}}</pre> |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{x,
+        title = {{No Escape}},
+        year  = {2019}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "{{No Escape}}" in "_site/scholar.html"

@@ -570,6 +570,8 @@ module Jekyll
           e['bibtex'] = tmp.to_s({ quotes: config['bibtex_quotes'] })
         end
 
+        e['raw_bibtex'] = "{%raw%}#{e['bibtex']}{%endraw%}"
+
         entry.fields.each do |key, value|
           value = value.convert(*bibtex_filters) unless bibtex_filters.empty?
           e[key.to_s] = value.to_s
