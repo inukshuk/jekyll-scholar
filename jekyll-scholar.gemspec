@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
   s.date        = Time.now
 
   s.required_rubygems_version = '>= 1.3.6'
-  s.rubyforge_project = s.name
 
   s.add_runtime_dependency('jekyll', '~> 4.0')
   s.add_runtime_dependency('citeproc-ruby', '~> 1.0')
