@@ -6,16 +6,12 @@ rescue LoadError
 end
 
 begin
-  if RUBY_VERSION > '2.0'
-    require 'byebug'
-  else
-    require 'debugger'
-  end
+  require 'byebug'
 rescue LoadError
   # ignore
 end
 
-require 'test/unit'
+require 'minitest/test'
 require 'jekyll/scholar'
 require 'tmpdir'
 
@@ -32,7 +28,6 @@ def prepend_test_dir(options, key)
 end
 
 def run_jekyll(options = {})
-
   options = Jekyll.configuration(options)
 
   prepend_test_dir(options, 'source')
@@ -42,5 +37,4 @@ def run_jekyll(options = {})
   print options['destination'] + "\n"
   site = Jekyll::Site.new(options)
   site.process
-
 end

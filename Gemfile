@@ -2,22 +2,22 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'test-unit'
+  gem 'cucumber'
   gem 'rake'
+  gem 'redcarpet'
   gem 'redgreen'
   gem 'shoulda'
-  gem 'cucumber', '1.3.11'
-  gem 'redcarpet'
+  gem 'test-unit'
   gem 'unicode_utils' if RUBY_VERSION < '2.4'
 end
 
 group :extra do
-    gem 'listen'
+  gem 'listen'
 end
 
 group :coverage do
-  gem 'simplecov', :require => false
   gem 'coveralls', :require => false
+  gem 'simplecov', :require => false
 end
 
 group :debug do

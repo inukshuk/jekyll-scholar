@@ -583,7 +583,7 @@ Feature: BibTeX
       """
       ---
       ---
-      {% bibliography %}
+      {% bibliography --style apa-6th-edition %}
       """
     When I run jekyll
     Then the _site directory should exist

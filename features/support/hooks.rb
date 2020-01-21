@@ -5,6 +5,8 @@ Before do
 end
 
 After do
-  FileUtils.rm_rf(TEST_DIR) if File.exist?(TEST_DIR)
+  if File.exist?(TEST_DIR)
+    FileUtils.rm_rf(TEST_DIR)
+    Dir.chdir(File.dirname(TEST_DIR))
+  end
 end
-
