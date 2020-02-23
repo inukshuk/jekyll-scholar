@@ -724,6 +724,14 @@ module Jekyll
         end
       end
 
+      def details_link(key)
+        if bibliography.key?(key)
+          details_link_for(bibliography[key])
+        else
+          raise Exception.new "Could not find entry for key '%s'" % key
+        end
+      end
+
       def content_tag(name, content_or_attributes, attributes = {})
         if content_or_attributes.is_a?(Hash)
           content, attributes = nil, content_or_attributes

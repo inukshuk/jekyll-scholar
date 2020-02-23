@@ -140,3 +140,31 @@ Feature: Citations
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     And I should see "Click For More</a>" in "_site/scholar.html"
+
+  @tags @details_link
+  Scenario: A Simple Details Link
+    Given I have a scholar configuration with:
+      | key          | value             |
+      | source       | ./_bibliography   |
+      | bibliography | my_references     |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% details_link ruby %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "/bibliography/ruby.html" in "_site/scholar.html"
+    And I should not see ""<a>"" in "_site/scholar.html"
