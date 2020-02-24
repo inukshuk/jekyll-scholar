@@ -501,6 +501,13 @@ can be set via the 'details_link' configuration option).
     Duis 'aute irure dolor in reprehenderit in voluptate' velit esse cillum
     dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
     proident {% cite_details key --text Click Here For More Details %}.
+    
+Alternatively, you can use the `details_link` tag to get just the URL to 
+a details page. This can be used to link to details pages in markdown the 
+same way you would link to a blog post with Jekyll's `link` tag.
+
+    [See our blog post]({% link _posts/2020-01-01-research-post.md %}) 
+    or [find more details]({% details_link key %}).
 
 
 ### Bibliography Filters
