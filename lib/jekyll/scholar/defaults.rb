@@ -37,6 +37,7 @@ module Jekyll
 
       'bibtex_options'         => { :strip => false, :parse_months => true },
       'bibtex_filters'         => [ :smallcaps, :superscript, :italics, :textit, :lowercase, :textregistered, :tiny, :latex ],
+      'raw_bibtex_filters'     => [ ],
       'bibtex_skip_fields'     => [ :abstract, :month_numeric ],
       'bibtex_quotes'          => ['{', '}'],
 
