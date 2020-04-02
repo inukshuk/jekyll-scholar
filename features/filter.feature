@@ -609,3 +609,39 @@ Feature: BibTeX
     And the "_site/scholar.html" file should exist
     And I should see "This is <span class="tiny">i is tiny</span> to me." in "_site/scholar.html"
 
+  @tags @filters
+  Scenario: Apply raw BiBTeX filters
+    Given I have a scholar configuration with:
+      | key                   | value             |
+      | source                | ./_bibliography   |
+      | bibliography_template | bibliography      |
+    And I have the following raw BibTeX filters:
+      | linebreaks |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @misc{pickaxe,
+        title = {Long
+                 line},
+        series = {Longer
+                  line}
+      }
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/bibliography.html":
+      """
+      ---
+      ---
+      {{ entry.bibtex }}
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "@misc{pickaxe,\n  title = {Long line},\n  series = {Longer line}" in "_site/scholar.html"
+
