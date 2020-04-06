@@ -774,8 +774,9 @@ module Jekyll
       end
 
       def set_context_to(context)
-        @context, @site, = context, context.registers[:site]
+        @context, @site, @page, = context, context.registers[:site], context.registers[:page]
         config.merge!(site.config['scholar'] || {})
+        config.merge!(page['scholar'] || {})
         self
       end
 
