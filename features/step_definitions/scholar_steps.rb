@@ -36,6 +36,15 @@ Given(/^I have the following BibTeX filters:$/) do |table|
   end
 end
 
+Given(/^I have the following raw BibTeX filters:$/) do |table|
+  File.open('_config.yml', 'a') do |f|
+    f.write("  raw_bibtex_filters:\n")
+    table.raw.flatten.each do |row|
+      f.write("    - #{row}\n")
+    end
+  end
+end
+
 Then(/^"(.*)" should come before "(.*)" in "(.*)"$/) do |p1, p2, file|
   data = File.open(file).readlines.join('')
 

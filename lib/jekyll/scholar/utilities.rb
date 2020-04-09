@@ -165,6 +165,10 @@ module Jekyll
         config['bibtex_filters'] ||= []
       end
 
+      def raw_bibtex_filters
+        config['raw_bibtex_filters'] ||= []
+      end
+
       def bibtex_paths
         bibtex_files.map { |file|
           interpolated_file = interpolate file
@@ -548,8 +552,13 @@ module Jekyll
         e['key'] = entry.key
         e['type'] = entry.type.to_s
 
+        conv_opts = { quotes: config['bibtex_quotes'] }
+        if !raw_bibtex_filters.empty?
+          conv_opts[:filter] = *raw_bibtex_filters
+        end
+
         if entry.field_names(config['bibtex_skip_fields']).empty?
-          e['bibtex'] = entry.to_s({ quotes: config['bibtex_quotes'] })
+          e['bibtex'] = entry.to_s(conv_opts)
         else
           tmp = entry.dup
 
@@ -557,7 +566,7 @@ module Jekyll
             tmp.delete name if tmp.field?(name)
           end
 
-          e['bibtex'] = tmp.to_s({ quotes: config['bibtex_quotes'] })
+          e['bibtex'] = tmp.to_s(conv_opts)
         end
 
         #e['raw_bibtex'] = "{%raw%}#{e['bibtex']}{%endraw%}"
