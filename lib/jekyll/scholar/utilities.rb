@@ -67,6 +67,10 @@ module Jekyll
             @bibliography_list_tag = tag
           end
 
+          opts.on('-H', '--bibliography_list_attributes ATTS') do |atts|
+            @bibliography_list_attributes = atts
+          end
+
           opts.on('-p', '--prefix PREFIX') do |prefix|
             @prefix = prefix
           end
@@ -112,7 +116,7 @@ module Jekyll
           end
         end
 
-        argv = arguments.split(/(\B-[cCfhqptTsgGOlLomAr]|\B--(?:cited(_in_order)?|clear|bibliography_list_tag|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|remove_duplicates|))/)
+        argv = arguments.split(/(\B-[cCfhHqptTsgGOlLomAr]|\B--(?:cited(_in_order)?|clear|bibliography_list_tag|bibliography_list_attributes|file|query|prefix|text|style|group_(?:by|order)|type_order|template|locator|label|offset|max|suppress_author|remove_duplicates|))/)
 
         parser.parse argv.map(&:strip).reject(&:empty?)
       end
@@ -122,6 +126,14 @@ module Jekyll
           config['bibliography_list_tag']
         else
           @bibliography_list_tag
+        end
+      end
+
+      def bibliography_list_attributes
+        if @bibliography_list_attributes.nil?
+          {}
+        else
+          eval(@bibliography_list_attributes)
         end
       end
 
