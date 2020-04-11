@@ -45,6 +45,15 @@ Given(/^I have the following raw BibTeX filters:$/) do |table|
   end
 end
 
+Given(/^I have the following bibliography_list_attributes:$/) do |table|
+  File.open('_config.yml', 'a') do |f|
+    f.write("  bibliography_list_attributes:\n")
+    table.hashes.each do |row|
+      f.write("    #{row["key"]}: #{row["value"]}\n")
+    end
+  end
+end
+
 Then(/^"(.*)" should come before "(.*)" in "(.*)"$/) do |p1, p2, file|
   data = File.open(file).readlines.join('')
 

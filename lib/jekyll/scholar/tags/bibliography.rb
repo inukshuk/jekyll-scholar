@@ -71,7 +71,7 @@ module Jekyll
         }.join("\n")
 
         content_tag bibliography_list_tag, bibliography,
-          { :class => config['bibliography_class'] }.merge(bibliography_list_attributes)
+          { :class => config['bibliography_class'] }.merge(config['bibliography_list_attributes']).merge(bibliography_list_attributes)
 
       end
 
