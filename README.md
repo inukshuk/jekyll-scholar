@@ -18,7 +18,7 @@ Installation
 
 Or add it to your `Gemfile`:
 
-    gem 'jekyll-scholar'
+    gem 'jekyll-scholar', group: :jekyll_plugins
 
 ### Github Pages
 
