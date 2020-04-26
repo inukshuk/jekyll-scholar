@@ -23,7 +23,7 @@ module Jekyll
 
       def url
         # Reuse the logic in the utilities module for deciding URLs
-        details_link_for(@entry)
+        details_path_for(@entry)
       end
     end
 

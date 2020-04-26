@@ -107,7 +107,7 @@ Feature: Details
     And I should see "Page title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "Title: An Umlaut \\\"a!" in "_site/bibliography/ruby.html"
     And I should see "title = {An Umlaut \\\"a!}" in "_site/bibliography/ruby.html"
-    
+
 
   @generators
   Scenario: Liquid tags should not be parsed inside the bibtex
@@ -438,8 +438,8 @@ Feature: Details
     And the "_site/scholar/index.html" file should exist
     And I should see "<a[^>]+href=\"/blog/bibliography/2008/10.0000/1111/\">" in "_site/scholar/index.html"
     And I should see "<a[^>]+href=\"/blog/bibliography/2018/ruby/\">" in "_site/scholar/index.html"
-    And the "_site/blog/bibliography/2008/10.0000/1111/index.html" file should exist
-    And the "_site/blog/bibliography/2018/ruby/index.html" file should exist
+    And the "_site/bibliography/2008/10.0000/1111/index.html" file should exist
+    And the "_site/bibliography/2018/ruby/index.html" file should exist
 
   @generators @parse_months
   Scenario: Months are parsed by default
