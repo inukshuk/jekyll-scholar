@@ -642,10 +642,10 @@ module Jekyll
         end
 
         # generate the URL
-        File.join(base, 
+        File.join(base,
           URL.new(
-            :template => config['details_permalink'],
-            :placeholders => url_placeholders
+            template: config['details_permalink'],
+            placeholders: url_placeholders
           ).to_s)
       end
 
@@ -783,7 +783,7 @@ module Jekyll
       end
 
       def set_context_to(context)
-        @context, @site, @page, = context, context.registers[:site], context.registers[:page]
+        @context, @site, page, = context, *context.registers.values_at(:site, :page)
         config.merge!(site.config['scholar'] || {})
         config.merge!(page['scholar'] || {})
         self
