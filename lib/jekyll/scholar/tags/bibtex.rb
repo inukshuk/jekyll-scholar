@@ -1,6 +1,5 @@
 module Jekyll
   class Scholar
-
     class BibTeXTag < Liquid::Block
       include Scholar::Utilities
 
@@ -15,16 +14,13 @@ module Jekyll
 
       def render(context)
         set_context_to context
-        
+
         BibTeX.parse(super, bibtex_options).map { |entry|
           reference_tag entry
-
         }.join("\n")
       end
     end
-
   end
 end
 
 Liquid::Template.register_tag('bibtex', Jekyll::Scholar::BibTeXTag)
-

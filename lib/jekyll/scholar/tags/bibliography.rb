@@ -1,6 +1,5 @@
 module Jekyll
   class Scholar
-
     class BibliographyTag < Liquid::Tag
       include Scholar::Utilities
 
@@ -34,7 +33,7 @@ module Jekyll
       def render_groups(groups)
         def group_renderer(groupsOrItems,keys,order,tags)
           if keys.count == 0
-            renderer(true)
+            csl_renderer(true)
             render_items(groupsOrItems)
           else
             groupsOrItems

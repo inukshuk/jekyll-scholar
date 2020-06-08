@@ -662,15 +662,15 @@ module Jekyll
         config['details_dir']
       end
 
-      def renderer(force = false)
-        return @renderer if @renderer && !force
+      def csl_renderer(force = false)
+        return @csl_renderer if @csl_renderer && !force
 
-        @renderer = CiteProc::Ruby::Renderer.new :format => 'html',
+        @csl_renderer = CiteProc::Ruby::Renderer.new :format => 'html',
           :style => style, :locale => config['locale']
       end
 
       def render_citation(items)
-        renderer.render items.zip(locators.zip(labels)).map { |entry, (locator, label)|
+        csl_renderer.render items.zip(locators.zip(labels)).map { |entry, (locator, label)|
           cited_keys << entry.key
           cited_keys.uniq!
 
@@ -684,17 +684,17 @@ module Jekyll
 
       def render_bibliography(entry, index = nil)
         begin
-          original_locale, renderer.locale =
-            renderer.locale, locales(entry.language)
+          original_locale = csl_renderer.locale
+          csl_renderer.locale = locales(entry.language)
         rescue
           # Locale failed to load; just use original one!
         end if allow_locale_overrides? &&
-        entry['language'] != renderer.locale.language
+          entry['language'] != csl_renderer.locale.language
 
-        renderer.render citation_item_for(entry, index),
+        csl_renderer.render citation_item_for(entry, index),
           styles(style).bibliography
       ensure
-        renderer.locale = original_locale unless original_locale.nil?
+        csl_renderer.locale = original_locale unless original_locale.nil?
       end
 
       def citation_item_for(entry, citation_number = nil)
