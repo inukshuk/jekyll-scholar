@@ -53,10 +53,10 @@ configuration:
 
 In your Jekyll configuration file you can adjust the Jekyll-Scholar settings
 using the `scholar` key. For example, the following sets the bibliography style
-to `mla`.
+to `modern-language-association`.
 
     scholar:
-      style: mla
+      style: modern-language-association
 
 The table below describes some commonly used configuration options. For a
 description of all options and their defaults, see
@@ -64,7 +64,7 @@ description of all options and their defaults, see
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `style` | `apa` | Indicates the style used for the bibliography and citations. You can use any style that ships with [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g., apa, mla, chicago-fullnote-bibliography) which is usually the filename as seen [here](https://github.com/citation-style-language/styles) without the `.csl` ending; note that you have to use `dependent/style` if you want to use one from that directory. Alternatively you can add a link to any CSL  style (e.g., you could link to any of the styles available at the official [CSL style repository](https://github.com/citation-style-language/styles)). |
+| `style` | `apa` | Indicates the style used for the bibliography and citations. You can use any style that ships with [CiteProc-Ruby](https://github.com/inukshuk/citeproc-ruby) by name (e.g., apa, chicago-fullnote-bibliography) which is usually the filename as seen [here](https://github.com/citation-style-language/styles) without the `.csl` ending; note that you have to use `dependent/style` if you want to use one from that directory. Alternatively you can add a link to any CSL  style (e.g., you could link to any of the styles available at the official [CSL style repository](https://github.com/citation-style-language/styles)). |
 | `locale` | `en` | Defines what language to use when formatting your references (this typically applies to localized terms, e.g., 'Eds.' for editors in English). |
 | `source` | `./_bibliography` |  Indicates where your bibliographies are stored. |
 | `bibliography` | `references.bib` | Indicates the name of your default bibliography. For best results, please ensure that your bibliography is encoded as ASCII or UTF-8. A string that contains a `*` will be passed to `Dir::glob`, so `**/*.bib{,tex}` will find all files named `*.bib` and `*.bibtex` under `source`.  |
