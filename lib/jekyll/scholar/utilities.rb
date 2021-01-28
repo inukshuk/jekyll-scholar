@@ -730,6 +730,19 @@ module Jekyll
         link_to link_target_for(keys[0]), render_citation(items), {class: config['cite_class']}
       end
 
+      def nocite(keys)
+        items = keys.map do |key|
+          if bibliography.key?(key)
+            entry = bibliography[key]
+            entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+            cited_keys << entry.key
+            cited_keys.uniq!
+          else
+            return missing_reference
+          end
+        end
+      end
+
       def cite_details(key, text)
         if bibliography.key?(key)
           link_to details_link_for(bibliography[key]), text || config['details_link']
