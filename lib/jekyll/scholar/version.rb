@@ -1,5 +1,5 @@
 module Jekyll
   class Scholar
-    VERSION = '6.8.0'.freeze
+    VERSION = '6.8.1'.freeze
   end
 end
