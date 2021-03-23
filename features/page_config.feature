@@ -40,3 +40,33 @@ Feature: Page Configuration
     And I should see "The Ruby Programming Language" in "_site/scholar.html"
     And I should not see "Programming Ruby" in "_site/scholar.html"
 
+
+  @tags
+  Scenario: Template access to page config
+    Given I have a scholar configuration with:
+      | key                   | value                     |
+      | source                | ./_bibliography           |
+      | bibliography_template | <p>{{page.scholar.x}}</p> |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      scholar:
+        x: Asa-Nisi-Masa
+      ---
+      {% bibliography %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "<p>Asa-Nisi-Masa</p>" in "_site/scholar.html"
+

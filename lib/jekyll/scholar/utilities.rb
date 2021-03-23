@@ -527,10 +527,11 @@ module Jekyll
           .merge(site.site_payload)
           .merge({
           'index' => index,
+          'page' => context.registers[:page],
           'details' => details_link_for(entry)
         }),
         {
-          :registers => { :site => site },
+          :registers => context.registers,
           :filters => [Jekyll::Filters]
         })
       end
