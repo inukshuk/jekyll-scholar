@@ -226,6 +226,16 @@ would be a more complex template file:
 You can also override the default bibliography template, by passing the
 `--template` or `-T` option parameter to the bibliography tag.
 
+Some of the bibliography template styles, such as `acm-sigchi-proceedings`, list the references in an ordered list, resulting in redundant indices. This is due to the ordered list created by Jekyll Scholar per reference item. You can work around it by specifying the HTML tags like so:
+```
+scholar:
+  style: acm-sigchi-proceedings
+  bibliography_template: bib
+  bibliography_list_tag: div
+  bibliography_item_tag: div
+```
+As a result, the references will be put in `div` items instead of ordered list items, negating the redundant indices.
+
 ### Citations
 
 If you want to reference books or papers from your bibliography in your blog
