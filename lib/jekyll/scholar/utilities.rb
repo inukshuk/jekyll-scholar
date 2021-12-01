@@ -384,7 +384,7 @@ module Jekyll
       def month_names
         return @month_names unless @month_names.nil?
 
-        @month_names = config['month_names'].nil? ? Date::MONTHNAMES : config['month_names'].unshift(nil)
+        @month_names = config['month_names'].nil? ? Date::MONTHNAMES : [nil] + config['month_names']
       end
 
       def remove_duplicates?

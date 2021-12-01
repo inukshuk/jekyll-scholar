@@ -17,7 +17,7 @@ module Jekyll
 
       def initialize(config = {})
         super
-        @config['scholar'] = Scholar.defaults.merge(@config['scholar'] || {})
+        @config = Scholar.defaults.merge(@config['scholar'] || {})
         @markdown = Jekyll::Converters::Markdown.new(config)
       end
 
@@ -31,7 +31,7 @@ module Jekyll
 
       def convert(content)
         content = BibTeX.parse(content, :strict => true, :include => [:meta_content],
-                               :filter => @config['scholar']['bibtex_filters']).map do |b|
+                               :filter => config['bibtex_filters']).map do |b|
           if b.respond_to?(:to_citeproc)
             render_bibliography b
           else
