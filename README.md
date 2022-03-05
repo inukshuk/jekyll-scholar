@@ -32,7 +32,7 @@ You can keep sources, configuration and plugins in a separate branch; see e.g.
   [here](http://davidensinger.com/2013/07/automating-jekyll-deployment-to-github-pages-with-rake/)
 for details.
 
-
+Alternatively, you can use a [Github Actions](https://github.com/features/actions) called [jekyll-action](https://github.com/helaili/jekyll-action) to deploy your site to Github Pages
 
 Usage
 -----
