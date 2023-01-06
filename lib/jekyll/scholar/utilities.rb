@@ -593,6 +593,9 @@ module Jekyll
       end
 
       def generate_details?
+        if !config['details_link'] then
+          return false
+        end 
         site.layouts.key?(File.basename(config['details_layout'], '.html'))
       end
 
