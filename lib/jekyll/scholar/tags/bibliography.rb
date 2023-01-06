@@ -61,7 +61,7 @@ module Jekyll
         bibliography = items.compact.each_with_index.map { |entry, index|
           reference = bibliography_tag(entry, index + 1)
 
-          if generate_details?
+          if generate_details_link?
             reference << link_to(details_link_for(entry),
               config['details_link'], :class => config['details_link_class'])
           end
