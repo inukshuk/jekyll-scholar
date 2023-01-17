@@ -63,5 +63,5 @@ Then(/^the "(.*)" file should exist$/) do |file|
 end
 
 Then(/^the "(.*)" file should not exist$/) do |file|
-  assert !File.exists?(file)
+  assert !File.exist?(file)
 end

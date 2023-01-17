@@ -457,10 +457,10 @@ module Jekyll
 
         # Return as is if it is an absolute path
         # Improve by using Pathname from stdlib?
-        return name if name.start_with?('/') && File.exists?(name)
+        return name if name.start_with?('/') && File.exist?(name)
 
         name = File.join scholar_source, name
-        name << '.bib' if File.extname(name).empty? && !File.exists?(name)
+        name << '.bib' if File.extname(name).empty? && !File.exist?(name)
         name
       end
 
@@ -468,7 +468,7 @@ module Jekyll
         source = config['source']
 
         # Improve by using Pathname from stdlib?
-        return source if source.start_with?('/') && File.exists?(source)
+        return source if source.start_with?('/') && File.exist?(source)
 
         File.join site.source, source
       end
