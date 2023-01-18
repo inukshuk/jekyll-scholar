@@ -155,7 +155,7 @@ Feature: PDF Repository
       | source                    | ./_bibliography   |
       | repository                | papers            |
       | bibliography_template     | bibliography      |
-      | repository_file_delimiter | ':'               |
+      | repository_file_delimiter | '-'               |
 
     And I have a "_bibliography" directory
     And I have a file "_bibliography/references.bib":
@@ -168,11 +168,11 @@ Feature: PDF Repository
       }
       """
     And I have a "papers" directory
-    And I have a file "papers/ruby.ref:pdf":
+    And I have a file "papers/ruby.ref-pdf":
       """
       The PDF
       """
-    And I have a file "papers/ruby.ref:slides.pdf":
+    And I have a file "papers/ruby.ref-slides.pdf":
       """
       The Slides PDF
       """
@@ -191,11 +191,11 @@ Feature: PDF Repository
       """
     When I run jekyll
     Then the _site directory should exist
-    And the "_site/papers/ruby.ref:pdf" file should exist
-    And the "_site/papers/ruby.ref:slides.pdf" file should exist
+    And the "_site/papers/ruby.ref-pdf" file should exist
+    And the "_site/papers/ruby.ref-slides.pdf" file should exist
     And I should see "The Ruby Programming Language" in "_site/scholar.html"
-    And I should see "Link: /papers/ruby.ref:pdf" in "_site/scholar.html"
-    And I should see "Slides: /papers/ruby.ref:slides.pdf" in "_site/scholar.html"
+    And I should see "Link: /papers/ruby.ref-pdf" in "_site/scholar.html"
+    And I should see "Slides: /papers/ruby.ref-slides.pdf" in "_site/scholar.html"
 
   @repository
   Scenario: A bibliography with a single entry and a repository with a directory
