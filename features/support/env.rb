@@ -6,7 +6,7 @@ rescue LoadError
 end
 
 begin
-  require 'byebug'
+  require 'debug'
 rescue LoadError
   # ignore
 end

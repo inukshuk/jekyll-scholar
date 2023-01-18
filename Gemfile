@@ -21,5 +21,5 @@ group :coverage do
 end
 
 group :debug do
-  gem 'byebug', :require => false, :platform => :mri
+  gem 'debug', '>= 1.0.0', :require => false
 end
