@@ -16,7 +16,6 @@ group :extra do
 end
 
 group :coverage do
-  gem 'coveralls', :require => false
   gem 'simplecov', :require => false
 end
 
