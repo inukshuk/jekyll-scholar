@@ -1,5 +1,6 @@
 Jekyll-Scholar
 ==============
+[![CI](https://github.com/inukshuk/jekyll-scholar/actions/workflows/ci.yml/badge.svg)](https://github.com/inukshuk/jekyll-scholar/actions/workflows/ci.yml)
 
 Jekyll-Scholar is for all the academic bloggers out there. It is a set of
 extensions to [Jekyll](http://jekyllrb.com/), the awesome, blog aware, static
