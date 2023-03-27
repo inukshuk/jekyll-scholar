@@ -384,7 +384,7 @@ module Jekyll
       def month_names
         return @month_names unless @month_names.nil?
 
-        @month_names = config['month_names'].nil? ? Date::MONTHNAMES : config['month_names'].unshift(nil)
+        @month_names = config['month_names'].nil? ? Date::MONTHNAMES : [nil] + config['month_names']
       end
 
       def remove_duplicates?
@@ -457,10 +457,10 @@ module Jekyll
 
         # Return as is if it is an absolute path
         # Improve by using Pathname from stdlib?
-        return name if name.start_with?('/') && File.exists?(name)
+        return name if name.start_with?('/') && File.exist?(name)
 
         name = File.join scholar_source, name
-        name << '.bib' if File.extname(name).empty? && !File.exists?(name)
+        name << '.bib' if File.extname(name).empty? && !File.exist?(name)
         name
       end
 
@@ -468,7 +468,7 @@ module Jekyll
         source = config['source']
 
         # Improve by using Pathname from stdlib?
-        return source if source.start_with?('/') && File.exists?(source)
+        return source if source.start_with?('/') && File.exist?(source)
 
         File.join site.source, source
       end
@@ -592,6 +592,13 @@ module Jekyll
         e
       end
 
+      def generate_details_link?
+        if !config['details_link'] then
+          return false
+        end
+        return true
+      end 
+#
       def generate_details?
         site.layouts.key?(File.basename(config['details_layout'], '.html'))
       end
@@ -656,7 +663,9 @@ module Jekyll
       end
 
       def base_url
-        @base_url ||= site.config['baseurl'] || site.config['base_url'] || ''
+        @base_url ||= (
+          site.config['baseurl'] || site.config['base_url'] || ''
+        ).to_s
       end
 
       def details_path
@@ -729,6 +738,18 @@ module Jekyll
         end
 
         link_to link_target_for(keys[0]), render_citation(items), {class: config['cite_class']}
+      end
+
+      def nocite(keys)
+        items = keys.map do |key|
+          if bibliography.key?(key)
+            entry = bibliography[key]
+            cited_keys << entry.key
+            cited_keys.uniq!
+          else
+            return missing_reference
+          end
+        end
       end
 
       def cite_details(key, text)

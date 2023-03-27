@@ -40,6 +40,105 @@ Feature: Details
     And I should see "A Comment" in "_site/bibliography/ruby.html"
 
   @generators
+  Scenario: A bibliography with a single entry with link
+    Given I have a scholar configuration with:
+      | key            | value             |
+      | source         | ./_bibliography   |
+      | details_layout | details.html      |
+      | details_link   | Full details      |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        comment   = {A Comment},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a file "bibliography.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {%bibliography%}
+      </body>
+      </html>
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {{ page.title }}
+      {{ page.entry.comment }}
+      </body>
+      </html>
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/bibliography/ruby.html" file should exist
+    And I should see "The Ruby Programming Language" in "_site/bibliography/ruby.html"
+    And I should see "A Comment" in "_site/bibliography/ruby.html"
+    And I should see "Full details" in "_site/bibliography.html"
+
+  @generators
+  Scenario: A bibliography with a single entry but no link
+    Given I have a scholar configuration with:
+      | key            | value             |
+      | source         | ./_bibliography   |
+      | details_layout | details.html      |
+      | details_link   |                   |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        comment   = {A Comment},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a file "bibliography.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {%bibliography%}
+      </body>
+      </html>
+      """
+    And I have a "_layouts" directory
+    And I have a file "_layouts/details.html":
+      """
+      ---
+      ---
+      <html>
+      <head></head>
+      <body>
+      {{ page.title }}
+      {{ page.entry.comment }}
+      </body>
+      </html>
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/bibliography/ruby.html" file should exist
+    And I should see "The Ruby Programming Language" in "_site/bibliography/ruby.html"
+    And I should see "A Comment" in "_site/bibliography/ruby.html"
+    And I should not see "Full details" in "_site/bibliography.html"
+
+
+  @generators
   Scenario: LaTeX conversion is applied to everything except the bibtex field
     Given I have a scholar configuration with:
       | key            | value             |

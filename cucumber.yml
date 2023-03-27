@@ -1,1 +1,1 @@
-default: --require features --color
+default: --require features --color --publish-quiet

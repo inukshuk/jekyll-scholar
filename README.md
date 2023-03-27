@@ -1,13 +1,11 @@
 Jekyll-Scholar
 ==============
+[![CI](https://github.com/inukshuk/jekyll-scholar/actions/workflows/ci.yml/badge.svg)](https://github.com/inukshuk/jekyll-scholar/actions/workflows/ci.yml)
 
 Jekyll-Scholar is for all the academic bloggers out there. It is a set of
 extensions to [Jekyll](http://jekyllrb.com/), the awesome, blog aware, static
 site generator; it formats your bibliographies and reading lists for the web
 and gives your blog posts citation super-powers.
-
-[![Build Status](https://travis-ci.org/inukshuk/jekyll-scholar.png?branch=master)](https://travis-ci.org/inukshuk/jekyll-scholar)
-[![Coverage Status](https://coveralls.io/repos/inukshuk/jekyll-scholar/badge.png)](https://coveralls.io/r/inukshuk/jekyll-scholar)
 
 Already using Jekyll-Scholar and interested to help out? Please get in touch with us if you would like to become a maintainer!
 
@@ -32,7 +30,7 @@ You can keep sources, configuration and plugins in a separate branch; see e.g.
   [here](http://davidensinger.com/2013/07/automating-jekyll-deployment-to-github-pages-with-rake/)
 for details.
 
-
+Alternatively, you can use a [Github Actions](https://github.com/features/actions) called [jekyll-action](https://github.com/helaili/jekyll-action) to deploy your site to Github Pages
 
 Usage
 -----
