@@ -8,7 +8,6 @@ group :development do
   gem 'redgreen'
   gem 'shoulda'
   gem 'test-unit'
-  gem 'unicode_utils' if RUBY_VERSION < '2.4'
 end
 
 group :extra do
