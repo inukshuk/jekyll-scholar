@@ -47,7 +47,7 @@ module Jekyll
 
           opts.on('-r', '--remove_duplicates [MATCH_FIELDS]') do |match_field|
             @remove_duplicates = true
-            @match_fields = match_field.split(/,\s+/) if not match_field.nil? 
+            @match_fields = match_field.split(/,\s+/) if not match_field.nil?
           end
 
           opts.on('-A', '--suppress_author') do |cited|
@@ -389,7 +389,7 @@ module Jekyll
 
       def remove_duplicates?
         @remove_duplicates || config['remove_duplicates']
-      end 
+      end
 
       def suppress_author?
         !!@suppress_author
@@ -597,7 +597,7 @@ module Jekyll
           return false
         end
         return true
-      end 
+      end
 #
       def generate_details?
         site.layouts.key?(File.basename(config['details_layout'], '.html'))
@@ -631,7 +631,7 @@ module Jekyll
 
         # First generate placeholders for all items in the bibtex entry
         url_placeholders = {}
-        entry.fields.each_pair do |k, v| 
+        entry.fields.each_pair do |k, v|
           value = v.to_s.dup
           value = Jekyll::Utils::slugify(value, :mode => 'pretty') unless k == :doi
           url_placeholders[k] = value
@@ -728,16 +728,30 @@ module Jekyll
       end
 
       def cite(keys)
+        layout = styles(style).citation.layout
+        prefix = layout.attributes.prefix.nil? ? '' : layout.attributes.prefix
+        suffix = layout.attributes.suffix.nil? ? '' : layout.attributes.suffix
+        delimiter = layout.delimiter
+
         items = keys.map do |key|
           if bibliography.key?(key)
             entry = bibliography[key]
             entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+
+            # Render the single citation, stripping delimiting characters
+            rendered = render_citation([entry])
+              .sub(/^#{Regexp.escape(prefix)}/, '')
+              .sub(/#{Regexp.escape(suffix)}$/, '')
+
+            # Then render to HTML with the link to this specific citation
+            link_to link_target_for(key), rendered, {class: config['cite_class']}
           else
             return missing_reference
           end
         end
 
-        link_to link_target_for(keys[0]), render_citation(items), {class: config['cite_class']}
+        # Combine individual linkified items
+        prefix + items.join(delimiter) + suffix
       end
 
       def nocite(keys)
