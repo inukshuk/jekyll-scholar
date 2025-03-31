@@ -17,8 +17,15 @@ Feature: BibTex
         publisher = {O'Reilly Media}
       }
       """
-    When I load the bibliography
-    Then I should have a bibliography cache entry for "_bibliography/references.bib"
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    And I clear the jekyll caches
+    When I run jekyll
+    Then I should have 1 bibliography cache entry
 
   Scenario: Changed file
     Given I have a scholar configuration with:
@@ -34,9 +41,15 @@ Feature: BibTex
         publisher = {O'Reilly Media}
       }
       """
-    When I load the bibliography
-    Then I should have a bibliography cache entry for "_bibliography/references.bib"
-    And I should have 1 bibliography cache entry
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    And I clear the jekyll caches
+    When I run jekyll
+    Then I should have 1 bibliography cache entry
     When I have a file "_bibliography/references.bib":
       """
       @book{ruby,
@@ -46,5 +59,5 @@ Feature: BibTex
         publisher = {O'Reilly Media}
       }
       """
-    Then I should have a bibliography cache entry for "_bibliography/references.bib"
-    And I should have 2 bibliography cache entries
+    And I run jekyll
+    Then I should have 2 bibliography cache entries
