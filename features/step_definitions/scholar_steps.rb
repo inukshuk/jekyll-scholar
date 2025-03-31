@@ -64,7 +64,7 @@ Then(/^I should have a (bibliography|cite) cache entry for (.*)$/) do |cache_typ
     # bib_hash = Digest::SHA256.hexdigest bib_mtimes
     # assert Jekyll::Scholar::Utilities.bib_cache.key?(bib_hash)
   when "cite"
-    assert Jekyll::Scholar::Utilities.cite_cache.key?(key)
+    assert Jekyll::Scholar::Utilities.class_variable_get(:@@cite_cache).key?(key)
   else
     raise "Unknown cache type"
   end
