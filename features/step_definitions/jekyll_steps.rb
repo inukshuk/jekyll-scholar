@@ -35,6 +35,15 @@ Given(/^I have a configuration file with:$/) do |table|
   end
 end
 
+Given(/^I clear the jekyll caches$/) do
+  begin
+    Jekyll::Scholar::Utilities.class_variable_get(:@@bib_cache).clear
+    Jekyll::Scholar::Utilities.class_variable_get(:@@cite_cache).clear
+  rescue NameError
+    # Ignored
+  end
+end
+
 When(/^I run jekyll$/) do
   run_jekyll
 end

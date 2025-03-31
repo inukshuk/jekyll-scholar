@@ -1,6 +1,7 @@
 module Jekyll
   class Scholar
     require 'date'
+    require 'digest'
 
     # Load styles into static memory.
     # They should be thread safe as long as they are
@@ -47,7 +48,7 @@ module Jekyll
 
           opts.on('-r', '--remove_duplicates [MATCH_FIELDS]') do |match_field|
             @remove_duplicates = true
-            @match_fields = match_field.split(/,\s+/) if not match_field.nil? 
+            @match_fields = match_field.split(/,\s+/) if not match_field.nil?
           end
 
           opts.on('-A', '--suppress_author') do |cited|
@@ -181,33 +182,37 @@ module Jekyll
         bibtex_paths[0]
       end
 
+      def bib_cache
+        @@bib_cache ||= Jekyll::Cache.new("jekyll-scholar::BibCache")
+      end
+
+      def cite_cache
+        @@cite_cache ||= Jekyll::Cache.new("jekyll-scholar::CiteCache")
+      end
+
       def bibliography
         paths = bibtex_paths
+        bib_mtimes = paths.reduce('') { |s, p| s << File.mtime(p).inspect }
+        bib_hash = Digest::SHA256.hexdigest bib_mtimes
 
-        # Clear @bibliography if sources change! See #282
-        unless @paths.nil? || @paths == paths
-          @bibliography = nil
-        end
-
-        unless @bibliography
-          @bibliography = BibTeX::Bibliography.parse(
+        bib_cache.getset(bib_hash) do
+          bib = BibTeX::Bibliography.parse(
             paths.reduce('') { |s, p| s << IO.read(p) },
             bibtex_options
           )
 
+          # clear cite caches on bibliography update
+          cite_cache.clear
+
           @paths = paths
 
-          @bibliography.replace_strings if replace_strings?
-          @bibliography.join if join_strings? && replace_strings?
+          bib.replace_strings if replace_strings?
+          bib.join if join_strings? && replace_strings?
 
           # Remove duplicate entries
-          @bibliography.uniq!(*match_fields) if remove_duplicates?
+          bib.uniq!(*match_fields) if remove_duplicates?
+          bib
         end
-
-        @bibliography
-      end
-
-      def bibliography_stale?
       end
 
 
@@ -389,7 +394,7 @@ module Jekyll
 
       def remove_duplicates?
         @remove_duplicates || config['remove_duplicates']
-      end 
+      end
 
       def suppress_author?
         !!@suppress_author
@@ -597,7 +602,7 @@ module Jekyll
           return false
         end
         return true
-      end 
+      end
 #
       def generate_details?
         site.layouts.key?(File.basename(config['details_layout'], '.html'))
@@ -631,7 +636,7 @@ module Jekyll
 
         # First generate placeholders for all items in the bibtex entry
         url_placeholders = {}
-        entry.fields.each_pair do |k, v| 
+        entry.fields.each_pair do |k, v|
           value = v.to_s.dup
           value = Jekyll::Utils::slugify(value, :mode => 'pretty') unless k == :doi
           url_placeholders[k] = value
@@ -731,7 +736,9 @@ module Jekyll
         items = keys.map do |key|
           if bibliography.key?(key)
             entry = bibliography[key]
-            entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+            cite_cache.getset(key) do
+              entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+            end
           else
             return missing_reference
           end
