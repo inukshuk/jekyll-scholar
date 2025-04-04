@@ -192,7 +192,7 @@ module Jekyll
 
       def bibliography
         paths = bibtex_paths
-        bib_mtimes = paths.reduce('') { |s, p| s << File.mtime(p).inspect }
+        bib_mtimes = paths.reduce('') { |s, p| s << p << File.mtime(p).inspect }
         bib_hash = Digest::SHA256.hexdigest bib_mtimes
 
         bib_cache.getset(bib_hash) do
