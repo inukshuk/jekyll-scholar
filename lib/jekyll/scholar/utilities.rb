@@ -343,12 +343,12 @@ module Jekyll
         case key
         when 'type'
           type_aliases[item.type.to_s] || item.type.to_s
+        when 'year', 'date'
+          item[key].to_date
         else
           value = item[key]
           if value.numeric?
             value.to_i
-          elsif value.date?
-            value.to_date
           else
             value.to_s
           end
