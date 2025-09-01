@@ -638,7 +638,7 @@ module Jekyll
         url_placeholders = {}
         entry.fields.each_pair do |k, v|
           value = v.to_s.dup
-          value = Jekyll::Utils::slugify(value, :mode => 'pretty') unless k == :doi
+          value = Jekyll::Utils::slugify(value, :mode => 'pretty') unless k == :doi || value.empty?
           url_placeholders[k] = value
         end
         # Maintain the same URLs are previous versions of jekyll-scholar
