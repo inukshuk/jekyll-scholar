@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0'
 
   s.add_runtime_dependency('jekyll', '~> 4.0')
-  s.add_runtime_dependency('citeproc-ruby', '~> 2.0')
+  s.add_runtime_dependency('citeproc-ruby', '>= 2.1.3')
   s.add_runtime_dependency('csl-styles', '~> 2.0')
   s.add_runtime_dependency('bibtex-ruby', '~> 6.0')
 

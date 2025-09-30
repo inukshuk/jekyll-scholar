@@ -293,6 +293,34 @@ Feature: Citations
     And the "_site/scholar.html" file should exist
     And I should see "Matsumoto, 2008, pp. 2-3; Shaughnessy, 2013, pp. 23 &amp; 42" in "_site/scholar.html"
 
+  @tags @cite @locator
+  Scenario: Citations with locators
+    Given I have a scholar configuration with:
+      | key          | value               |
+      | source       | ./_bibliography     |
+      | style        | chicago-author-date |
+      | bibliography | my_references       |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/my_references.bib":
+      """
+      @book{ruby,
+        title     = {The Ruby Programming Language},
+        author    = {Flanagan, David and Matsumoto, Yukihiro},
+        year      = {2008},
+        publisher = {O'Reilly Media}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% cite ruby -A --locator 284 %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    And I should see "(2008, p. 284)" in "_site/scholar.html"
+
   @tags @cite @locator @label
   Scenario: Citations with locator labels
     Given I have a scholar configuration with:
