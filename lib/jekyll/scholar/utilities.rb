@@ -345,7 +345,7 @@ module Jekyll
           type_aliases[item.type.to_s] || item.type.to_s
         when 'year', 'date'
           value = item[key]
-          if value.date?
+          if value&.date?
             value.to_date
           else
             value.to_s
