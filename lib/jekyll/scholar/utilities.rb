@@ -696,7 +696,7 @@ module Jekyll
 
           item = citation_item_for entry, citation_number(entry.key)
           item.locator = locator
-          item.label = label unless label.nil?
+          item.label = label || 'page' unless locator.nil?
 
           item
         }, styles(style).citation
