@@ -67,7 +67,7 @@ description of all options and their defaults, see
 | `source` | `./_bibliography` |  Indicates where your bibliographies are stored. |
 | `bibliography` | `references.bib` | Indicates the name of your default bibliography. For best results, please ensure that your bibliography is encoded as ASCII or UTF-8. A string that contains a `*` will be passed to `Dir::glob`, so `**/*.bib{,tex}` will find all files named `*.bib` and `*.bibtex` under `source`.  |
 | `allow_locale_overrides` | `false` | When `true`, allows the `language` entry in the BibTex to override the `locale` setting for individual entries. When the language is missing it will revert back to `locale`. The language value should be encoded using the two-letter [ISO 639-1](https://www.loc.gov/standards/iso639-2/php/code_list.php) standard. Ex. English = 'en', Spanish = 'es'. |
-| `sort_by` | `none` | Specifies if and how bibliography entries are sorted. Entries can be sorted on multiple fields, by using a list of keys, e.g. `year,month`. Ordering can be specified per sort level, e.g. `order: descending,ascending` will sort the years descending, but per year the months are ascending. If there are more sort keys than order directives, the last order entry is used for the remaining keys. |
+| `sort_by` | `none` | Specifies if and how bibliography entries are sorted. Entries can be sorted on multiple fields, by using a list of keys, e.g. `year,month`. Ordering can be specified per sort level, e.g. `order: descending,ascending` will sort the years descending, but per year the months are ascending. If there are more sort keys than order directives, the last order entry is used for the remaining keys. Special field `name` provides a fallback chain across named entities: `author` → `editor` → `institution` → `organization` → `publisher`, useful for bibliographies where all entries should be alphabetized together regardless of entity type. |
 | `order` | `ascending` | Specifies order bibliography entries are sorted in. Can be `ascending` or descending. Ordering can be specified per sort level, e.g. `descending,ascending` will sort in descending on the first key then ascending order on the second key. If there are more sort keys than order directives, the last order entry is used for the remaining keys. |
 | `group_by` | `none` | Specifies how bibliography items are grouped. Grouping can be multi-level, e.g. `type, year` groups entries per publication type, and within those groups per year. |
 | `group_order` | `ascending` |  Ordering for groups is specified in the same way as the sort order. Publication types -- specified with group key `type`, can be ordered by adding `type_order` to the configuration. For example, `type_order: [article,techreport]` lists journal articles before technical reports. Types not mentioned in `type_order` are considered smaller than types that are mentioned. Types can be merge in one group using the `type_aliases` setting. By default `phdthesis` and `mastersthesis` are grouped as `thesis`. By using, for example, `type_aliases: { inproceedings: article}`, journal and conference articles appear in a single group. The display names for entry types are specified with `type_names`. Names for common types are provided, but they can be extended or overridden. For example, the default name for `article` is *Journal Articles*, but it can be changed to *Papers* using `type_names: { article: Papers }`. |
@@ -155,6 +155,20 @@ This would print the publications from 2013 of the bibliography at
 For more details about filters, see the corresponding section below or
 consult the [BibTeX-Ruby](https://github.com/inukshuk/bibtex-ruby)
 documentation.
+
+To create bibliographies where all entries are alphabetized together
+regardless of whether they have authors, editors, or institutional
+publishers, you can use the special `name` sort field in your configuration:
+
+```yaml
+scholar:
+  sort_by: name
+```
+
+This will sort entries by their primary named entity, using the fallback chain:
+`author` → `editor` → `institution` → `organization` → `publisher`. For example,
+a book by an author, an edited volume, and a technical report would all be
+sorted alphabetically together.
 
 If you need to limit the number of entries in your bibliography, you can
 use the `--max` option:
