@@ -60,11 +60,11 @@ module Jekyll
       # Valid template parameters:
       #    ":details_dir"   The value of the details_dir field in the scholar config
       #    ":key"           The bibtex citation key.
-      #    ":doi"           The DOI. If the DOI is missing or blank, this returns the citation key. 
+      #    ":doi"           The DOI. If the DOI is missing or blank, this returns the citation key.
       #    ":extension"     Either of ".html" or "/index.html" depending upon the global permalink setting.
       # Template parameters can also include any key defined in the bibtex file, e.g. ":year", ":title", etc.
       # Bibtex keys such as 'title' are slugified in the same way as Jekyll treats blog post titles.
-      'details_permalink'       => '/:details_dir/:key:extension', 
+      'details_permalink'       => '/:details_dir/:key:extension',
 
       'bibliography_class'     => 'bibliography',
       'bibliography_template'  => '{{reference}}',
@@ -77,6 +77,12 @@ module Jekyll
       'query'                  => '@*',
 
       'cite_class'             => 'citation',
+
+      # If true, render in-page links from in-text citations to references as separate links (one link per citation).
+      # If false, render as only one link to the first citation.
+      # Note: This feature may not work with citation styles that group in-text citations
+      # like `[1-3]` rather than `[1, 2, 3]`
+      'separate_links'         => false,
 
       'type_names' => {
         'article' => 'Journal Articles',
