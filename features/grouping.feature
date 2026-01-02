@@ -56,6 +56,11 @@ Feature: Grouping BibTeX Bibliographies
         year      = {2007},
         publisher = {O'Reilly Media}
       }
+      @book{future,
+        title     = {Future},
+        author    = {Someone},
+        status    = {forthcoming}
+      }
       """
     And I have a page "scholar.html":
       """
@@ -67,6 +72,8 @@ Feature: Grouping BibTeX Bibliographies
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
     Then "<h2 class=\"bibliography\">2007</h2>" should come before "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
+    And "<h2 class=\"bibliography\"></h2>" should come before "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
+    And I should see "(forthcoming)" in "_site/scholar.html"
 
   @tags @grouping
   Scenario: Reverse Group Order
