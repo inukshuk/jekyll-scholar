@@ -524,7 +524,7 @@ Feature: BibTeX
       | source                 | ./_bibliography               |
       | bibliography           | my_references                 |
       | allow_locale_overrides | true                          |
-      | style                  | chicago-fullnote-bibliography |
+      | style                  | chicago-notes-bibliography |
     And I have a "_bibliography" directory
     And I have a file "_bibliography/my_references.bib":
       """

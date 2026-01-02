@@ -352,7 +352,7 @@ Feature: Citations
     When I run jekyll
     Then the _site directory should exist
     And the "_site/scholar.html" file should exist
-    And I should see "Matsumoto, 2008, Chapters 2-3; Shaughnessy, 2013, figs. 4,5" in "_site/scholar.html"
+    And I should see "Matsumoto, 2008, Chapters 2-3; Shaughnessy, 2013, Figures 4,5" in "_site/scholar.html"
 
   @tags @cite @locator @label
   Scenario: Citations with multiple locator labels
