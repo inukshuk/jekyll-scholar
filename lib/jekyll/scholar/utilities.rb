@@ -1,6 +1,7 @@
 module Jekyll
   class Scholar
     require 'date'
+    require 'digest'
 
     # Load styles into static memory.
     # They should be thread safe as long as they are
@@ -181,33 +182,37 @@ module Jekyll
         bibtex_paths[0]
       end
 
+      def bib_cache
+        @@bib_cache ||= Jekyll::Cache.new("jekyll-scholar::BibCache")
+      end
+
+      def cite_cache
+        @@cite_cache ||= Jekyll::Cache.new("jekyll-scholar::CiteCache")
+      end
+
       def bibliography
         paths = bibtex_paths
+        bib_mtimes = paths.reduce('') { |s, p| s << p << File.mtime(p).inspect }
+        bib_hash = Digest::SHA256.hexdigest bib_mtimes
 
-        # Clear @bibliography if sources change! See #282
-        unless @paths.nil? || @paths == paths
-          @bibliography = nil
-        end
-
-        unless @bibliography
-          @bibliography = BibTeX::Bibliography.parse(
+        bib_cache.getset(bib_hash) do
+          bib = BibTeX::Bibliography.parse(
             paths.reduce('') { |s, p| s << IO.read(p) },
             bibtex_options
           )
 
+          # clear cite caches on bibliography update
+          cite_cache.clear
+
           @paths = paths
 
-          @bibliography.replace_strings if replace_strings?
-          @bibliography.join if join_strings? && replace_strings?
+          bib.replace_strings if replace_strings?
+          bib.join if join_strings? && replace_strings?
 
           # Remove duplicate entries
-          @bibliography.uniq!(*match_fields) if remove_duplicates?
+          bib.uniq!(*match_fields) if remove_duplicates?
+          bib
         end
-
-        @bibliography
-      end
-
-      def bibliography_stale?
       end
 
 
@@ -338,12 +343,17 @@ module Jekyll
         case key
         when 'type'
           type_aliases[item.type.to_s] || item.type.to_s
+        when 'year', 'date'
+          value = item[key]
+          if value&.date?
+            value.to_date
+          else
+            value.to_s
+          end
         else
           value = item[key]
           if value.numeric?
             value.to_i
-          elsif value.date?
-            value.to_date
           else
             value.to_s
           end
@@ -657,7 +667,7 @@ module Jekyll
         url_placeholders = {}
         entry.fields.each_pair do |k, v|
           value = v.to_s.dup
-          value = Jekyll::Utils::slugify(value, :mode => 'pretty') unless k == :doi
+          value = Jekyll::Utils::slugify(value, :mode => 'pretty') unless k == :doi || value.empty?
           url_placeholders[k] = value
         end
         # Maintain the same URLs are previous versions of jekyll-scholar
@@ -710,7 +720,7 @@ module Jekyll
 
           item = citation_item_for entry, citation_number(entry.key)
           item.locator = locator
-          item.label = label unless label.nil?
+          item.label = label || 'page' unless locator.nil?
 
           item
         }, styles(style).citation
@@ -755,19 +765,21 @@ module Jekyll
         items = keys.map do |key|
           if bibliography.key?(key)
             entry = bibliography[key]
-            entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+            cite_cache.getset(key) do
+              entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
 
-            if config['separate_links']
-              ## Render each citation in the group as a separate link
-              # Render the single citation, stripping delimiting characters
-              rendered = render_citation([entry])
-                .sub(/^#{Regexp.escape(csl_prefix)}/, '')
-                .sub(/#{Regexp.escape(csl_suffix)}$/, '')
+              if config['separate_links']
+                ## Render each citation in the group as a separate link
+                # Render the single citation, stripping delimiting characters
+                rendered = render_citation([entry])
+                  .sub(/^#{Regexp.escape(csl_prefix)}/, '')
+                  .sub(/#{Regexp.escape(csl_suffix)}$/, '')
 
-              # Then render to HTML with the link to this specific citation
-              link_to link_target_for(key), rendered, {class: config['cite_class']}
-            else
-              entry
+                # Then render to HTML with the link to this specific citation
+                link_to link_target_for(key), rendered, {class: config['cite_class']}
+              else
+                entry
+              end
             end
           else
             return missing_reference
