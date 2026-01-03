@@ -501,6 +501,30 @@ module Jekyll
         interpolate(@style)|| config['style']
       end
 
+      # The citation layout object for the currently selected style
+      # @return [CSL::Style::Layout]
+      def layout
+        styles(style).citation.layout
+      end
+
+      # Prefix string before citations. If style has no prefix, return empty string
+      # @return [String]
+      def csl_prefix
+        layout.attributes.prefix.nil? ? '' : layout.attributes.prefix
+      end
+
+      # Suffix string after citations. If style has no suffix, return empty string
+      # @return [String]
+      def csl_suffix
+        layout.attributes.suffix.nil? ? '' : layout.attributes.suffix
+      end
+
+      # Delimiter between citations in a citation group
+      # @return [String]
+      def delimiter
+        layout.delimiter
+      end
+
       def missing_reference
         config['missing_reference']
       end
@@ -742,14 +766,33 @@ module Jekyll
           if bibliography.key?(key)
             entry = bibliography[key]
             cite_cache.getset(key) do
-              entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+              entry = entry.convert(*bibtex_filters) unless bibtex_filters.empty?
+
+              if config['separate_links']
+                ## Render each citation in the group as a separate link
+                # Render the single citation, stripping delimiting characters
+                rendered = render_citation([entry])
+                  .sub(/^#{Regexp.escape(csl_prefix)}/, '')
+                  .sub(/#{Regexp.escape(csl_suffix)}$/, '')
+
+                # Then render to HTML with the link to this specific citation
+                link_to link_target_for(key), rendered, {class: config['cite_class']}
+              else
+                entry
+              end
             end
           else
             return missing_reference
           end
         end
 
-        link_to link_target_for(keys[0]), render_citation(items), {class: config['cite_class']}
+        if config['separate_links']
+          # Combine individual linkified items
+          csl_prefix + items.join(delimiter) + csl_suffix
+        else
+          # Render as a single link
+          link_to link_target_for(keys[0]), render_citation(items), {class: config['cite_class']}
+        end
       end
 
       def nocite(keys)
@@ -828,6 +871,7 @@ module Jekyll
         self
       end
 
+      # @return [CSL::Style]
       def load_style(uri)
         begin
           style = CSL::Style.load uri
@@ -847,6 +891,8 @@ module Jekyll
         end
       end
 
+      # Access or load style by style URI or relative path
+      # @return [CSL::Style]
       def styles(style)
         STYLES[style] ||= load_style(style)
       end
