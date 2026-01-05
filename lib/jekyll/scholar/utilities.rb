@@ -277,16 +277,7 @@ module Jekyll
         @sort_keys = Array(config['sort_by'])
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
-          .map do |key|
-            case key
-            when 'month'
-              'month_numeric'
-            when 'name'
-              'name'
-            else
-              key
-            end
-          end
+          .map { |key| key == 'month' ? 'month_numeric' : key }
       end
 
       def sort_order
@@ -330,16 +321,7 @@ module Jekyll
         @group_keys = Array(group_by)
           .map { |key| key.to_s.split(/\s*,\s*/) }
           .flatten
-          .map do |key|
-            case key
-            when 'month'
-              'month_numeric'
-            when 'name'
-              'name'
-            else
-              key
-            end
-          end
+          .map { |key| key == 'month' ? 'month_numeric' : key }
       end
 
       def group_order
