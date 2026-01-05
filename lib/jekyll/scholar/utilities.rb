@@ -236,14 +236,29 @@ module Jekyll
         !offset.nil? || !max.nil?
       end
 
+      def resolve_sort_value(entry, key)
+        case key
+        when 'name'
+          # Fallback chain: author → editor → institution → organization → publisher
+          # Convert to lowercase string for case-insensitive cross-type comparison
+          # Strip leading/trailing braces and whitespace (for corporate authors like {{Name}})
+          value = entry[:author] || entry[:editor] || entry[:institution] ||
+            entry[:organization] || entry[:publisher]
+          normalized = value ? value.to_s.gsub(/\A[{\s]+|[}\s]+\z/, '').downcase : ''
+          BibTeX::Value.new(normalized)
+        else
+          entry[key].nil? ? BibTeX::Value.new : entry[key]
+        end
+      end
+
       def sort(unsorted)
         return unsorted if skip_sort?
 
         sorted = unsorted.sort do |e1, e2|
           sort_keys
             .map.with_index do |key, idx|
-            v1 = e1[key].nil? ? BibTeX::Value.new : e1[key]
-            v2 = e2[key].nil? ? BibTeX::Value.new : e2[key]
+            v1 = resolve_sort_value(e1, key)
+            v2 = resolve_sort_value(e2, key)
             if (sort_order[idx] || sort_order.last) =~ /^(desc|reverse)/i
               v2 <=> v1
             else
@@ -350,6 +365,10 @@ module Jekyll
           else
             value.to_s
           end
+        when 'name'
+          value = item[:author] || item[:editor] || item[:institution] ||
+            item[:organization] || item[:publisher] || BibTeX::Value.new
+          value.to_s
         else
           value = item[key]
           if value.numeric?

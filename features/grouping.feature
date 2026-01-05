@@ -376,3 +376,98 @@ Feature: Grouping BibTeX Bibliographies
     Then I should see "<h2 class=\"bibliography\">2007</h2>" in "_site/scholar.html"
     And I should see "<h2 class=\"bibliography\">2008</h2>" in "_site/scholar.html"
     And "2008" should come before "2007" in "_site/scholar.html"
+
+  @tags @grouping
+  Scenario: Group By Name
+    Given I have a scholar configuration with:
+      | key      | value             |
+      | group_by | name              |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{book_by_author,
+        title     = {First Book by Adams},
+        author    = {Adams, Alice},
+        year      = {2020}
+      }
+      @book{another_by_author,
+        title     = {Second Book by Adams},
+        author    = {Adams, Alice},
+        year      = {2021}
+      }
+      @book{edited_volume,
+        title     = {Edited Collection},
+        editor    = {Baker, Bob},
+        year      = {2020}
+      }
+      @techreport{tech_report,
+        title       = {Technical Report},
+        institution = {MIT},
+        year        = {2020}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then I should see "<h2 class=\"bibliography\">Adams, Alice</h2>" in "_site/scholar.html"
+    And I should see "<h2 class=\"bibliography\">Baker, Bob</h2>" in "_site/scholar.html"
+    And I should see "<h2 class=\"bibliography\">MIT</h2>" in "_site/scholar.html"
+    And "Adams, Alice" should come before "Baker, Bob" in "_site/scholar.html"
+    And "Baker, Bob" should come before "MIT" in "_site/scholar.html"
+
+  @tags @grouping
+  Scenario: Group By Name With Sorting Within Groups
+    Given I have a scholar configuration with:
+      | key      | value             |
+      | group_by | name              |
+      | sort_by  | year              |
+    And I have a "_bibliography" directory
+    And I have a file "_bibliography/references.bib":
+      """
+      @book{adams_2021,
+        title     = {Second Book by Adams},
+        author    = {Adams, Alice},
+        year      = {2021}
+      }
+      @book{adams_2019,
+        title     = {First Book by Adams},
+        author    = {Adams, Alice},
+        year      = {2019}
+      }
+      @book{adams_2020,
+        title     = {Third Book by Adams},
+        author    = {Adams, Alice},
+        year      = {2020}
+      }
+      @book{baker_2022,
+        title     = {Recent Edited Collection},
+        editor    = {Baker, Bob},
+        year      = {2022}
+      }
+      @book{baker_2018,
+        title     = {Earlier Edited Collection},
+        editor    = {Baker, Bob},
+        year      = {2018}
+      }
+      """
+    And I have a page "scholar.html":
+      """
+      ---
+      ---
+      {% bibliography -f references %}
+      """
+    When I run jekyll
+    Then the _site directory should exist
+    And the "_site/scholar.html" file should exist
+    Then I should see "<h2 class=\"bibliography\">Adams, Alice</h2>" in "_site/scholar.html"
+    And I should see "<h2 class=\"bibliography\">Baker, Bob</h2>" in "_site/scholar.html"
+    And "Adams, Alice" should come before "Baker, Bob" in "_site/scholar.html"
+    And "2019" should come before "2020" in "_site/scholar.html"
+    And "2020" should come before "2021" in "_site/scholar.html"
+    And "2018" should come before "2022" in "_site/scholar.html"
